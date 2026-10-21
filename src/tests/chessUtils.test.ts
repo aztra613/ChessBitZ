@@ -137,8 +137,68 @@ assert(dailyToday.id === dailyRepeat.id, 'Daily puzzle lookup is strictly determ
 const octPuzzles = getArchivePuzzlesForMonth(2026, 10);
 assert(octPuzzles.length === 31, 'getArchivePuzzlesForMonth(2026, 10) returns exactly 31 daily puzzles for October');
 
+// 8. Test Social Sharing & Viral Growth Functions
+import {
+  getPuzzleShareUrl,
+  getChallengeMessage,
+  getStandardShareMessage,
+  getResultShareText,
+  getWhatsAppShareUrl,
+  getXShareUrl,
+  getFacebookShareUrl,
+  getTelegramShareUrl,
+} from '../utils/shareUtils';
+import { generateQrMatrix } from '../utils/qrCode';
+
+const testPz = PUZZLES[0];
+const sampleUrl = getPuzzleShareUrl(testPz.id);
+assert(sampleUrl.includes(`/puzzle/${testPz.id}`), 'getPuzzleShareUrl returns valid canonical URL');
+
+// Challenge message: must contain URL and MUST NOT leak any solution move
+const challengeMsg = getChallengeMessage(testPz, sampleUrl);
+assert(challengeMsg.includes(sampleUrl), 'Challenge message includes puzzle URL');
+const solutionMoveStr = testPz.moves.slice(1).join(' ');
+assert(!challengeMsg.includes(solutionMoveStr), 'Challenge message is strictly spoiler-free (no solution moves leaked)');
+
+// Result card text: must contain attempts, hints, duration, and MUST NOT leak solution
+const resultText = getResultShareText(
+  testPz,
+  { attempts: 2, hintsUsed: 1, durationSeconds: 45, isDaily: false },
+  sampleUrl
+);
+assert(resultText.includes('Attempts: 2'), 'Result text contains attempt count');
+assert(resultText.includes('Hints used: 1'), 'Result text contains hints used count');
+assert(resultText.includes('45s'), 'Result text contains formatted duration');
+assert(!resultText.includes(solutionMoveStr), 'Result text is strictly spoiler-free (no solution moves leaked)');
+
+// Channel share URLs
+const waUrl = getWhatsAppShareUrl('Challenge test', sampleUrl);
+assert(waUrl.startsWith('https://api.whatsapp.com/send?text='), 'WhatsApp share URL uses official API format');
+assert(waUrl.includes(encodeURIComponent(sampleUrl)), 'WhatsApp share URL properly encodes target link');
+
+const xUrl = getXShareUrl('Check this tactic', sampleUrl);
+assert(xUrl.startsWith('https://twitter.com/intent/tweet?'), 'X/Twitter share URL uses official intent format');
+
+const fbUrl = getFacebookShareUrl(sampleUrl);
+assert(fbUrl.startsWith('https://www.facebook.com/sharer/sharer.php?u='), 'Facebook share URL uses official sharer format');
+
+const tgUrl = getTelegramShareUrl('Solve this tactic', sampleUrl);
+assert(tgUrl.startsWith('https://t.me/share/url?'), 'Telegram share URL uses official format');
+
+// QR Code Matrix Generation
+const qr = generateQrMatrix(sampleUrl);
+assert(qr.size >= 21 && qr.size <= 41, `generateQrMatrix produces valid QR version matrix (size: ${qr.size}x${qr.size})`);
+const svgStr = qr.toSvg(180);
+assert(svgStr.includes('<svg') && svgStr.includes('</svg>'), 'generateQrMatrix.toSvg() produces valid standalone SVG');
+assert(svgStr.includes('<rect'), 'generateQrMatrix.toSvg() contains rendered vector modules');
+
+import { CLOCK_PRESETS } from '../components/ChessClock';
+assert(CLOCK_PRESETS.length >= 8, 'Chess Clock defines 8+ official Bullet, Blitz, Rapid, and Classical presets');
+assert(CLOCK_PRESETS.some((p) => p.name === '3 + 2'), 'Chess Clock includes standard 3+2 Blitz preset');
+
 console.log(`\nTests Completed: ${testsPassed} passed, ${testsFailed} failed.`);
 
 if (testsFailed > 0) {
   process.exit(1);
 }
+

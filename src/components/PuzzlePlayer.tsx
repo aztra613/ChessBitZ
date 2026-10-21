@@ -8,8 +8,9 @@ import { HintPanel } from './HintPanel';
 import { MoveStatus, MoveStatusType } from './MoveStatus';
 import { getHintContent, formatThemeLabel, uciToSan } from '../utils/chessUtils';
 import { recordPuzzleSolved } from '../utils/storage';
-import { Share2, Check, ArrowRight, Shield, Award, Sparkles, Flag, ExternalLink, Zap, Compass } from 'lucide-react';
+import { Share2, Check, ArrowRight, Shield, Award, Sparkles, Flag, ExternalLink, Zap, Compass, Swords } from 'lucide-react';
 import { AdSlot } from './AdSlot';
+import { ShareModal } from './ShareModal';
 
 interface PuzzlePlayerProps {
   puzzle: PuzzleRecord;
@@ -55,6 +56,13 @@ export const PuzzlePlayer: React.FC<PuzzlePlayerProps> = ({
   const [shareCopied, setShareCopied] = useState<boolean>(false);
   // Report copy confirmation
   const [reportCopied, setReportCopied] = useState<boolean>(false);
+  // Social share & challenge modal state
+  const [shareModalOpen, setShareModalOpen] = useState<boolean>(false);
+  const [shareModalTab, setShareModalTab] = useState<'share' | 'challenge' | 'result'>('share');
+  // Metric tracking for spoiler-free result cards
+  const [attempts, setAttempts] = useState<number>(1);
+  const startTimeRef = useRef<number>(Date.now());
+  const [durationSeconds, setDurationSeconds] = useState<number>(0);
 
   // Handle reporting a puzzle with no backend ticket dependency
   const handleReportPuzzle = () => {
@@ -92,6 +100,9 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
     setHintData(null);
     setIsSolutionVisible(false);
     setIsPlayingSolution(false);
+    setAttempts(1);
+    startTimeRef.current = Date.now();
+    setDurationSeconds(0);
     if (playbackTimerRef.current) clearInterval(playbackTimerRef.current);
 
     if (puzzle.moves.length > 0) {
@@ -156,6 +167,8 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
         if (nextIndex >= puzzle.moves.length) {
           setStatus('solved');
           setStatusMessage('Tactical sequence completed!');
+          const elapsed = Math.max(1, Math.round((Date.now() - startTimeRef.current) / 1000));
+          setDurationSeconds(elapsed);
           recordPuzzleSolved(puzzle.id, hintLevel);
         } else {
           // Play opponent response after brief pause
@@ -189,6 +202,7 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
       // Incorrect move
       setStatus('wrong');
       setStatusMessage('That is not the optimal continuation. Try looking for a more forcing line.');
+      setAttempts((prev) => prev + 1);
     }
   };
 
@@ -407,7 +421,14 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
             onShowSolution={handleShowSolution}
             isSolutionVisible={isSolutionVisible}
             onRotateBoard={() => setOrientation(orientation === 'w' ? 'b' : 'w')}
-            onShare={handleShare}
+            onShare={() => {
+              setShareModalTab('share');
+              setShareModalOpen(true);
+            }}
+            onChallenge={() => {
+              setShareModalTab('challenge');
+              setShareModalOpen(true);
+            }}
             onPrint={() => onOpenWorksheet && onOpenWorksheet(puzzle.id)}
             isPlayingSolution={isPlayingSolution}
             onTogglePlaySolution={handleTogglePlaySolution}
@@ -498,6 +519,34 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
                 <div className="pt-1 text-[11px] font-mono text-slate-500 dark:text-slate-400">
                   Solution: {puzzle.moves.slice(1).join(' ')}
                 </div>
+
+                {/* Growth Sharing Loop: Result Card & Challenge Actions */}
+                <div className="pt-2 flex flex-wrap items-center gap-2 border-t border-slate-200 dark:border-slate-800">
+                  {status === 'solved' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShareModalTab('result');
+                        setShareModalOpen(true);
+                      }}
+                      className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                    >
+                      <Award className="w-3.5 h-3.5 text-emerald-200" />
+                      <span>Share Result Card</span>
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShareModalTab('challenge');
+                      setShareModalOpen(true);
+                    }}
+                    className="px-3.5 py-1.5 bg-[#4658C9] hover:bg-[#3548C5] text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                  >
+                    <Swords className="w-3.5 h-3.5 text-[#C7D2FE]" />
+                    <span>Challenge a Friend</span>
+                  </button>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -546,6 +595,25 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
 
       {/* Isolated AdSlot below solving area */}
       <AdSlot slotId="puzzle-bottom-banner" format="leaderboard" className="mt-8" />
+
+      {/* Social Sharing, Challenge & Result Modal */}
+      <ShareModal
+        isOpen={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        puzzle={puzzle}
+        stats={
+          status === 'solved'
+            ? {
+                attempts,
+                hintsUsed: hintLevel,
+                durationSeconds,
+                isDaily: puzzle.id.startsWith('cb-daily-'),
+                dateStr: new Date().toISOString().split('T')[0],
+              }
+            : undefined
+        }
+        initialTab={shareModalTab}
+      />
     </div>
   );
 };

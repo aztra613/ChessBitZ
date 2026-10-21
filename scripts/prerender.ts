@@ -162,6 +162,19 @@ export function getStaticRoutes(): RouteMeta[] {
         </section>
       `,
     },
+    {
+      path: '/clock',
+      title: 'Digital Chess Clock & Game Timer — Chessbitz',
+      description: 'Free fullscreen digital chess clock with Fischer increment, Bullet, Blitz, and Rapid presets. Works on mobile, tablet, and desktop.',
+      priority: '0.8',
+      changefreq: 'monthly',
+      semanticHtml: `
+        <section>
+          <h1>Digital Chess Clock & Game Timer</h1>
+          <p>Dual-sided over-the-board chess clock for mobile and desktop. Fischer delay/increment, custom presets, and tactile sounds.</p>
+        </section>
+      `,
+    },
   ];
 
   // Tactical themes
@@ -231,9 +244,112 @@ export function getStaticRoutes(): RouteMeta[] {
         </article>
       `,
     });
+
+    // Embed widget route
+    coreRoutes.push({
+      path: `/embed/puzzle/${pz.id}`,
+      title: `${pz.title} — Embeddable Chess Puzzle — Chessbitz`,
+      description: `Interactive embeddable chess tactic: ${pz.title}. Side to move: ${sideName}. Rated ${pz.rating}.`,
+      priority: '0.3',
+      changefreq: 'monthly',
+      semanticHtml: `
+        <article>
+          <h1>${pz.title} (Embed)</h1>
+          <p>Rating: ${pz.rating} • Side to move: ${sideName}</p>
+          <p>Objective: ${pz.objective}</p>
+        </article>
+      `,
+    });
   }
 
   return coreRoutes;
+}
+
+function parseFenBoard(fen: string): (string | null)[][] {
+  const parts = fen.split(' ')[0].split('/');
+  const grid: (string | null)[][] = [];
+  for (const rowStr of parts) {
+    const row: (string | null)[] = [];
+    for (const ch of rowStr) {
+      if (ch >= '1' && ch <= '8') {
+        const empties = parseInt(ch, 10);
+        for (let i = 0; i < empties; i++) row.push(null);
+      } else {
+        row.push(ch);
+      }
+    }
+    grid.push(row);
+  }
+  return grid;
+}
+
+const PIECE_SYMBOLS: Record<string, string> = {
+  K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙',
+  k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟',
+};
+
+function generateSvgCard(title: string, subtitle: string, fen: string, sideToMove: 'w' | 'b'): string {
+  const grid = parseFenBoard(fen);
+  let boardSvg = '';
+  const sqSize = 50;
+  const boardX = 690;
+  const boardY = 115;
+
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const isLight = (r + c) % 2 === 0;
+      const x = boardX + c * sqSize;
+      const y = boardY + r * sqSize;
+      const fill = isLight ? '#F8FAFC' : '#CBD5E1';
+      boardSvg += `<rect x="${x}" y="${y}" width="${sqSize}" height="${sqSize}" fill="${fill}"/>`;
+      const piece = grid[r] && grid[r][c];
+      if (piece) {
+        const sym = PIECE_SYMBOLS[piece] || piece;
+        const pieceFill = piece === piece.toUpperCase() ? '#1E293B' : '#0F172A';
+        boardSvg += `<text x="${x + 25}" y="${y + 36}" font-size="32" font-weight="bold" fill="${pieceFill}" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif">${sym}</text>`;
+      }
+    }
+  }
+
+  const safeTitle = title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const safeSubtitle = subtitle.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const turnBadge = sideToMove === 'w' ? 'WHITE TO MOVE' : 'BLACK TO MOVE';
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#101322"/>
+      <stop offset="50%" stop-color="#171B34"/>
+      <stop offset="100%" stop-color="#252B52"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Brand Header -->
+  <text x="80" y="85" font-size="34" font-weight="900" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif">Chessbitz</text>
+  <text x="80" y="115" font-size="13" font-weight="700" fill="#818CF8" letter-spacing="2" font-family="system-ui, -apple-system, sans-serif">TACTICAL TRAINING STUDIO • FREE &amp; OPEN-ACCESS</text>
+
+  <!-- Turn Badge -->
+  <rect x="80" y="155" width="180" height="34" rx="8" fill="#4658C9"/>
+  <text x="170" y="177" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif">${turnBadge}</text>
+
+  <!-- Title & Subtitle -->
+  <text x="80" y="240" font-size="40" font-weight="900" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif">${safeTitle}</text>
+  <text x="80" y="285" font-size="20" font-weight="600" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif">${safeSubtitle}</text>
+
+  <!-- Value Props -->
+  <rect x="80" y="335" width="550" height="110" rx="16" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255, 255, 255, 0.1)"/>
+  <text x="110" y="375" font-size="18" font-weight="700" fill="#C7D2FE" font-family="system-ui, -apple-system, sans-serif">🎯 Can you calculate the winning line?</text>
+  <text x="110" y="410" font-size="14" font-weight="500" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif">Zero spoilers • Instant interactive play with progressive hints</text>
+
+  <!-- Board border & shadow -->
+  <rect x="${boardX - 4}" y="${boardY - 4}" width="408" height="408" rx="8" fill="none" stroke="#4658C9" stroke-width="4"/>
+  ${boardSvg}
+
+  <!-- Footer -->
+  <text x="80" y="565" font-size="14" font-weight="500" fill="#64748B" font-family="system-ui, -apple-system, sans-serif">Product of Aztras AI Tech Solutions • chessbitz.com</text>
+  <text x="1120" y="565" font-size="14" font-weight="700" fill="#818CF8" text-anchor="end" font-family="system-ui, -apple-system, sans-serif">Free Chess Tactics</text>
+</svg>`;
 }
 
 export function buildPrerender(): void {
@@ -244,13 +360,61 @@ export function buildPrerender(): void {
 
   const baseHtml = fs.readFileSync(BASE_HTML_PATH, 'utf-8');
   const routes = getStaticRoutes();
+  const daily = getDailyPuzzle();
 
+  // Create OG image output directories
+  const distOgDir = path.resolve(DIST_DIR, 'assets/og');
+  const publicOgDir = path.resolve(process.cwd(), 'public/assets/og');
+  [distOgDir, publicOgDir].forEach((d) => {
+    if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
+  });
+
+  // Generate static preview SVG images
+  const coverSvg = generateSvgCard(
+    'Chess Tactics Studio',
+    'Free Curated Tactics & Printable Worksheets',
+    'r1bqk2r/pppp1ppp/2n5/4p3/1bB1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4',
+    'w'
+  );
+  fs.writeFileSync(path.resolve(distOgDir, 'cover.svg'), coverSvg, 'utf-8');
+  fs.writeFileSync(path.resolve(publicOgDir, 'cover.svg'), coverSvg, 'utf-8');
+
+  const dailySvg = generateSvgCard(
+    'Daily Chess Puzzle',
+    `${daily.objective} • Rated ${daily.rating}`,
+    daily.solverFen,
+    daily.sideToMove
+  );
+  fs.writeFileSync(path.resolve(distOgDir, 'daily.svg'), dailySvg, 'utf-8');
+  fs.writeFileSync(path.resolve(publicOgDir, 'daily.svg'), dailySvg, 'utf-8');
+
+  for (const pz of PUZZLES) {
+    const pzSvg = generateSvgCard(
+      pz.title,
+      `${pz.objective} • Rated ${pz.rating}`,
+      pz.solverFen,
+      pz.sideToMove
+    );
+    fs.writeFileSync(path.resolve(distOgDir, `puzzle-${pz.id}.svg`), pzSvg, 'utf-8');
+    fs.writeFileSync(path.resolve(publicOgDir, `puzzle-${pz.id}.svg`), pzSvg, 'utf-8');
+  }
+
+  console.log(`Generated static social preview images for ${PUZZLES.length} puzzles and core routes.`);
   console.log(`Prerendering ${routes.length} static routes for true SSG/SEO...`);
 
   let renderedCount = 0;
 
   for (const route of routes) {
     const canonicalUrl = `${SITE_URL}${route.path === '/' ? '' : route.path}`;
+
+    // Select appropriate preview image
+    let imageUrl = `${SITE_URL}/assets/og/cover.svg`;
+    if (route.path.startsWith('/puzzle/') || route.path.startsWith('/embed/puzzle/')) {
+      const pId = route.path.split('/').pop();
+      imageUrl = `${SITE_URL}/assets/og/puzzle-${pId}.svg`;
+    } else if (route.path === '/daily') {
+      imageUrl = `${SITE_URL}/assets/og/daily.svg`;
+    }
 
     // Replace meta tags and title
     let html = baseHtml;
@@ -272,15 +436,24 @@ export function buildPrerender(): void {
       html = html.replace('</head>', `  <link rel="canonical" href="${canonicalUrl}" />\n</head>`);
     }
 
-    // OpenGraph Tags
+    // Strip fallback base og and twitter tags to ensure zero duplicate tags
+    html = html.replace(/<meta property="og:[^>]*>\s*/g, '');
+    html = html.replace(/<meta name="twitter:[^>]*>\s*/g, '');
+
+    // OpenGraph & Twitter Card Tags with absolute teaser image
     const ogTags = `
   <meta property="og:title" content="${route.title}" />
   <meta property="og:description" content="${route.description}" />
   <meta property="og:url" content="${canonicalUrl}" />
   <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image" content="${imageUrl}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/svg+xml" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${route.title}" />
   <meta name="twitter:description" content="${route.description}" />
+  <meta name="twitter:image" content="${imageUrl}" />
 `;
     html = html.replace('</head>', `${ogTags}</head>`);
 

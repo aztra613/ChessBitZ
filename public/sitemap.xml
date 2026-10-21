@@ -61,6 +61,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/clock</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/themes/fork</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -163,10 +169,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-lic-001gi</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/puzzle/cb-lic-003IX</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-lic-003IX</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://chessbitz.com/puzzle/cb-lic-00sHx</loc>
@@ -175,10 +193,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-lic-00sHx</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/puzzle/cb-lic-0kDWS</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-lic-0kDWS</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://chessbitz.com/puzzle/cb-lic-kRapK</loc>
@@ -187,10 +217,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-lic-kRapK</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/puzzle/cb-lic-00008</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-lic-00008</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://chessbitz.com/puzzle/cb-daily-01</loc>
@@ -199,10 +241,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-daily-01</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/puzzle/cb-mate1-01</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-mate1-01</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://chessbitz.com/puzzle/cb-mate1-02</loc>
@@ -211,10 +265,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-mate1-02</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/puzzle/cb-mate1-03</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-mate1-03</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://chessbitz.com/puzzle/cb-fork-01</loc>
@@ -223,10 +289,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-fork-01</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/puzzle/cb-pin-01</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-pin-01</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://chessbitz.com/puzzle/cb-skewer-01</loc>
@@ -235,10 +313,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-skewer-01</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/puzzle/cb-disc-01</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-disc-01</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://chessbitz.com/puzzle/cb-sac-01</loc>
@@ -247,15 +337,33 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-sac-01</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/puzzle/cb-symm-cb-mate1-01</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-symm-cb-mate1-01</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chessbitz.com/puzzle/cb-symm-cb-skewer-01</loc>
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chessbitz.com/embed/puzzle/cb-symm-cb-skewer-01</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

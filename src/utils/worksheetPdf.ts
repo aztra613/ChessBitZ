@@ -1,6 +1,7 @@
 import { jsPDF } from 'jspdf';
 import { Chess } from 'chess.js';
 import { PuzzleRecord } from '../types/puzzle';
+import { generateQrMatrix } from './qrCode';
 
 export interface WorksheetOptions {
   paperSize: 'a4' | 'letter';
@@ -208,7 +209,30 @@ export function generateWorksheetPdf(
         // Space for solver answer line
         doc.setFontSize(8);
         doc.setTextColor(98, 108, 130);
-        doc.text('Solution: _________________________________', cellX, boardY + boardSize + 16);
+        const ansLineWidth = options.includeQrCode ? colWidth - 28 : colWidth - 8;
+        doc.text('Solution: ________________________', cellX, boardY + boardSize + 14);
+
+        // Optional interactive QR code to solve online / verify without spoiling
+        if (options.includeQrCode) {
+          const qrUrl = `https://chessbitz.com/puzzle/${puzzle.id}`;
+          const qr = generateQrMatrix(qrUrl);
+          const qrSize = Math.min(16, colWidth * 0.22);
+          const qrX = cellX + colWidth - qrSize - 4;
+          const qrY = boardY + boardSize + 4;
+          const modSize = qrSize / qr.size;
+
+          doc.setFillColor(23, 27, 52);
+          for (let qrR = 0; qrR < qr.size; qrR++) {
+            for (let qrC = 0; qrC < qr.size; qrC++) {
+              if (qr.isDark(qrR, qrC)) {
+                doc.rect(qrX + qrC * modSize, qrY + qrR * modSize, modSize, modSize, 'F');
+              }
+            }
+          }
+          doc.setFontSize(5.5);
+          doc.setTextColor(98, 108, 130);
+          doc.text('Scan to solve', qrX + qrSize / 2, qrY + qrSize + 2.5, { align: 'center' });
+        }
 
         currentIdx++;
       }

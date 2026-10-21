@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Lightbulb, RotateCcw, Eye, Share2, Printer, RotateCw, Play, Pause, SkipBack, SkipForward } from 'lucide-react';
+import { Lightbulb, RotateCcw, Eye, Share2, Printer, RotateCw, Play, Pause, SkipBack, SkipForward, Swords } from 'lucide-react';
 
 interface PuzzleControlsProps {
   onHint: () => void;
@@ -11,6 +11,7 @@ interface PuzzleControlsProps {
   isSolutionVisible: boolean;
   onRotateBoard: () => void;
   onShare: () => void;
+  onChallenge?: () => void;
   onPrint: () => void;
   // Solution playback state
   isPlayingSolution?: boolean;
@@ -31,6 +32,7 @@ export const PuzzleControls: React.FC<PuzzleControlsProps> = ({
   isSolutionVisible,
   onRotateBoard,
   onShare,
+  onChallenge,
   onPrint,
   isPlayingSolution = false,
   onTogglePlaySolution,
@@ -155,18 +157,18 @@ export const PuzzleControls: React.FC<PuzzleControlsProps> = ({
         </motion.div>
       )}
 
-      {/* Secondary Utility Controls: Rotate Board, Share, Print Worksheet */}
-      <div className="grid grid-cols-3 gap-2">
+      {/* Secondary Utility Controls: Rotate Board, Share, Challenge, Print Worksheet */}
+      <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
         <motion.button
           type="button"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.95 }}
           onClick={onRotateBoard}
-          className="flex items-center justify-center gap-1.5 px-3 py-2 min-h-[42px] rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 hover:bg-white dark:bg-[#161C2E] dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:border-slate-300 transition-all shadow-2xs cursor-pointer"
+          className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 min-h-[42px] rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 hover:bg-white dark:bg-[#161C2E] dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:border-slate-300 transition-all shadow-2xs cursor-pointer"
           aria-label="Rotate chessboard"
         >
           <RotateCw className="w-3.5 h-3.5 text-[#4658C9] dark:text-[#818CF8]" />
-          <span>Rotate</span>
+          <span className="hidden xs:inline sm:inline">Rotate</span>
         </motion.button>
 
         <motion.button
@@ -174,7 +176,7 @@ export const PuzzleControls: React.FC<PuzzleControlsProps> = ({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.95 }}
           onClick={onShare}
-          className="flex items-center justify-center gap-1.5 px-3 py-2 min-h-[42px] rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 hover:bg-white dark:bg-[#161C2E] dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:border-slate-300 transition-all shadow-2xs cursor-pointer"
+          className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 min-h-[42px] rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 hover:bg-white dark:bg-[#161C2E] dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:border-slate-300 transition-all shadow-2xs cursor-pointer"
           aria-label="Share puzzle link"
         >
           <Share2 className="w-3.5 h-3.5 text-[#4658C9] dark:text-[#818CF8]" />
@@ -185,8 +187,20 @@ export const PuzzleControls: React.FC<PuzzleControlsProps> = ({
           type="button"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.95 }}
+          onClick={onChallenge || onShare}
+          className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 min-h-[42px] rounded-xl text-xs font-bold border border-[#4658C9]/30 dark:border-[#4658C9]/50 bg-[#4658C9]/10 hover:bg-[#4658C9]/20 dark:bg-[#4658C9]/20 dark:hover:bg-[#4658C9]/30 text-[#3548C5] dark:text-[#C7D2FE] transition-all shadow-2xs cursor-pointer"
+          aria-label="Challenge a friend"
+        >
+          <Swords className="w-3.5 h-3.5 text-[#4658C9] dark:text-[#818CF8]" />
+          <span className="truncate">Challenge</span>
+        </motion.button>
+
+        <motion.button
+          type="button"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.95 }}
           onClick={onPrint}
-          className="flex items-center justify-center gap-1.5 px-3 py-2 min-h-[42px] rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 hover:bg-white dark:bg-[#161C2E] dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:border-slate-300 transition-all shadow-2xs cursor-pointer"
+          className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 min-h-[42px] rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 hover:bg-white dark:bg-[#161C2E] dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:border-slate-300 transition-all shadow-2xs cursor-pointer"
           aria-label="Print worksheet for this puzzle"
         >
           <Printer className="w-3.5 h-3.5 text-[#4658C9] dark:text-[#818CF8]" />

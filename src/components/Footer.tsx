@@ -10,6 +10,34 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenCookieSettings
   return (
     <footer className="w-full bg-white dark:bg-[#1A2032] border-t border-slate-300 dark:border-slate-800 transition-colors mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        {/* Brand Banner */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200 dark:border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-indigo-500/30 shadow-md shrink-0 bg-[#0F1222]">
+              <img
+                src="/logo.png"
+                alt="Chessbitz Logo"
+                className="w-full h-full object-cover"
+                width={40}
+                height={40}
+              />
+            </div>
+            <div>
+              <span className="text-base font-black tracking-tight text-slate-950 dark:text-white block">
+                Chessbitz
+              </span>
+              <p className="text-xs text-slate-600 dark:text-slate-400">
+                Premium Free Chess Tactics Puzzles, Worksheets & Digital Clock
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300/40">
+              100% Free • No Sign-up
+            </span>
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           {/* Column 1: Puzzles & Training */}
           <div>
@@ -42,6 +70,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenCookieSettings
                   className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors cursor-pointer"
                 >
                   Spaced Repetition
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('/clock')}
+                  className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors cursor-pointer"
+                >
+                  Digital Chess Clock
                 </button>
               </li>
               <li>
@@ -272,22 +309,30 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenCookieSettings
           </div>
         </div>
 
-        {/* Legal Disclaimer & Independent Statement */}
-        <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-600 dark:text-slate-400">
-          <p className="text-center md:text-left leading-relaxed">
-            &copy; 2026 Chessbitz. An independent static-first chess tactics educational platform.
-            <br />
-            <span className="opacity-90">
-              Not affiliated with, endorsed by, or sponsored by Lichess, Chess.com, or the International Chess Federation (FIDE).
-            </span>
-          </p>
-
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300 font-bold text-xs border border-emerald-300 dark:border-emerald-800">
-              <Shield className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
-              100% Free • No Account Required
-            </span>
+        {/* Aztras AI Tech Solutions & Legal Links Row */}
+        <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs">
+          <div className="text-slate-600 dark:text-slate-400">
+            <span>Product of <strong className="font-semibold text-slate-900 dark:text-white">Aztras AI Tech Solutions</strong>, Chennai, India.</span>
           </div>
+
+          <nav className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-600 dark:text-slate-400 font-medium" aria-label="Legal & Policy Links">
+            <a href="https://musikflo.pages.dev/#privacy" target="_blank" rel="noopener noreferrer" className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors">Privacy</a>
+            <a href="https://musikflo.pages.dev/#terms" target="_blank" rel="noopener noreferrer" className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors">Terms</a>
+            <a href="https://musikflo.pages.dev/#cookies" target="_blank" rel="noopener noreferrer" className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors">Cookies</a>
+            <a href="https://musikflo.pages.dev/#disclaimer" target="_blank" rel="noopener noreferrer" className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors">Disclaimer</a>
+            <a href="https://musikflo.pages.dev/#contact" target="_blank" rel="noopener noreferrer" className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors">Contact</a>
+            <a href="https://musikflo.pages.dev/#licenses" target="_blank" rel="noopener noreferrer" className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors">Licenses</a>
+            <a href="https://musikflo.pages.dev/#accessibility" target="_blank" rel="noopener noreferrer" className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors">Accessibility</a>
+            <a href="https://musikflo.pages.dev/#security" target="_blank" rel="noopener noreferrer" className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors">Security</a>
+          </nav>
+        </div>
+
+        {/* Bottom Copyright & Independent Statement */}
+        <div className="pt-4 mt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+          <p>© 2026 Aztras AI Tech Solutions. All rights reserved.</p>
+          <p className="text-center md:text-right text-[11px] text-slate-500 dark:text-slate-400">
+            Independent static-first chess tactics educational platform. Users are solely responsible for copyright compliance and lawful use.
+          </p>
         </div>
       </div>
     </footer>

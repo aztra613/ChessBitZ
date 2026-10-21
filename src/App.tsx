@@ -13,6 +13,8 @@ import { WorksheetBuilder } from './components/WorksheetBuilder';
 import { SprintMode } from './components/SprintMode';
 import { ReviewMode } from './components/ReviewMode';
 import { FenImport } from './components/FenImport';
+import { EmbedWidget } from './components/EmbedWidget';
+import { ChessClock } from './components/ChessClock';
 import { LegalPages } from './components/LegalPages';
 import { NotFound } from './components/NotFound';
 import { CookieBanner } from './components/CookieBanner';
@@ -113,6 +115,8 @@ export default function App() {
       document.title = 'Spaced Repetition Review - Chessbitz';
     } else if (currentRoute === '/import') {
       document.title = 'Import FEN Position - Private Analysis - Chessbitz';
+    } else if (currentRoute === '/clock') {
+      document.title = 'Digital Chess Clock & Timer — Chessbitz';
     } else if (currentRoute.startsWith('/mate-in-')) {
       const n = currentRoute.replace('/mate-in-', '');
       document.title = `Mate in ${n} Puzzles - Chessbitz`;
@@ -301,6 +305,25 @@ export default function App() {
       );
     }
 
+    // 8d. Embed Widget: /embed/puzzle/:id
+    if (currentRoute.startsWith('/embed/puzzle/')) {
+      const id = currentRoute.replace('/embed/puzzle/', '');
+      const puzzle = PUZZLES.find((p) => p.id === id);
+      if (!puzzle) {
+        return (
+          <div className="p-4 text-center text-xs text-slate-500">
+            Puzzle not found.
+          </div>
+        );
+      }
+      return <EmbedWidget puzzle={puzzle} boardTheme={boardTheme} />;
+    }
+
+    // 8e. Digital Chess Clock: /clock
+    if (currentRoute === '/clock') {
+      return <ChessClock />;
+    }
+
     // 9. Worksheet Studio: /printable-chess-puzzles
     if (currentRoute === '/printable-chess-puzzles') {
       return (
@@ -338,6 +361,15 @@ export default function App() {
       />
     );
   };
+
+  // If rendering inside an iframe/embed widget, display without shell header/footer
+  if (currentRoute.startsWith('/embed/')) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-2 bg-transparent text-[var(--cb-ink)]">
+        {renderRoute()}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-[var(--cb-canvas)] text-[var(--cb-ink)]">

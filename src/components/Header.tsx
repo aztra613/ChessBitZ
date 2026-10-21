@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, Palette, Menu, X, Calendar, Grid, Printer, BookOpen, Zap, Brain, Upload } from 'lucide-react';
+import { Sun, Moon, Palette, Menu, X, Calendar, Grid, Printer, BookOpen, Zap, Brain, Upload, Clock } from 'lucide-react';
 import { BoardThemeId } from '../types/puzzle';
 import { BoardThemeSelector } from './BoardThemeSelector';
 
@@ -25,10 +25,11 @@ export const Header: React.FC<HeaderProps> = ({
   const [themeModalOpen, setThemeModalOpen] = useState(false);
 
   const navLinks = [
-    { label: 'Daily Puzzle', route: '/daily', icon: Calendar },
-    { label: 'Browse Puzzles', route: '/puzzles', icon: Grid },
+    { label: 'Daily', route: '/daily', icon: Calendar },
+    { label: 'Puzzles', route: '/puzzles', icon: Grid },
     { label: 'Sprint', route: '/sprint', icon: Zap },
     { label: 'Review', route: '/review', icon: Brain },
+    { label: 'Clock', route: '/clock', icon: Clock },
     { label: 'Import', route: '/import', icon: Upload },
     { label: 'Worksheets', route: '/printable-chess-puzzles', icon: Printer },
   ];
@@ -51,10 +52,14 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-2.5 text-left group focus-visible:ring-2 focus-visible:ring-[#3548C5] rounded-xl p-1 -ml-1 cursor-pointer shrink-0"
             aria-label="Chessbitz Home"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#171B34] to-[#252B52] dark:from-[#4658C9] dark:to-[#3548C5] flex items-center justify-center text-white shadow-md group-hover:shadow-lg transition-all shrink-0">
-              <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
-                <path d="M19 22H5v-2h14v2zm-2-4H7l1.5-6h7L17 18zm-3.5-8a2.5 2.5 0 0 1-2.5-2.5c0-.6.2-1.1.6-1.5-.7-.3-1.4-.4-2.1-.4a5.5 5.5 0 0 0-5.5 5.5v.9H5V11a7 7 0 0 1 7-7c1.3 0 2.5.3 3.6.9.4-.5 1-1 1.9-1a3 3 0 0 1 3 3c0 1.2-.7 2.2-1.7 2.7l.7 2.4h-1.6l-.7-2.3c-.6.2-1.2.3-1.7.3z" />
-              </svg>
+            <div className="w-9 h-9 rounded-xl overflow-hidden border border-indigo-500/30 shadow-md group-hover:shadow-indigo-500/40 transition-all shrink-0 bg-[#0F1222]">
+              <img
+                src="/logo.png"
+                alt="Chessbitz Logo"
+                className="w-full h-full object-cover"
+                width={36}
+                height={36}
+              />
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-black tracking-tight text-slate-950 dark:text-white leading-none">
