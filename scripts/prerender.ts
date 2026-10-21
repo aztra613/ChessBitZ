@@ -449,12 +449,16 @@ export function buildPrerender(): void {
   <meta property="og:description" content="${route.description}" />
   <meta property="og:url" content="${canonicalUrl}" />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="PlyQuest" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:image" content="${imageUrl}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:type" content="${imageType}" />
   <meta property="og:image:alt" content="${route.title}" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@plyquest" />
+  <meta name="twitter:creator" content="@plyquest" />
   <meta name="twitter:title" content="${route.title}" />
   <meta name="twitter:description" content="${route.description}" />
   <meta name="twitter:image" content="${imageUrl}" />
@@ -502,10 +506,11 @@ export function buildPrerender(): void {
       html = html.replace('</head>', `  <script type="application/ld+json">\n${faqJsonLd}\n  </script>\n</head>`);
     }
 
-    // Inject semantic server HTML inside #root
+    // Inject crawlable semantic HTML inside #root. This is the pre-hydration content
+    // (real H1/description) that crawlers and no-JS users see; React replaces it on mount.
     if (route.semanticHtml) {
       const rootPlaceholder = '<div id="root"></div>';
-      const rootFilled = `<div id="root">\n  <noscript>\n    ${route.semanticHtml}\n  </noscript>\n</div>`;
+      const rootFilled = `<div id="root">${route.semanticHtml}</div>`;
       html = html.replace(rootPlaceholder, rootFilled);
     }
 
