@@ -1,0 +1,24 @@
+{
+  "manifestVersion": "1.0.0",
+  "generatedAt": "2026-10-21T12:10:45.425Z",
+  "validatorVersion": "2.0.0",
+  "totalPuzzles": 17,
+  "suppressedByDenylist": 0,
+  "datasets": {
+    "lichess-open-puzzles": 6,
+    "chessbitz-curated": 9,
+    "chessbitz-transformed-variant": 2
+  },
+  "difficultyBreakdown": {
+    "beginner": 6,
+    "intermediate": 7,
+    "advanced": 3,
+    "master": 1
+  },
+  "licensingSummary": {
+    "dataLicense": "CC0-1.0 Universal",
+    "dataLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "educationalContentLicense": "CC-BY-4.0",
+    "commercialRedistributionPermitted": true
+  }
+}

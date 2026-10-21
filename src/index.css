@@ -1,0 +1,48 @@
+@import "tailwindcss";
+@import "./styles/tokens.css";
+
+/* Strictly scope dark variant to .dark class and data-theme="dark" attribute */
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
+/* System typography & smooth rendering */
+html {
+  scroll-padding-top: 1rem;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  background-color: var(--cb-canvas);
+  color: var(--cb-ink);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  min-height: 100vh;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom focus ring matching token */
+:focus-visible {
+  outline: 2px solid var(--cb-focus);
+  outline-offset: 2px;
+}
+
+/* Printable media styling */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}

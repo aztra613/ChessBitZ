@@ -1,0 +1,477 @@
+Chessbitz
+Product Requirements Document v2.2
+Date: 20 October 2026
+
+Status: Revised implementation baseline with non-green brand palette, selectable board themes, explicit puzzle-transformation policy and AI Studio-ready UI specification; legal review required before public launch
+
+Product: Static-first chess puzzle training and printable worksheet platform
+
+Business model: Free access; ad-supported through Monetag; no accounts or subscriptions planned for launch
+
+Primary launch market: India, with international visitors expected
+Important legal limitation
+This document is product and risk-planning material, not legal advice and not a guarantee against claims, complaints, takedowns, regulatory action, or platform termination. The operator must fill all placeholders, inspect the deployed website and actual vendor scripts, complete trademark and licence checks, and obtain India-specific legal and tax advice before launch. International privacy rules may apply based on actual targeting and processing, not only where the operator is located.
+
+Version 2.2 change log
+- Replaced the default forest-green visual identity with Midnight Indigo + Blue-Gray + Warm Ivory.
+- Added selectable, locally persisted board themes: Ocean Slate (default), Classic Tournament, Rosewood and High Contrast.
+- Specified white/indigo Staunton piece fills and outlines, annotation colours, focus state, theme previews and contrast checks.
+- Updated the dedicated Google AI Studio build prompt to use the same tokens and require the same visual results.
+1. Executive decision
+Build Chessbitz as a static-site-generated (SSG) chess puzzle platform. Puzzle moves, board state, progressive hints, local progress, sharing, and worksheet generation should run in the browser. GitHub Actions (GHA) should curate and validate data, run tests, create a pre-generated date-to-puzzle manifest, and deploy the static site. A daily puzzle must not depend on a successful scheduled workflow at the moment of the daily reset.
+
+The revised product remains no-login and subscription-free, but treats legal provenance, privacy, advertising behaviour, child safety, software licensing, security, and takedown handling as release requirements rather than optional documentation.
+1.1 Decisions
+- Puzzle source: use the specific Lichess open puzzle dataset stated as CC0, and preserve downloaded source evidence, checksum, retrieval date, schema version, and per-puzzle provenance. The Lichess database page states that the exports may be used commercially, modified, and redistributed. Do not scrape commercial chess sites or assume all Lichess datasets/assets share the puzzle dataset's licence. [R1][R15]
+- Colour-swapped variants: may be generated as a product feature only through a mathematically defined board symmetry transform and full legal-move validation. This is not a way to “escape compliance”; CC0 already permits modification and redistribution of that specific dataset. Never falsify, delete or obscure source provenance. [R1][R16]
+- Browser rules: use chess.js for move legality and state management, after pinning and recording the exact version/licence. [R2]
+- Board UI: prefer a version of react-chessboard whose exact package version and MIT licence are verified at build time. Do not adopt Chessground unless Chessbitz deliberately accepts GPL obligations, including making the covered combined work/source available as required by the licence. [R3][R4]
+- Engine: do not ship Stockfish in the MVP. If added later, make a separate GPLv3 distribution-compliance decision, including required licence and corresponding-source availability for the exact distributed build. [R5]
+- Advertising: Monetag is a third-party ad provider, not a component of the chess engine. Its scripts must not block the board, hide controls, redirect unexpectedly, or trigger monetisation on core puzzle clicks. Launch with a conservative format approved in the publisher dashboard and verify every format under the publisher agreement. [R6]
+- Privacy: no account or upload does not mean no data processing. Hosting/CDN logs and advertising tags can process IP addresses, browser/device data, identifiers, and interaction data. Maintain a vendor/data-flow inventory and gate non-essential tracking using a consent mechanism where required. [R7][R8]
+- Children: design for general audiences and safe use. Do not profile children or intentionally serve behavioural advertising to child users. Because chess worksheets may attract minors, obtain legal/ad-network confirmation before promoting Chessbitz specifically to children or schools. [R9]
+- Brand: “Chessbitz” is not cleared by this document. Complete an Indian trademark and common-law search, including phonetic variants and related software/education/advertising classes, before spending materially on branding. [R10]
+1.2 What this revision adds to v2.0
+- A formal legal and compliance risk register with owners and launch gates.
+- An explicit no-evasion policy for colour-swapped/mirrored puzzles and a validated transformation specification.
+- A complete non-green indigo/blue-gray design system, selectable board-theme specifications, piece styling, responsive interaction rules, and accessibility criteria suitable for a Google AI Studio build prompt.
+- A licence allowlist, software bill of materials (SBOM) and third-party notice requirements.
+- Privacy/data mapping, local-storage controls, cookie/advertising consent requirements and policy pages.
+- Child-safety and international privacy considerations.
+- Copyright complaint/takedown workflow and content provenance records.
+- Security architecture, GitHub Actions hardening, incident response and hosting-log review.
+- Monetag implementation guardrails, anti-invalid-traffic rules and ad-review checklist.
+- Website-ready policy templates in the companion Chessbitz Compliance Pack v1.0. Those templates must be completed against the actual deployed site before publication.
+2. Product vision, goals and boundaries
+2.1 Vision
+Make high-quality, short-form chess tactics easy to solve on any device. The player sees one position, identifies the best move or sequence, receives progressively more informative hints, then can review the line, share the puzzle, or print a worksheet without creating an account.
+2.2 Product promises
+1. Free tactical practice: Mate in 1, Mate in 2, Mate in 3, and tactical motifs from beginner to advanced.
+2. Useful printing: single puzzles and multi-puzzle worksheets with separate answer keys, A4 and US Letter layouts, and optional QR links.
+3. No forced identity: no account, public profile, chat, comments, cloud sync, or subscription in the MVP.
+4. Reliable static delivery: no server request is required to validate a move or provide the known solution/hints.
+5. Respectful monetisation: ads are separated from board controls and cannot be required for puzzle use.
+6. Documented provenance: every puzzle and shipped dependency has a traceable source/licence record.
+2.3 MVP non-goals
+- Full chess games, matchmaking, real-time multiplayer, live ratings or tournaments.
+- Accounts, public leaderboards, chat, profiles, user uploads or user-generated puzzle hosting.
+- Arbitrary engine analysis or bundled Stockfish.
+- Ads disguised as puzzle controls, forced notification prompts, pop-under triggers on board clicks, or forced redirects.
+- Behavioural advertising directed at children.
+- Indexing every row in a source database just because SSG can generate the URLs.
+- A guarantee that a puzzle has only one correct move unless its validated solution data supports that claim.
+3. Users, success metrics and growth design
+3.1 Audiences
+Audience	Primary need	Product implication
+Beginner or casual player	A quick puzzle and forgiving explanation	Plain-language task, retry and progressive hints
+Improving club player	Daily practice and motif-specific drills	Rating bands, themes, solution playback
+Teacher, coach or club	Printable exercises and answer keys	Batch worksheet builder and clean print layouts
+Parent or family learner	Low-friction, readable mobile practice	No forced sign-in, accessible controls, safe ad experience
+Social sharer	A puzzle that opens correctly on another phone	Stable URL, spoiler-free preview and copy/share controls
+
+
+3.2 Product and business metrics
+North-star: completed, validated puzzle solves per returning browser, measured locally by default. Any analytics transmission requires an approved privacy configuration and consent where applicable.
+
+Track: first-puzzle start rate; solve completion by theme/difficulty; hints and reveal rate; puzzle defect rate; PDF export attempts; share/copy action counts if analytics is allowed; returning visitors; Core Web Vitals before and after ads; Monetag revenue per thousand sessions; ad-related complaint rate; invalid-traffic warnings; and takedown/correction response time.
+
+Do not optimise only for time-on-page. A rapid successful solve is a good result. Do not use deceptive ad placements or force multiple page loads to increase impressions.
+4. Product scope and roadmap
+P0 - launch requirements
+- Landing page with clear value proposition and a “Solve today's puzzle” CTA.
+- Daily puzzle and date archive; globally consistent reset timezone stated in the UI.
+- Curated library with filters for difficulty, theme, mate length and rating band.
+- Interactive responsive board; click/tap-to-move and drag-and-drop; keyboard-supported alternatives where practical.
+- Local board-theme selector with Ocean Slate as default plus Classic Tournament, Rosewood and High Contrast; keep the Chessbitz brand palette indigo regardless of board theme.
+- Progressive hints, reset, retry, show solution and line playback.
+- Stable puzzle pages with canonical metadata and spoiler-free social previews.
+- Share/copy link and Web Share support when available.
+- Single-puzzle and multi-puzzle PDF/print studio; A4 and US Letter; optional separate answer key and QR codes.
+- Local progress in localStorage/IndexedDB with a clear reset/export pathway.
+- Source and licence inventory, dependency licence check, privacy/cookie controls, legal pages and report links.
+- Monetag integration isolated from solving logic, with mobile/desktop regression tests.
+- Security headers, protected repository/CI, dependency scanning and an incident response contact.
+P1 - after launch stability
+- Theme pages for forks, pins, skewers, discovered attacks, deflection, sacrifice and back-rank mate.
+- 10- and 20-puzzle practice sets; optional 3- or 5-minute sprint.
+- Local streaks, personal bests, spaced repetition and progress export/import.
+- Coach/teacher worksheet presets: 1, 2, 4 or 6 puzzles per page; answers at end; optional student name/date fields processed only in browser.
+- Hindi and Tamil UI after demand and translation QA.
+- Small offline pack/PWA if caching and update invalidation are tested.
+- Embeddable puzzle widget with clear Chessbitz attribution and safe sizing.
+P2 - evidence-led only
+- Curated curriculum and club packs.
+- User-submitted positions only after a separate legal, privacy, validation, moderation and abuse-control design.
+- Optional engine-based analysis only after licence compliance and performance review.
+5. Site map and SEO requirements
+Route	Purpose	Rule
+/	Landing page and daily challenge	Static; useful internal links
+/daily	Current puzzle	Date chosen from prebuilt manifest
+/archive/YYYY/MM	Puzzle archive	Only publish if it is useful and populated
+/puzzle/{id}	Puzzle details	Stable ID; spoilers hidden; useful original context
+/puzzles	Search/filter library	Useful functional page; avoid thin index pages
+/themes/{theme}	Tactical collection	Curated descriptions and valid related puzzles
+/mate-in-1, /mate-in-2, /mate-in-3	Mate categories	Curated, maintained pages
+/difficulty/{band}	Skill collection	Useful content, not keyword-only duplicates
+/printable-chess-puzzles	Worksheet studio landing page	Explain formats and print workflow
+/learn/{topic}	Learning guide	Original explanation reviewed by a human
+/privacy, /cookies, /terms, /disclaimer	Legal pages	Linked in footer and where controls matter
+/copyright, /licenses, /security, /accessibility, /contact	Trust and reporting pages	Contact details must be real and monitored
+
+
+Do not publish thousands of near-identical SEO pages with a templated paragraph and no meaningful user value. Google explicitly identifies scaled content produced primarily to manipulate rankings and unhelpful scraped/duplicative pages as spam risk. [R11] Start with roughly 2,000-5,000 validated puzzles in the curated corpus but index only the pages that merit independent discovery. Every indexable page should add useful context, taxonomy, difficulty, a spoiler-controlled objective, a concise original explanation and links to genuinely related puzzles.
+6. Visual design system and user experience
+6.1 Design intent
+Chessbitz should look like a polished, editorial chess-learning product rather than a casino, ad-network landing page, or full-game client. The default brand identity is Midnight Indigo with blue-gray and warm-ivory chessboard squares; green is not the brand colour. The board and tactical task are the visual priority. Use familiar Staunton piece silhouettes, concise instructions, predictable controls, and clear post-move feedback. Indian and international users should see the same core visual system; language is not encoded only by colour or icon.
+
+Design principles:
+- Board-first layout; ads never overlay the board, move targets, hints, reset, solution playback, or print/share controls.
+- Familiar chess conventions; no novelty pieces, emojis, or abstract icons in place of chessmen.
+- Low cognitive load: one primary action per screen, progressive hints, and restrained motion.
+- Mobile-first: the entire 8x8 board remains visible without horizontal scrolling.
+- Text and icons supplement colour. Correct/incorrect states must never be distinguished by colour alone.
+- Default to a light theme; an optional dark UI theme may change the page shell, but the chessboard stays on the approved accessible board palette unless the user chooses another tested board theme.
+6.2 Brand and colour tokens
+The default palette is Midnight Indigo + Blue-Gray + Warm Ivory. Do not use green as the main brand, primary-button, or default-board colour. Green may appear only as a semantic colour within a selected board theme or a tested success state. Do not let a coding agent invent colours without updating the token table and reviewing contrast.
+Token	Hex	Use
+brand-950	#171B34	Main brand, headings, dark piece fill
+brand-800	#252B52	Secondary brand, dark piece outlines
+brand-600	#4658C9	Primary buttons, active navigation, links
+board-light	#F3E8D2	Default light board squares: warm ivory
+board-dark	#657D9B	Default dark board squares: blue-gray
+canvas	#F7F8FC	Main page background
+surface	#FFFFFF	Cards, panels, fields
+ink	#1C2238	Main text
+muted	#626C82	Secondary text; re-check on every surface
+border	#DCE1EC	Borders and dividers
+accent-amber	#F2A65A	Last move, highlights, small decorative accents
+hint-lavender	#D9CCFF	Hint state with an additional outline/icon
+success	#087F79	Correct-state text/icon; never the sole signal
+error	#B83D50	Incorrect-state text/icon; never the sole signal
+focus	#3548C5	Keyboard focus ring
+dark-canvas	#101321	Dark page background
+dark-surface	#1A2032	Dark cards/panels
+dark-ink	#F3F5FC	Dark-theme text
+
+
+Board themes: Keep brand identity and board theme separate. The user can select a tested board theme in settings; the selection is local to the browser and does not require an account.
+Theme name	Light square	Dark square	Role
+Ocean Slate	#F3E8D2	#657D9B	Default Chessbitz board; warm and distinctive without green branding
+Classic Tournament	#F0D9B5	#779556	Optional familiar green board for players who prefer tradition
+Rosewood	#F5E4D8	#956675	Optional muted rose board
+High Contrast	#FFFFFF	#5E6678	Accessibility-oriented option; piece outlines remain mandatory
+
+
+Implementation rules:
+- Store tokens and board themes centrally in src/styles/tokens.css or typed theme data; do not scatter hex values across components.
+- The brand colour remains indigo for every board theme. Board selection must not recolour the logo, brand buttons, or site navigation.
+- Check contrast for every text/background pair under WCAG 2.2 AA targets: 4.5:1 for normal text, 3:1 for large text and meaningful non-text UI components. The default board squares have approximately 3.48:1 luminance contrast; still test coordinates, borders, indicators and piece edges independently.
+- Primary button #4658C9 with white text has approximately 6:1 contrast. Recalculate if a token changes.
+- The amber last-move highlight and lavender hint highlight must retain a visible border, arrow, icon or text label. Never communicate correctness, turn, selection, check or failure through colour alone.
+- Board-theme controls must show a tiny 8x8 preview and a readable theme name; persist selection locally. Provide a Reset to Ocean Slate option.
+- Ads must be visually separated from app controls and clearly marked as advertising where users could otherwise mistake them for site content.
+6.3 Board and piece specification
+Board geometry
+- Use an exact 8-column by 8-row square grid, aspect-ratio: 1 / 1, with all squares equal. Desktop board maximum width: 640 CSS px. Mobile board width: min(100%, 640px) within a container with 16px minimum side gutters. No horizontal board scrolling.
+- Desktop puzzle layout: board on the left, puzzle task/hints/move status in a right-hand panel. On screens below approximately 760 CSS px, stack the board first and controls directly beneath it.
+- The player whose turn it is to solve the puzzle is at the bottom by default. Display a visible rotate-board control. Coordinate labels are enabled by default and must remain readable on both square colours.
+- Use the same board geometry for the playable puzzle, solution playback, embedded puzzle and print/PDF renderer, with layout changes only where necessary for paper.
+Pieces
+- Use a conventional Staunton silhouette for all 12 piece types. Piece assets must be local, deterministic SVG or another documented, compatible format; do not use emoji, Unicode chess glyphs as the default rendering, competitor screenshots, or copied proprietary pieces.
+- Preferred default white pieces: white fill #FFFFFF, deep-indigo outline #252B52, and limited internal detail. Preferred default black pieces: deep-indigo fill #252B52, white outline/detail #FFFFFF. Use enough stroke and silhouette separation for both pieces to remain identifiable on both square colours and every selectable board theme.
+- Maintain an asset register for all 12 piece SVGs: author/source, licence, exact file path, checksum, and any modifications. Prefer original project-created SVGs or assets with explicit permission and compatible licence.
+- Do not depend on remote image/font hosts for piece rendering. If a selected chessboard component bundles piece art, inspect the exact installed package and bundled-asset licences separately.
+Board annotations and state
+- Legal destination indicators: restrained indigo dots/rings with sufficient contrast; do not use the same treatment as the focus ring.
+- Selected source square: distinct focus outline, not a full-board colour change.
+- Last move: translucent amber overlay plus from/to indication.
+- Check/checkmate: king-square outline plus readable status text and screen-reader announcement.
+- Wrong move: concise message, error icon and optional move reset; never use only a red square.
+- Correct move: success icon/text and a subtle animation; honour prefers-reduced-motion.
+- Hints: reveal information progressively (piece, destination area, then exact move), but only from the validated solution line. Label the current hint level and explain that a hint was used for the local score/streak rule.
+- Include undo/reset, show solution, and move-list playback as distinct controls. No Monetag click handler may attach to any board or puzzle control.
+6.4 Page-by-page UI and UX
+Landing page (/)
+1. Header: Chessbitz wordmark; Daily Puzzle, Themes, Print Worksheets, and How to Play; a compact theme toggle and accessible mobile menu.
+2. Hero: heading “Train your tactics, one move at a time.”; one sentence explaining free, no-account puzzles; primary Solve today's puzzle CTA and secondary Build a worksheet CTA.
+3. Daily preview: board preview with objective, difficulty band, and a clear start action; do not show solution moves before interaction.
+4. Discovery: visual cards for Mate in 1, Mate in 2, Forks, Pins, Beginner, and Mixed Practice.
+5. Worksheet value proposition: choose puzzles, print questions, and optionally append the answer key.
+6. Footer: About, Privacy, Cookies, Terms, Disclaimer, Licences, Copyright/report, Security, Accessibility and Contact.
+Puzzle page (/puzzle/[id])
+- Show puzzle objective, difficulty/rating band if validated, and the board before any supporting copy.
+- Put move feedback immediately below the board on mobile; on desktop place it in the side panel.
+- Display Hint, Reset, Show solution, Share, and Print as plainly labelled buttons. Do not hide core actions in an ellipsis-only menu on mobile.
+- Do not reveal future solution moves in title tags, social preview images, DOM text visible before solving, or worksheet questions-only exports.
+- Give the page a canonical URL and a useful, non-duplicative title/description. Only index curated individual puzzles that meet the editorial/quality rule in the SEO section.
+Theme/archive pages
+- Filter by tactical theme, mate length, difficulty and puzzle count, with keyboard and screen-reader support.
+- Explain a theme in original concise wording; do not bulk-copy third-party instructional prose.
+- Use pagination or build-generated collection pages; never publish all rows as low-value pages only because build-time generation is easy.
+Worksheet studio
+- Client-side selection of puzzle IDs; previews separate from the export controls.
+- A4 and US Letter; options for 1/2/4/6 puzzles per page; question-only, answer key at end, and separate answer-key PDF.
+- Default to no student-identifying fields. Optional name/date fields stay in-browser and are never transmitted by Chessbitz.
+- QR codes link to stable interactive puzzle URLs. The questions-only export must not leak answers through text layers, alt text, metadata or filenames.
+6.5 Typography, spacing and interaction sizing
+- Use a self-hosted, licence-cleared font if a bundled webfont is needed; otherwise use a stable system stack such as Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif. Avoid remote font calls by default to reduce third-party network requests.
+- Use a simple spacing scale based on 4px increments; card corners 12-16px; buttons at least 44x44 CSS px (48x48 preferred on touch); visible focus rings; clear disabled/loading states.
+- Primary buttons use brand-600 (#4658C9) with white text after contrast validation. Secondary buttons use white/surface with a border and brand-800 text. Destructive/reset confirmation may use an outlined treatment rather than a red filled button.
+- Responsive breakpoints are implementation choices but must be documented and tested at 320, 360, 390, 768, 1024 and 1440 CSS px widths. Avoid layout shift when the ad script loads.
+6.6 Accessibility acceptance
+- Keyboard users can select a square, move a piece, request a hint, reset and navigate the solution without drag-and-drop.
+- Announce turn, legal move status, correct/incorrect move, check/checkmate, and hint changes via accessible status/live-region text without flooding screen readers.
+- Provide meaningful labels for each square/piece when practicable, visible coordinates, non-colour-only feedback, reduced-motion support and adequate focus visibility.
+- Test with keyboard only, at least one screen reader, zoom to 200%, narrow viewports, and a colour-vision simulation. Document known limitations honestly.
+6.7 Google AI Studio implementation requirements
+Google AI Studio Build mode can generate and iterate a web application from a natural-language brief, and its documented workflow supports code inspection and GitHub import/sync. Its web builds may include a Node.js server runtime, so do not assume an AI Studio preview is automatically an SSG site. The final repository must pass the static-export and clean-hosting checks in this PRD. [R17]
+- Use the separate Chessbitz_Google_AI_Studio_Build_Prompt_v1.1.md as the implementation prompt. It repeats the visual tokens and interaction contracts so they are not left to model invention.
+- Final deployment target: static files, with generated puzzle/theme/archive routes and assets available at build time; final output must be deployable to Cloudflare Pages or equivalent static hosting through GitHub Actions.
+- No runtime server, database, account system, remote chess engine, Gemini API call, or secret key is needed for solving, hints, local progress, share links or PDF generation.
+- Use a chess legality library for moves; never ask an LLM to determine whether a chess move is legal or to invent a solution line.
+- Use only explicitly approved dependencies and original/cleared piece art. The AI-generated code must be reviewed for every licence, remote request, browser-storage write, and security header before merge.
+- AI Studio output is a prototype until automated tests, exact SSG output, direct-route refreshes, offline/ad-block tests and mobile/accessibility QA pass.
+6.8 Visual and interaction release tests
+- [ ] Board is square, all 64 squares equal, and entire board fits at 320px viewport width without horizontal scrolling.
+- [ ] White and black Staunton pieces are recognisable on all four square/state combinations and remain visible at 200% zoom.
+- [ ] All tokens come from the central palette; contrast checks and visible focus styles pass.
+- [ ] Tap/click-to-move and drag-and-drop work; reset, hint, show solution, rotate board, share and print are distinct actions.
+- [ ] No advertising overlay touches the board or triggers on a move/control click.
+- [ ] Puzzle solution and hint information remain hidden from question-only exports and pre-solve share metadata.
+- [ ] Light UI, optional dark UI, reduced motion and keyboard-only journeys are tested.
+- [ ] Every route resolves directly on static hosting and after refresh; no Node-only endpoint is required.
+7. Architecture and deployment
+7.1 Static-first architecture
+1. Source stage: download the puzzle data from the documented CC0 puzzle dataset location; capture retrieval date, original filename, checksum, schema and relevant licence snapshot.
+2. Curation stage: deduplicate; normalise metadata; validate FEN; apply the setup move correctly; verify full solution legality and completion; detect empty/ambiguous lines; record excluded rows.
+3. Manifest stage: choose a reproducible, deterministic mapping of dates to puzzle IDs for a rolling horizon (recommended 12 months). Keep the timezone explicit (UTC by default, or choose Asia/Kolkata before launch and use it consistently everywhere).
+4. Build stage: build static landing/category/detail pages, JSON shards, sitemap, canonical URLs, robots rules and social preview metadata.
+5. QA stage: unit tests, puzzle-line replay, link validation, policy route checks, dependency/licence scanning, privacy/tag scan and browser E2E tests.
+6. Deploy stage: least-privilege GitHub Actions deploy to the selected static host; retain a deploy rollback path.
+7. Maintenance stage: scheduled workflow extends the daily manifest and updates source data; if it fails, the previously deployed manifest remains valid.
+7.2 Core data and privacy boundary
+Puzzle metadata is static public content. Board moves and hints run locally. Progress/preference data stays in the browser unless the user explicitly exports it. No move history, puzzle progress, student name, or worksheet metadata is uploaded by Chessbitz in the MVP. Hosting/security logs and third-party advertising requests are separate flows and must be explained honestly.
+7.3 Puzzle source processing rules
+- Use the puzzle dataset specifically documented as CC0; do not infer the licence of all game broadcasts, studies, pieces, themes, software or media from the dataset licence.
+- Apply the first Moves token to the source FEN before presenting the puzzle; that first token is the opponent/setup move, and the next token begins the solver's line. Add fixtures proving this behaviour. [R1]
+- Any generated color-symmetric variant must follow the transform specification in Section 9.4, retain complete provenance, and pass the same position/move validation suite as the source puzzle.
+- Store source_dataset, source_record_id, source_downloaded_at, source_sha256, source_license, schema_version, normalization_version, validated_at, validator_version, reason_for_exclusion, and the transformations performed.
+- Validate every stored move through the chess rules library. Keep both the original record and normalised output in a restricted build artifact or source archive according to retention policy.
+- Include a static denylist/withdrawal file that suppresses disputed or defective puzzle IDs at build time. It must take precedence over every catalogue and daily manifest.
+- Do not copy explanatory prose, graphics, puzzle diagrams, article text, player photos, videos or proprietary site UI from Chess.com or other publishers. Write original teaching explanations.
+- Keep raw corpus files outside the public build output. Do not deploy a multi-million-row raw file or expose future schedule details unnecessarily.
+8. Intellectual property and licensing controls
+8.1 Puzzle and data rights
+The Lichess open database site states that its database exports are released under CC0 and may be modified and redistributed commercially. This is a suitable primary source for the initial puzzle corpus if the exact puzzle export and its current licence are confirmed at ingestion time. [R1] Store the evidence. A licence to a dataset is not a blanket licence to copy the provider's software, logo, website design, brand, illustrations, other datasets or every item linked from it.
+
+Do not scrape commercial puzzle services, republish book exercises or copy puzzle text/diagrams from copyrighted books, videos, apps or websites without documented permission. Copyright treatment of a bare chess position or move sequence may differ by jurisdiction and facts; do not rely on an unreviewed theory that all chess puzzles are uncopyrightable. Use a documented, licensed source and obtain local counsel review if a rightsholder disputes an item.
+8.2 Open-source software allowlist
+Component	Preferred decision	Required control
+react-chessboard	Candidate; MIT licence stated by upstream	Pin exact version; verify packaged licence and piece artwork provenance [R3]
+chess.js	Candidate; BSD-2-Clause	Pin exact version; keep required notice [R2]
+Chessground	Avoid by default	GPL-3.0-or-later; website's upstream project says the combined work must be GPL and source must be released [R4]
+Stockfish	Exclude from MVP	GPLv3 source/binary obligations if distributed; assess NNUE/model provenance too [R5]
+Fonts/icons/images/pieces	Original or documented compatible licence	Keep source URL, copyright holder, licence, attribution terms and asset checksum
+
+
+At each production release, create an SBOM and a THIRD_PARTY_NOTICES.md with package name, exact version, licence, copyright notice, source, changes and licence text/notice where required. Fail the build on unknown, missing, incompatible or prohibited licences until reviewed. A permissive dependency licence does not automatically clear separately bundled artwork or its transitive dependencies.
+8.3 Brand, domain and identity
+Before public marketing, search the Indian Trade Marks Registry, domain registries, company names, app stores, social handles and general web for Chessbitz, spacing variants, phonetic variants and similar marks. Relevant classes may include software, education/entertainment and advertising; counsel should select classes and search scope. The public trademark portal requires user interaction, so this document does not claim a completed clearance. [R10]
+
+Avoid competitor logos, trade dress and branding that may imply affiliation. Include a clear “independent project; not affiliated with Lichess, Chess.com, FIDE or other chess organisations” statement where appropriate. Descriptive nominative mentions should be accurate, non-misleading and no broader than needed.
+8.4 Colour-swapped and mirrored puzzle variants: rules and compliance
+This is a product transformation, not a compliance workaround. Do not describe or implement it as a way to conceal the source. The Lichess open database page states that the puzzle export is CC0 and that users may modify and redistribute it, including for commercial use. That explicit permission is the relevant starting point for the dataset. Retain evidence of the exact dataset licence and download. CC0 does not grant rights to Lichess trademarks, unrelated software, other exports with different terms, or third-party artwork. [R1][R15][R16]
+
+Correct the product language: the puzzle CSV does not contain a general field saying “White wins in N moves.” It contains fields such as PuzzleId, FEN, Moves, Rating, Themes, GameUrl and related metadata. Themes can include mate-length tags; the actual position and validated move line determine the task. The source FEN is before the opponent/setup move, so the first move in Moves must be applied before showing the player the puzzle; the next move begins the solver's line. Never change a label from White to Black without transforming and validating the actual position and moves. [R1]
+
+Approved transformation (standard chess only): create a mathematically symmetric color-swapped/rank-reflected position, not merely pieces recoloured on the same squares.
+1. Normalize the source record, apply the setup move, and validate the solver position and remaining solution line.
+2. Reflect every square vertically: files remain the same and each rank r maps to 9 - r (for example, e2 maps to e7). Swap the colour of every piece at the same time. This allows white pawn movement to correspond to black pawn movement.
+3. Flip the active side (w to b, b to w). Swap castling-right case (K to k, Q to q, and conversely), preserving kingside/queenside. Reflect the en-passant target square's rank if present. Normalize FEN castling-right order and counters according to the chess library's accepted FEN representation.
+4. Apply the same square transform to every UCI move in the solution: transform the from-square and to-square; retain promotion piece type. Replay the transformed line from the transformed position using a rules library. This must cover castling, en passant, promotion/underpromotion and terminal states. Exclude a record if any transformed move is illegal or the transformed line/objective is inconsistent.
+5. Generate a distinct Chessbitz variant ID and record transformed_from, source dataset and source ID, source licence, retrieval date, source checksum, transform version, validation version, and resulting FEN/moves. Never replace or discard the original source record from the internal provenance registry.
+6. Recheck metadata: recompute or label the difficulty/rating as an estimate rather than assuming the source user rating remains valid for the new Chessbitz variant; check tactical-theme labels, objective text and all solution/hint outputs. For mate puzzles, verify the transformed mate sequence and exact mate length through legal replay; any stronger uniqueness claim requires separate validation.
+7. Test round-trip symmetry where appropriate: transform a source puzzle twice and confirm it returns to the normalized source position/move line, subject to FEN normalization. Keep fixtures for every special-move class.
+Do not do these things: simply swap piece colours in-place; alter “White” to “Black” in a title while retaining the old position; delete source fields in order to make origins harder to identify; label a transformed line as original analysis authored by Chessbitz; or claim that transformation itself makes content legally safer. For the CC0 puzzle data, modification is already permitted by the documented dataset licence; provenance, correctness and other rights still require appropriate controls.
+
+Public disclosure: on the /licenses page, it is good practice to say that Chessbitz uses the Lichess open puzzle database (CC0) and may normalize or symmetry-transform positions. CC0 does not itself make attribution a condition, but transparent source acknowledgement is recommended. Do not use Lichess logos or imply affiliation. [R16]
+9. Data protection, cookies and third-party advertising
+9.1 Data inventory
+Data/source	Default treatment	Required notice/control
+Puzzle FEN, moves, tags, rating metadata	Public licensed content	Provenance and correction process
+Local theme, board orientation, solved state, streak	Browser-only local storage	Explain purpose; give reset and export options; avoid transmitting by default
+Web host/CDN request logs	Vendor-controlled technical records may include IP, user agent, time and requested URL	Verify host, region, retention, access and subprocessors; explain in privacy policy
+Monetag/ad-tech requests	May process IP, browser/device identifiers, ad events and other signals; actual fields depend on implementation	Review current vendor terms/privacy documentation; use required consent signals; list vendor in policy
+Contact messages, if implemented	Name/email/message voluntarily supplied	Keep optional, minimise content, restrict access and publish a retention rule
+Analytics, if later added	Disabled until approved	Consent by region where required; event minimisation; no puzzle-history upload unless disclosed
+Student name/date on worksheet	Browser-generated; must not be sent to servers	State that it is printed locally; do not collect through forms
+
+
+Do not state “we collect no personal data” unless verified against actual hosting, CDN, advertising and security telemetry. A site can process personal data even when it has no login system.
+9.2 India - DPDP and other applicable law
+The Digital Personal Data Protection Act, 2023 and Digital Personal Data Protection Rules, 2025 have phased commencement. The Rules were notified on 13 November 2025; Rules 1, 2 and 17-21 commenced on publication, Rule 4 after one year, and Rules 3, 5-16, 22-23 after 18 months. The associated Act provisions are also phased. The main operational notice/consent and data-fiduciary framework is expected to become central around May 2027; verify exact effective dates, corrigenda and any new notifications with Indian counsel before launch and again before those provisions apply. [R7][R8]
+
+Build to the intended standard now: clearly identify the operator, describe data categories and purposes, separate required from optional processing, provide rights/complaint contact, document processors and transfers, minimise data, apply safeguards and define deletion/retention. Do not use the transitional period as a reason to ship a misleading or unreviewed privacy experience.
+9.3 International privacy and cookie rules
+Visitors in the EEA/UK and other jurisdictions may trigger privacy, ePrivacy/cookie, children’s or state privacy requirements. Location alone is not a sufficient legal analysis; assess the actual audience, targeting, personalisation and vendor relationships. For EEA/UK visits, do not load non-essential analytics/advertising storage or tracking before valid consent where required. Accept all, Reject all and Settings must be similarly clear; consent must be revocable from a persistent “Privacy/Cookie settings” footer link. Do not treat a privacy policy alone as cookie consent. [R12]
+
+Use a consent-management platform (CMP) compatible with the selected Monetag implementation and applicable frameworks. Before choosing a CMP, verify the consent signals supported by Monetag, whether the ad tags honour those signals, which vendors/partners execute, and which cookies/storage items are set. If this cannot be technically verified, do not serve behavioural/personalised ads in jurisdictions where consent is required; disable non-essential ad technology until it can be implemented correctly.
+9.4 Cookie and local storage inventory
+Before production, run a clean-browser scan on first visit, after Accept, Reject and Settings, and after withdrawal. Record all first- and third-party cookies, localStorage, sessionStorage, IndexedDB entries, pixels, beacons, network requests, identifiers, purpose, vendor, duration, region, consent state and deletion behaviour. The public cookie policy must list actual names and lifetimes from this scan. Do not publish invented or assumed cookie names.
+
+Local progress is not uploaded by the Chessbitz application. Provide controls to clear progress. If privacy law treats local storage or similar device access as consent-controlled in a visitor's jurisdiction, gate optional storage appropriately. Essential functionality should be limited to what the user requested or what is genuinely required to operate the requested service.
+9.5 Monetag rules
+- Re-read the live Monetag publisher agreement/content rules before approval and whenever the vendor changes terms. Monetag states publisher content must not infringe third-party rights or violate law. [R6]
+- Do not generate artificial traffic, use bots, buy incentivised/invalid traffic, click your own ads, ask users to click ads, rotate tags to fabricate impressions, or place ads where a board interaction is mistaken for an ad click.
+- Do not use pop-under/on-click formats on the chessboard, hint, reset, solution, print or share controls. Do not hide close controls or trigger redirects as a side effect of ordinary moves.
+- Keep ad code separate from game state. Failure, blocking or delay of ad script must not prevent solving, hinting, printing or downloading a user-selected worksheet.
+- Test ads on mobile and desktop, including keyboard and touch. Monitor complaints, deceptive/malicious creatives, redirects, CLS/LCP, bounce rate and revenue. Pause the affected format if it disrupts primary tasks or a harmful ad is detected.
+- Do not assume Monetag's consent or privacy obligations are automatically solved by putting its name in the privacy policy.
+10. Children and family use
+Chessbitz may be used by minors even without accounts. US COPPA can apply to services directed to children under 13 or to services with actual knowledge of collecting personal information from them. India’s DPDP framework defines children as under 18 and includes special treatment for children's data and tracking/targeted advertising; the relevant provisions must be checked against their commencement date. [R7][R9]
+
+For the MVP:
+- Do not request date of birth, school, precise location, real name, photo, account identifier or other child-specific data.
+- Do not add chat, public profile, uploads, direct messaging, classroom roster uploads or public comments.
+- Do not build behavioural profiles from puzzle solving.
+- Do not intentionally direct personalised ads to children. Confirm ad-network suitability for general-audience educational content and the ability to suppress prohibited targeting.
+- If the marketing plan becomes child-directed or the ad provider cannot give adequate child-safe controls, pause child-directed promotion and get specialist advice before monetising such pages.
+- Give parents/teachers a straightforward contact for privacy and content concerns; do not promise that third-party advertising is automatically child-safe.
+11. Website policy pages and disclosures
+Required routes, linked in the footer:
+- /privacy - actual operator identity, data flows, purposes, vendors, rights, retention, international transfers and contact.
+- /cookies - cookie/local-storage categories, actual inventory and consent settings.
+- /terms - permitted use, IP, service availability and legally limited warranty/liability provisions.
+- /disclaimer - educational nature, possible puzzle errors, no performance guarantee, third-party ads and links.
+- /copyright - rights-holder notice/takedown/correction process; must be monitored.
+- /licenses - source dataset declaration, third-party notices and OSS licence disclosures.
+- /about - product purpose and clear non-affiliation statement.
+- /security - responsible disclosure channel and supported report format.
+- /accessibility - target standard, limitations and feedback channel.
+- /contact - working contact details and response expectations.
+All operator contact fields are mandatory pre-launch inputs, not optional copy. Do not publish policies that say a request may be sent to a placeholder or non-monitored address. Do not copy a generic template unchanged if it inaccurately describes actual scripts, data locations, the business entity or vendors.
+12. Terms and disclaimer requirements
+The companion Compliance Pack contains initial drafts. At minimum the live terms must address: acceptance/use restrictions; puzzle/education-only purpose; no chess rating, tournament or coaching certification; possible data/position/source errors; third-party ads and links; intellectual property and source notices; service change/availability; prohibited scraping/abuse; complaint/takedown channels; privacy/cookie documents; governing law and dispute language reviewed for operator status; and a limitation clause that does not purport to remove mandatory consumer/statutory rights.
+
+A disclaimer is not a substitute for valid licences, transparent ad behaviour, a truthful privacy notice or security controls. Avoid absolute language such as “we have no liability under any circumstances” or “this website cannot be sued.” Such statements do not guarantee enforceability and can be misleading.
+13. Security requirements and threat model
+13.1 Threat model
+Threat	Consequence	Required mitigation
+Compromised GitHub token/action	Malicious production build or secret exposure	Least privilege, pin third-party actions by full commit SHA, protected branch/environment, secret scanning, MFA/passkeys
+Malicious dependency or unreviewed licence	Supply-chain compromise or forced source disclosure	Lockfile, SBOM, licence allowlist, OSV/dependency alerts, review transitive and bundled assets
+Poisoned or malformed puzzle row	Broken board, script error, misleading solution	Strict schema/FEN/line validation, bounded payloads, fuzz/fixture tests, denylist
+Third-party ad script changes	Redirects, tracking, malicious creatives, broken UX	Tag isolation, consent checks, CSP monitoring, ad QA, pause switch, no ad code in move handlers
+XSS through future content fields	Script execution or data theft	No unsanitised HTML, escape puzzle metadata, restrictive CSP, avoid user-generated HTML
+Supply-chain/secret leak	Account takeover	No deployment secrets in public bundles or repo; rotate keys; GitHub OIDC where supported
+Privacy over-collection	Regulatory complaint or loss of trust	Data minimisation, local-only progress, tag inventory, consent controls, retention/deletion tests
+Copyright complaint	Takedown, cost, brand risk	Provenance, legal report mailbox, rapid review/suppression, preserve evidence, counsel escalation
+Bad/fraudulent traffic	Monetag suspension or lost earnings	No paid bot traffic, no self-clicks, traffic-source monitoring, preserve evidence of legitimate referrers
+Host/configuration failure	Defacement, downtime or lost logs	MFA, HTTPS, security headers, rollback, host-log/location review, incident runbook
+
+
+13.2 Secure build and hosting baseline
+- Enforce MFA/passkeys on GitHub, hosting/CDN, domain registrar and Monetag accounts; use unique passwords and recovery codes in a secure password manager.
+- Use protected main branch, pull-request review (even if the second reviewer is a documented self-review), required tests, pinned GitHub Actions by full commit SHA, minimal permissions, short-lived OIDC deployment credentials where supported, and protected deploy environments.
+- Never put API keys, Monetag account credentials, private data or admin tokens in static bundles or public repository files. The static site has no secret backend.
+- Enable dependency scanning, secret scanning, lockfile review and an SBOM; remove unmaintained or licence-unclear packages.
+- Use HTTPS; add and test HSTS, X-Content-Type-Options: nosniff, a restrictive Referrer-Policy, a narrow Permissions-Policy, and CSP including frame-ancestors. Adapt CSP to actual ad/CDN domains only after examining needed requests; do not use an unrestricted * policy as a quick fix.
+- Use rel="noopener noreferrer" for external links opened in new tabs. Escape puzzle themes, titles and imported data as text; never inject upstream text as HTML.
+- Scan production with clean browser profiles. Verify there are no unexpected cookies or outbound requests before consent in each relevant region.
+- Provide /security.txt or an equivalent clear security contact and a safe reporting channel.
+- Back up source/configuration, keep deploy logs and document rollback. Do not store sensitive user content because the product should not collect it.
+13.3 CERT-In and incident response
+CERT-In’s 28 April 2022 Directions include six-hour reporting for listed cyber incidents for in-scope entities and secure rolling 180-day retention of ICT logs within India. Whether and how a particular individual/business and its chosen static-hosting/logging model fall within each requirement must be confirmed; the operator must not assume static hosting automatically exempts it. [R13]
+
+Before launch, ask counsel and the hosting provider: (a) is the operator in scope; (b) which logs are available; (c) where the logs are stored; (d) how to preserve/export them; (e) who is the designated incident point of contact; and (f) which incident classes and reporting timelines apply. If in scope, implement the applicable reporting and log-retention requirements.
+
+Internal response sequence:
+1. Triage immediately; preserve relevant logs/evidence and note UTC timestamps.
+2. Disable compromised tags, revoke credentials, pause deployment or suppress affected content as needed.
+3. Determine what systems/data were affected and whether a reportable cyber incident or personal-data breach occurred.
+4. Follow the applicable CERT-In, DPDP, contract and foreign-law reporting clocks. Do not assume one notification satisfies every regime.
+5. Correct or roll back, verify the fix, document decisions and follow up with affected people/regulators where required.
+6. Review root cause, update controls and retain an incident record without keeping unnecessary personal data.
+14. Copyright and content complaint workflow
+Although the MVP has no user uploads, Chessbitz republishes a curated dataset and therefore needs a clear process for source disputes, copyright claims, trademark complaints, incorrect positions and defective solutions.
+
+A report should request: reporter name and contact; exact URL and puzzle ID; work alleged to be infringed; basis/authority to act; source URL or evidence; requested action; good-faith statement and declaration of accuracy; electronic signature/name. Do not demand sensitive identity documents unless necessary and lawful. A legal contact reviews promptly, may temporarily suppress the puzzle through the denylist, preserves necessary evidence, contacts counsel for disputed/complex cases, and records action/reason/date. Provide a counter-notice/response path without promising a specific statutory safe harbour. Restore only after review and where appropriate. Repeatedly disputed content stays excluded pending resolution.
+15. Static content quality and puzzle correctness
+Every puzzle must pass: schema validation; valid FEN parse; setup-move application fixture; all source move tokens legal; side-to-move and expected objective match the UI label; full solution replay; terminal condition verified for mate puzzles; no invalid promotion/castling/en-passant state; duplicate check; move list size cap; no malformed strings/HTML; and regression tests.
+
+Hints must derive from validated solution metadata and not invent unsupported variations. If wrong-move explanations are added, precompute and test refutations; do not ask a text model to invent lines at runtime. Distinguish “mate in N” from “find the tactic” in instructions, scorekeeping and share cards.
+16. Monetisation and performance acceptance criteria
+- Board, legal move handling, hints and printing work when all ad scripts are blocked.
+- No ad overlaps the board or moves controls on standard phone widths.
+- No ad click or new window is caused by a puzzle move, hint, reset, show solution, share or print action.
+- Consent decisions are honoured by network activity, not merely stored by a UI.
+- Cookie inventory is checked for first load, accepted, rejected and withdrawn states in supported regions.
+- Ad scripts are loaded only with approved configuration and are covered by regression checks.
+- Compare Core Web Vitals and solve completion before/after enabling ads; roll back formats that cause substantial UX degradation or complaints.
+- No incentivised, purchased bot, click-exchange or self-generated traffic.
+- Clearly mark advertisements as ads where the creative or placement could otherwise be confused with Chessbitz content.
+17. Release gates
+Gate A - identity and rights
+- Trademark/domain/social clearance documented; decision on name and logo recorded.
+- Dataset licence snapshot and exact source export archived.
+- Package and asset SBOM complete; all licenses approved; THIRD_PARTY_NOTICES.md published.
+- All puzzle content has source and validation metadata; takedown/denylist path tested.
+Gate B - privacy and advertising
+- Legal operator identity, address and working contact filled in every policy.
+- Real production cookie/storage scan completed and cookie table reflects observed behaviour.
+- CMP/ad-tag compatibility tested; no required non-essential tracking loads before consent where consent is required.
+- Monetag publisher agreement, accepted formats, site approval and child-audience handling reviewed.
+- Privacy, cookies, terms, disclaimer, licensing, copyright, security and accessibility pages published and linked.
+Gate C - security
+- MFA and least-privilege CI configured; no secrets in public assets.
+- HTTPS/security headers verified; CSP tested with actual ads.
+- Dependency/secret/license scans pass or have documented, accepted exceptions.
+- Incident and rollback contacts/runbooks tested; CERT-In scope/log questions answered.
+Gate D - product and SEO
+- Puzzle replay/data tests pass; mobile, keyboard and screen-reader QA performed.
+- PDF output checked for A4/Letter page breaks and no answer leakage on question-only exports.
+- Stable URLs, canonical tags, sitemap and robots rules tested.
+- No thin mass-generated pages or broken social-preview URLs.
+No launch should be declared “compliant” merely because documents exist. Gate B must reflect the running production code and actual advertising vendors.
+18. Risk register and immediate action list
+Priority	Issue	Action before launch
+Critical	Unknown owner/contact details in legal pages	Fill legal identity, service address and monitored contact fields
+Critical	No trademark clearance yet	Search India register and common-law use; decide whether to retain the name
+Critical	Monetag tags may track users or set storage	Test tags and consent in clean browser; inventory vendors/cookies; disable unsafe formats
+Critical	Wrong dependency artwork/licence can create infringement	Exact-version dependency and asset audit; publish notices; avoid GPL UI unless intentionally compliant
+High	Children may use puzzles; ad profiling risk	General-audience positioning, no child data, no behavioural profiles, obtain vendor/legal review
+High	Host logs may be outside India or not exportable	Confirm CERT-In scope and log location/retention with counsel and host
+High	Dataset/source dispute	Preserve CC0 evidence, metadata, withdrawal mechanism and responsive report contact
+High	Static deployment can leak all bundled puzzle answers	Treat client data as public; do not store secrets in static JSON; this is product design, not security failure
+High	Thin programmatic SEO pages	Index only useful curated pages; follow Search Central spam policies
+Medium	Tax/receipts/foreign monetisation payments	Ask Indian CA about income reporting, records, GST/TDS/foreign remittance treatment for actual setup
+Medium	Policy templates may not match code	Review against production scan before publishing; re-review after major vendor changes
+
+
+Immediate next steps
+1. Confirm the exact domain, business/operator identity, public contact address and legal-report email.
+2. Run trademark clearance for Chessbitz and alternatives.
+3. Build the puzzle and package provenance pipeline first; exclude unreviewed assets/software.
+4. Integrate no ads on local development and validate the full app; add Monetag separately behind a simple feature flag.
+5. Test actual Monetag requests and storage; select and verify a region-aware CMP before advertising to regulated regions.
+6. Complete the policy fields and obtain lawyer review; confirm CERT-In/logging and tax questions with professionals.
+7. Re-review DPDP commencement and vendor rules before launch and again before May 2027.
+19. Legal and technical references
+All references were accessed for this planning revision on 20 October 2026. Links are primary or official sources where available; laws, vendor terms, and repository licences must be checked again before deployment.
+- [R1] Lichess open database: https://database.lichess.org/ - licence statement for specific exports; verify the puzzle dataset, not unrelated content.
+- [R2] chess.js: https://github.com/jhlywa/chess.js/ - upstream project and BSD-2-Clause licence.
+- [R3] react-chessboard: https://github.com/Clariity/react-chessboard - upstream states MIT; verify exact installed version and bundled piece artwork.
+- [R4] Chessground: https://github.com/lichess-org/chessground - GPL-3.0-or-later; README discusses source-release/combined-work implications.
+- [R5] Stockfish: https://github.com/official-stockfish/Stockfish - GPLv3 and corresponding-source requirements for distribution.
+- [R6] Monetag publisher content rules: https://help.monetag.com/en/articles/6726292-website-content-main-rules-for-publishers and terms https://monetag.com/terms.
+- [R7] Digital Personal Data Protection Act, 2023: https://www.indiacode.nic.in/indiacode/handle/123456789/22037?view_type=browse.
+- [R8] Digital Personal Data Protection Rules, 2025: official MeitY page https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa and India Code rule PDF https://upload.indiacode.nic.in/showfile?actid=AC_CEN_45_0_00003_2023-22_1763464807080&filename=dpdprules2025.pdf&type=rule. Check corrigenda and commencement notifications.
+- [R9] US FTC COPPA Rule: https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa.
+- [R10] India Trade Marks Registry Public Search: https://tmrsearch.ipindia.gov.in/tmrpublicsearch/ - a clearance search has not been completed here.
+- [R11] Google Search Central spam policies: https://developers.google.com/search/docs/essentials/spam-policies.
+- [R12] European Commission cookie policy example: https://commission.europa.eu/cookies-policy_en. This is illustrative; obtain legal advice for the law that applies to the actual site.
+- [R13] CERT-In Directions dated 28 April 2022: https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf and https://www.cert-in.org.in/Directions70B.jsp.
+- [R14] Copyright Act, 1957 (India Code): https://www.indiacode.nic.in/indiacode/handle/123456789/1367?view_type=browse.
+- [R15] Lichess open database - puzzle schema and usage: https://database.lichess.org/ - states the exports are CC0, may be used commercially, modified and redistributed; documents puzzle CSV fields and setup-move semantics.
+- [R16] Creative Commons CC0 FAQ: https://wiki.creativecommons.org/wiki/CC0_FAQ - explains that CC0 has no attribution conditions, while voluntary attribution may still be appropriate.
+- [R17] Google AI Studio Build mode documentation: https://ai.google.dev/gemini-api/docs/aistudio-build-mode - current documented workflow for web-app generation, code inspection and GitHub integration. Verify current product behavior before implementation.
+End of Chessbitz PRD v2.2

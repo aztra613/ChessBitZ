@@ -1,0 +1,66 @@
+name: Monthly Puzzle Source Refresh & SSG Validation
+
+on:
+  schedule:
+    # Run at 00:00 UTC on the 1st of every month
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+    inputs:
+      force_refresh:
+        description: 'Force full rebuild of curated puzzle corpus'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build & Curate Puzzle Corpus
+        run: bun run build:puzzles
+
+      - name: Verify Puzzle Legality & Checkmate Objectives
+        run: bun run verify:puzzles
+
+      - name: Run Core Test Suite
+        run: bun run test
+
+      - name: Run Type Checking & Lint
+        run: bun run lint
+
+      - name: Build Production Static Assets & Prerender SSG Routes
+        run: bun run build
+
+      - name: Verify Production Bundle Budget & Isolation
+        run: |
+          # Ensure raw archives and CSVs are absent from dist/
+          if find dist -type f \( -name "*.csv" -o -name "*.zst" -o -name "*.tar*" \) | grep -q .; then
+            echo "ERROR: Raw dataset archive detected in dist/ production bundle!"
+            exit 1
+          fi
+          echo "SUCCESS: Zero raw dataset archives in dist/ output."
+
+      - name: Commit Updated Curated Corpus & Manifest (If Changed)
+        run: |
+          git config user.name "Chessbitz Ingestion Bot"
+          git config user.email "bot@chessbitz.com"
+          git add src/data/puzzles.ts src/data/source-manifest.json public/sitemap.xml
+          if git diff --staged --quiet; then
+            echo "No dataset updates or changes detected."
+          else
+            git commit -m "chore(data): automated monthly puzzle corpus refresh & verification"
+            git push
+          fi

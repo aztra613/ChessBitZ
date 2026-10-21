@@ -1,0 +1,105 @@
+/**
+ * Chessbitz Design Tokens & Board Theme Palettes
+ * PRD v2.2 specification: Midnight Indigo + Blue-Gray + Warm Ivory
+ * Single source of truth for all colour and board tokens
+ */
+
+:root {
+  /* Brand Palette (Always preserved regardless of board theme) */
+  --cb-brand-950: #171B34;
+  --cb-brand-800: #252B52;
+  --cb-brand-600: #4658C9;
+
+  /* Default Ocean Slate Board Theme */
+  --cb-board-light: #F3E8D2;
+  --cb-board-dark: #657D9B;
+
+  /* Surfaces & Ink */
+  --cb-canvas: #F7F8FC;
+  --cb-surface: #FFFFFF;
+  --cb-ink: #0F172A;
+  --cb-muted: #334155;
+  --cb-border: #CBD5E1;
+
+  /* Accents & States */
+  --cb-accent-amber: #F2A65A;
+  --cb-hint-lavender: #D9CCFF;
+  --cb-success: #087F79;
+  --cb-error: #B83D50;
+  --cb-focus: #3548C5;
+
+  /* Dark UI Shell Mode (Board palette stays accessible) */
+  --cb-dark-canvas: #101321;
+  --cb-dark-surface: #1A2032;
+  --cb-dark-ink: #F3F5FC;
+}
+
+/* Board Theme Overrides (Applied to the board or app root without affecting brand buttons) */
+[data-board-theme="ocean-slate"] {
+  --cb-board-light: #F3E8D2;
+  --cb-board-dark: #657D9B;
+}
+
+[data-board-theme="classic-tournament"] {
+  --cb-board-light: #F0D9B5;
+  --cb-board-dark: #779556;
+}
+
+[data-board-theme="rosewood"] {
+  --cb-board-light: #F5E4D8;
+  --cb-board-dark: #956675;
+}
+
+[data-board-theme="high-contrast"] {
+  --cb-board-light: #FFFFFF;
+  --cb-board-dark: #5E6678;
+}
+
+/* Dark UI Theme */
+[data-theme="dark"],
+.dark {
+  --cb-canvas: var(--cb-dark-canvas);
+  --cb-surface: var(--cb-dark-surface);
+  --cb-ink: var(--cb-dark-ink);
+  --cb-border: #2B334D;
+  --cb-muted: #94A3B8;
+}
+
+/* Responsive Viewport-Aware Chessboard Sizing Rules
+   Ensures:
+   1. Board is always a perfect 1:1 square with 64 equal squares.
+   2. On desktop (>=1024px), the board height is strictly bounded by available viewport height
+      (100vh - header - overhead) using modern dynamic viewport units with standard fallbacks.
+   3. On mobile (<1024px), the board fits the container width within page gutters, up to 520px max.
+   4. At 320px viewport, the full 8x8 board fits without horizontal scrolling.
+   5. Top and bottom ranks, left and right files, and all coordinates remain unobstructed.
+*/
+.cb-board-responsive {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 100%;
+  max-height: 100%;
+  touch-action: manipulation;
+}
+
+@media (min-width: 1024px) {
+  .cb-board-responsive {
+    /* Responsive desktop sizing derived from available column width and viewport height */
+    width: min(100%, 520px, calc(100vh - 180px));
+    width: min(100%, 520px, calc(100dvh - 180px));
+    max-width: min(100%, 520px, calc(100vh - 180px));
+    max-width: min(100%, 520px, calc(100dvh - 180px));
+    max-height: min(100%, 520px, calc(100vh - 180px));
+    max-height: min(100%, 520px, calc(100dvh - 180px));
+  }
+}
+
+@media (max-width: 1023px) {
+  .cb-board-responsive {
+    /* Stacked mobile and tablet layout */
+    width: 100%;
+    max-width: min(100%, 500px);
+    max-height: min(100%, 500px);
+  }
+}
+
