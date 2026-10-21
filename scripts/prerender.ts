@@ -1,5 +1,5 @@
 /**
- * Chessbitz — Build-Time Static Route Prerenderer & Sitemap Generator
+ * PlyQuest — Build-Time Static Route Prerenderer & Sitemap Generator
  *
  * Implements static HTML generation for Vite SPA routes:
  * 1. Clones dist/index.html shell
@@ -14,7 +14,7 @@ import * as path from 'path';
 import { PUZZLES } from '../src/data/puzzles';
 import { getDailyPuzzle } from '../src/utils/dailySchedule';
 
-const SITE_URL = 'https://chessbitz.com';
+const SITE_URL = 'https://plyquest.pages.dev';
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const BASE_HTML_PATH = path.resolve(DIST_DIR, 'index.html');
 
@@ -33,7 +33,7 @@ export function getStaticRoutes(): RouteMeta[] {
   const coreRoutes: RouteMeta[] = [
     {
       path: '/',
-      title: 'Chessbitz — Premium Free Chess Tactics Puzzles & Worksheets',
+      title: 'PlyQuest — Premium Free Chess Tactics Puzzles & Worksheets',
       description: 'Solve unlimited free chess tactics puzzles and generate customizable printable PDF worksheets. Zero login, zero subscription, client-side solving.',
       priority: '1.0',
       changefreq: 'daily',
@@ -46,7 +46,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/daily',
-      title: 'Daily Chess Puzzle — Chessbitz',
+      title: 'Daily Chess Puzzle — PlyQuest',
       description: `Play today's tactical challenge. Rated ${daily.rating} chess tactic. Find the best continuation with zero account required.`,
       priority: '0.9',
       changefreq: 'daily',
@@ -60,7 +60,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/puzzles',
-      title: 'Chess Tactics Puzzle Library — Chessbitz',
+      title: 'Chess Tactics Puzzle Library — PlyQuest',
       description: 'Explore the complete curated tactics corpus filtered by theme, difficulty, and mate length.',
       priority: '0.8',
       changefreq: 'weekly',
@@ -73,7 +73,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/printable-chess-puzzles',
-      title: 'Printable Chess Worksheets Studio (PDF) — Chessbitz',
+      title: 'Printable Chess Worksheets Studio (PDF) — PlyQuest',
       description: 'Create high-resolution printable chess diagram worksheets for classrooms, coaches, and personal training. Instant client-side PDF export with answer keys.',
       priority: '0.9',
       changefreq: 'weekly',
@@ -86,7 +86,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/mate-in-1',
-      title: 'Mate in 1 Chess Puzzles — Chessbitz',
+      title: 'Mate in 1 Chess Puzzles — PlyQuest',
       description: 'Practice one-move checkmate patterns to build sharp tactical awareness and instant board vision.',
       priority: '0.8',
       changefreq: 'weekly',
@@ -99,7 +99,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/mate-in-2',
-      title: 'Mate in 2 Chess Puzzles — Chessbitz',
+      title: 'Mate in 2 Chess Puzzles — PlyQuest',
       description: 'Solve two-move mating combinations involving deflections, sacrifices, and king hunts.',
       priority: '0.8',
       changefreq: 'weekly',
@@ -112,7 +112,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/mate-in-3',
-      title: 'Mate in 3 Chess Puzzles — Chessbitz',
+      title: 'Mate in 3 Chess Puzzles — PlyQuest',
       description: 'Deep tactical calculation puzzles requiring 3-ply combinations and forcing sacrificial lines.',
       priority: '0.8',
       changefreq: 'weekly',
@@ -125,7 +125,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/sprint',
-      title: 'Sprint Mode — Timed Puzzle Challenge — Chessbitz',
+      title: 'Sprint Mode — Timed Puzzle Challenge — PlyQuest',
       description: 'Race against the clock with timed chess puzzle sprints. Blitz 5-minute, Quick 10, or Marathon 25 challenge modes.',
       priority: '0.7',
       changefreq: 'monthly',
@@ -138,7 +138,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/review',
-      title: 'Spaced Repetition Review — Chessbitz',
+      title: 'Spaced Repetition Review — PlyQuest',
       description: 'Smart review system that uses spaced repetition to help you master chess puzzles. Tracks progress locally in your browser.',
       priority: '0.7',
       changefreq: 'monthly',
@@ -151,7 +151,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/import',
-      title: 'Import FEN Position — Private Analysis — Chessbitz',
+      title: 'Import FEN Position — Private Analysis — PlyQuest',
       description: 'Paste any FEN string to analyse a chess position on an interactive board. Fully private — no data leaves your browser.',
       priority: '0.6',
       changefreq: 'monthly',
@@ -164,7 +164,7 @@ export function getStaticRoutes(): RouteMeta[] {
     },
     {
       path: '/clock',
-      title: 'Digital Chess Clock & Game Timer — Chessbitz',
+      title: 'Digital Chess Clock & Game Timer — PlyQuest',
       description: 'Free fullscreen digital chess clock with Fischer increment, Bullet, Blitz, and Rapid presets. Works on mobile, tablet, and desktop.',
       priority: '0.8',
       changefreq: 'monthly',
@@ -183,7 +183,7 @@ export function getStaticRoutes(): RouteMeta[] {
     const formatted = th.replace(/([A-Z])/g, ' $1').toLowerCase();
     coreRoutes.push({
       path: `/themes/${th}`,
-      title: `${formatted.charAt(0).toUpperCase() + formatted.slice(1)} Tactics — Chessbitz`,
+      title: `${formatted.charAt(0).toUpperCase() + formatted.slice(1)} Tactics — PlyQuest`,
       description: `Train tactical pattern recognition for ${formatted} motifs with interactive solving and progressive hints.`,
       priority: '0.7',
       changefreq: 'weekly',
@@ -198,16 +198,16 @@ export function getStaticRoutes(): RouteMeta[] {
 
   // Legal and Trust pages
   const legalPages = [
-    { p: 'about', title: 'About Us — Chessbitz', desc: 'Learn about the mission, architecture, and technology behind Chessbitz.' },
-    { p: 'privacy', title: 'Privacy Policy — Chessbitz', desc: 'Transparent privacy policy. Chessbitz requires no account, collects no PII, and operates zero tracking databases.' },
-    { p: 'cookies', title: 'Cookie Policy — Chessbitz', desc: 'Overview of local browser storage and advertising cookies on Chessbitz.' },
-    { p: 'terms', title: 'Terms of Service — Chessbitz', desc: 'Usage guidelines and terms of service for Chessbitz.' },
-    { p: 'licenses', title: 'Open Source Licences & Attribution — Chessbitz', desc: 'Third-party notices, dataset licences, and open-source acknowledgments.' },
-    { p: 'copyright', title: 'Copyright Policy — Chessbitz', desc: 'Copyright disclosures and DMCA contact procedure.' },
-    { p: 'disclaimer', title: 'Disclaimer — Chessbitz', desc: 'General educational and legal disclaimers for Chessbitz.' },
-    { p: 'security', title: 'Security — Chessbitz', desc: 'Zero-backend static security architecture and practices.' },
-    { p: 'accessibility', title: 'Accessibility Statement — Chessbitz', desc: 'Accessibility commitment adhering to WCAG 2.1 AA standards.' },
-    { p: 'contact', title: 'Contact Us — Chessbitz', desc: 'Get in touch with the Chessbitz project team for feedback or bug reports.' },
+    { p: 'about', title: 'About Us — PlyQuest', desc: 'Learn about the mission, architecture, and technology behind PlyQuest.' },
+    { p: 'privacy', title: 'Privacy Policy — PlyQuest', desc: 'Transparent privacy policy. PlyQuest requires no account, collects no PII, and operates zero tracking databases.' },
+    { p: 'cookies', title: 'Cookie Policy — PlyQuest', desc: 'Overview of local browser storage and advertising cookies on PlyQuest.' },
+    { p: 'terms', title: 'Terms of Service — PlyQuest', desc: 'Usage guidelines and terms of service for PlyQuest.' },
+    { p: 'licenses', title: 'Open Source Licences & Attribution — PlyQuest', desc: 'Third-party notices, dataset licences, and open-source acknowledgments.' },
+    { p: 'copyright', title: 'Copyright Policy — PlyQuest', desc: 'Copyright disclosures and DMCA contact procedure.' },
+    { p: 'disclaimer', title: 'Disclaimer — PlyQuest', desc: 'General educational and legal disclaimers for PlyQuest.' },
+    { p: 'security', title: 'Security — PlyQuest', desc: 'Zero-backend static security architecture and practices.' },
+    { p: 'accessibility', title: 'Accessibility Statement — PlyQuest', desc: 'Accessibility commitment adhering to WCAG 2.1 AA standards.' },
+    { p: 'contact', title: 'Contact Us — PlyQuest', desc: 'Get in touch with the PlyQuest project team for feedback or bug reports.' },
   ];
 
   for (const leg of legalPages) {
@@ -231,7 +231,7 @@ export function getStaticRoutes(): RouteMeta[] {
     const sideName = pz.sideToMove === 'w' ? 'White' : 'Black';
     coreRoutes.push({
       path: `/puzzle/${pz.id}`,
-      title: `${pz.title} — Tactics Puzzle — Chessbitz`,
+      title: `${pz.title} — Tactics Puzzle — PlyQuest`,
       description: `Rated ${pz.rating} chess tactic. ${sideName} to move: ${pz.objective}. Solve with interactive hints and zero account required.`,
       priority: '0.6',
       changefreq: 'monthly',
@@ -248,7 +248,7 @@ export function getStaticRoutes(): RouteMeta[] {
     // Embed widget route
     coreRoutes.push({
       path: `/embed/puzzle/${pz.id}`,
-      title: `${pz.title} — Embeddable Chess Puzzle — Chessbitz`,
+      title: `${pz.title} — Embeddable Chess Puzzle — PlyQuest`,
       description: `Interactive embeddable chess tactic: ${pz.title}. Side to move: ${sideName}. Rated ${pz.rating}.`,
       priority: '0.3',
       changefreq: 'monthly',
@@ -326,7 +326,7 @@ function generateSvgCard(title: string, subtitle: string, fen: string, sideToMov
   <rect width="1200" height="630" fill="url(#bg)"/>
 
   <!-- Brand Header -->
-  <text x="80" y="85" font-size="34" font-weight="900" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif">Chessbitz</text>
+  <text x="80" y="85" font-size="34" font-weight="900" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif">PlyQuest</text>
   <text x="80" y="115" font-size="13" font-weight="700" fill="#818CF8" letter-spacing="2" font-family="system-ui, -apple-system, sans-serif">TACTICAL TRAINING STUDIO • FREE &amp; OPEN-ACCESS</text>
 
   <!-- Turn Badge -->
@@ -347,7 +347,7 @@ function generateSvgCard(title: string, subtitle: string, fen: string, sideToMov
   ${boardSvg}
 
   <!-- Footer -->
-  <text x="80" y="565" font-size="14" font-weight="500" fill="#64748B" font-family="system-ui, -apple-system, sans-serif">Product of Aztras AI Tech Solutions • chessbitz.com</text>
+  <text x="80" y="565" font-size="14" font-weight="500" fill="#64748B" font-family="system-ui, -apple-system, sans-serif">Product of Aztras AI Tech Solutions • plyquest.pages.dev</text>
   <text x="1120" y="565" font-size="14" font-weight="700" fill="#818CF8" text-anchor="end" font-family="system-ui, -apple-system, sans-serif">Free Chess Tactics</text>
 </svg>`;
 }
@@ -466,7 +466,7 @@ export function buildPrerender(): void {
     if (route.path === '/') {
       const faqItems = [
         {
-          q: 'Is Chessbitz really free?',
+          q: 'Is PlyQuest really free?',
           a: 'Yes. Every puzzle, hint, worksheet, and training tool is 100% free with no account, no subscription, and no paywalled content.',
         },
         {
@@ -482,7 +482,7 @@ export function buildPrerender(): void {
           a: 'Yes. Every puzzle ships with a lightweight embeddable widget you can drop into any site.',
         },
         {
-          q: 'Does Chessbitz work offline?',
+          q: 'Does PlyQuest work offline?',
           a: 'Yes. After the first load the app works fully offline and can be installed to your home screen.',
         },
         {

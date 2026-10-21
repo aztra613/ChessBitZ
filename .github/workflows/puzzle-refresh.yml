@@ -55,8 +55,8 @@ jobs:
 
       - name: Commit Updated Curated Corpus & Manifest (If Changed)
         run: |
-          git config user.name "Chessbitz Ingestion Bot"
-          git config user.email "bot@chessbitz.com"
+          git config user.name "PlyQuest Ingestion Bot"
+          git config user.email "bot@plyquest.pages.dev"
           git add src/data/puzzles.ts src/data/source-manifest.json public/sitemap.xml
           if git diff --staged --quiet; then
             echo "No dataset updates or changes detected."

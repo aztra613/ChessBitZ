@@ -1,5 +1,5 @@
 {
-  "name": "Chessbitz - Premium Free Chess Tactics Puzzles & Worksheets",
+  "name": "PlyQuest - Premium Free Chess Tactics Puzzles & Worksheets",
   "description": "Train your tactics with free chess puzzles, progressive hints, daily challenges, and printable worksheets. No account required.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

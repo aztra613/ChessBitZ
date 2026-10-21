@@ -134,12 +134,12 @@ export function generateWorksheetPdf(
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(16);
     doc.setTextColor(23, 27, 52); // brand-950
-    doc.text(options.title || 'Chessbitz Tactical Worksheet', margin, margin + 4);
+    doc.text(options.title || 'PlyQuest Tactical Worksheet', margin, margin + 4);
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
     doc.setTextColor(98, 108, 130);
-    doc.text('chessbitz.com • Free chess tactics training', margin, margin + 9);
+    doc.text('plyquest.pages.dev • Free chess tactics training', margin, margin + 9);
 
     // Optional student name and date fields (never uploaded)
     let headerY = margin + 14;
@@ -214,7 +214,7 @@ export function generateWorksheetPdf(
 
         // Optional interactive QR code to solve online / verify without spoiling
         if (options.includeQrCode) {
-          const qrUrl = `https://chessbitz.com/puzzle/${puzzle.id}`;
+          const qrUrl = `https://plyquest.pages.dev/puzzle/${puzzle.id}`;
           const qr = generateQrMatrix(qrUrl);
           const qrSize = Math.min(16, colWidth * 0.22);
           const qrX = cellX + colWidth - qrSize - 4;
@@ -287,7 +287,7 @@ export function generateWorksheetPdf(
   }
 
   // Save the PDF
-  const filename = `Chessbitz_Worksheet_${options.paperSize}_${new Date().toISOString().split('T')[0]}.pdf`;
+  const filename = `PlyQuest_Worksheet_${options.paperSize}_${new Date().toISOString().split('T')[0]}.pdf`;
   doc.save(filename);
 }
 
@@ -308,7 +308,7 @@ export function generateAnswerKeyPdf(puzzles: PuzzleRecord[], options: Worksheet
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(18);
   doc.setTextColor(23, 27, 52);
-  doc.text('Chessbitz - Answer Key', margin, margin + 5);
+  doc.text('PlyQuest - Answer Key', margin, margin + 5);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
@@ -339,6 +339,6 @@ export function generateAnswerKeyPdf(puzzles: PuzzleRecord[], options: Worksheet
     }
   });
 
-  const filename = `Chessbitz_AnswerKey_${new Date().toISOString().split('T')[0]}.pdf`;
+  const filename = `PlyQuest_AnswerKey_${new Date().toISOString().split('T')[0]}.pdf`;
   doc.save(filename);
 }

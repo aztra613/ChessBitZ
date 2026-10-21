@@ -6,8 +6,8 @@
   "suppressedByDenylist": 0,
   "datasets": {
     "lichess-open-puzzles": 6,
-    "chessbitz-curated": 9,
-    "chessbitz-transformed-variant": 2
+    "plyquest-curated": 9,
+    "plyquest-transformed-variant": 2
   },
   "difficultyBreakdown": {
     "beginner": 6,

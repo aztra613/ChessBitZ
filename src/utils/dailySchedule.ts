@@ -2,7 +2,7 @@
  * Deterministic Daily Puzzle Scheduling Engine
  *
  * Implements a static-first, zero-network, deterministic calendar schedule
- * for Chessbitz daily tactics puzzles.
+ * for PlyQuest daily tactics puzzles.
  *
  * Global Reset Timezone: Asia/Kolkata (UTC+05:30)
  * Works indefinitely into future and past dates without requiring daily API calls

@@ -113,7 +113,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       : standardMessage;
 
     const handled = await invokeNativeShare({
-      title: `${puzzle.title} — Chessbitz`,
+      title: `${puzzle.title} — PlyQuest`,
       text,
       url: shareUrl,
     });
@@ -152,7 +152,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       // 2. Brand Wordmark & Tagline
       ctx.fillStyle = '#FFFFFF';
       ctx.font = '900 38px system-ui, -apple-system, sans-serif';
-      ctx.fillText('Chessbitz', 70, 85);
+      ctx.fillText('PlyQuest', 70, 85);
 
       ctx.fillStyle = '#818CF8';
       ctx.font = '700 16px system-ui, -apple-system, sans-serif';
@@ -250,7 +250,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       ctx.fillText('SCAN TO PLAY', qrX + qrSize / 2, qrY + qrSize + 24);
       ctx.fillStyle = '#64748B';
       ctx.font = '600 11px system-ui, -apple-system, sans-serif';
-      ctx.fillText('chessbitz.com', qrX + qrSize / 2, qrY + qrSize + 42);
+      ctx.fillText('plyquest.pages.dev', qrX + qrSize / 2, qrY + qrSize + 42);
       ctx.textAlign = 'left'; // reset
 
       // 7. Footer
@@ -264,7 +264,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
       // Trigger download
       const link = document.createElement('a');
-      link.download = `Chessbitz_${stats?.isDaily ? 'Daily_' : 'Tactic_'}${puzzle.id}.png`;
+      link.download = `PlyQuest_${stats?.isDaily ? 'Daily_' : 'Tactic_'}${puzzle.id}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } finally {
@@ -354,7 +354,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               <div className="p-5 rounded-xl bg-gradient-to-br from-[#101322] to-[#252B52] text-white shadow-md relative overflow-hidden">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-black tracking-widest text-[#818CF8] uppercase">
-                    Chessbitz Daily
+                    PlyQuest Daily
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[11px] font-bold border border-emerald-500/30">
                     Solved
@@ -584,7 +584,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         {/* Footer info note */}
         <div className="px-6 py-3 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 flex items-center justify-between">
           <span>100% Free • No cookies required to view</span>
-          <span className="font-semibold text-[#4658C9] dark:text-[#A5B4FC]">chessbitz.com</span>
+          <span className="font-semibold text-[#4658C9] dark:text-[#A5B4FC]">plyquest.pages.dev</span>
         </div>
       </div>
     </div>

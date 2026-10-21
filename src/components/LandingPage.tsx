@@ -210,7 +210,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   const faqs = [
     {
-      q: 'Is Chessbitz really free?',
+      q: 'Is PlyQuest really free?',
       a: 'Yes. Every puzzle, hint, worksheet, and training tool is 100% free with no account, no subscription, and no paywalled content.',
     },
     {
@@ -226,7 +226,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       a: 'Yes. Every puzzle ships with a lightweight embeddable widget you can drop into any site.',
     },
     {
-      q: 'Does Chessbitz work offline?',
+      q: 'Does PlyQuest work offline?',
       a: 'Yes. After the first load the app works fully offline and can be installed to your home screen.',
     },
     {
@@ -360,7 +360,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             Everything You Get — Free
           </h2>
           <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-2 leading-relaxed">
-            Puzzles are just the start. Chessbitz bundles a full tactical training kit — no account, no paywall.
+            Puzzles are just the start. PlyQuest bundles a full tactical training kit — no account, no paywall.
           </p>
         </div>
 

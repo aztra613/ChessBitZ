@@ -16,7 +16,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenCookieSettings
             <div className="w-10 h-10 rounded-xl overflow-hidden border border-indigo-500/30 shadow-md shrink-0 bg-[#0F1222]">
               <img
                 src="/logo.png"
-                alt="Chessbitz Logo"
+                alt="PlyQuest Logo"
                 className="w-full h-full object-cover"
                 width={40}
                 height={40}
@@ -24,7 +24,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenCookieSettings
             </div>
             <div>
               <span className="text-base font-black tracking-tight text-slate-950 dark:text-white block">
-                Chessbitz
+                PlyQuest
               </span>
               <p className="text-xs text-slate-600 dark:text-slate-400">
                 Premium Free Chess Tactics Puzzles, Worksheets & Digital Clock
@@ -262,7 +262,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenCookieSettings
                   onClick={() => onNavigate('/about')}
                   className="hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:underline transition-colors cursor-pointer"
                 >
-                  About Chessbitz
+                  About PlyQuest
                 </button>
               </li>
               <li>

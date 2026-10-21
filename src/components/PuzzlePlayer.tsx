@@ -66,7 +66,7 @@ export const PuzzlePlayer: React.FC<PuzzlePlayerProps> = ({
 
   // Handle reporting a puzzle with no backend ticket dependency
   const handleReportPuzzle = () => {
-    const reportText = `[Chessbitz Puzzle Report]
+    const reportText = `[PlyQuest Puzzle Report]
 Puzzle ID: ${puzzle.id}
 Source: ${puzzle.provenance.sourceDataset} (#${puzzle.provenance.sourceRecordId})
 Rating: ${puzzle.rating}
@@ -81,8 +81,8 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
     setReportCopied(true);
     setTimeout(() => setReportCopied(false), 3500);
 
-    const mailtoUrl = `mailto:support@chessbitz.com?subject=${encodeURIComponent(
-      `[Chessbitz Puzzle Report] ${puzzle.id}`
+    const mailtoUrl = `mailto:support@plyquest.pages.dev?subject=${encodeURIComponent(
+      `[PlyQuest Puzzle Report] ${puzzle.id}`
     )}&body=${encodeURIComponent(reportText)}`;
     if (typeof window !== 'undefined') {
       window.open(mailtoUrl, '_blank');
@@ -286,8 +286,8 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
   const handleShare = async () => {
     const shareUrl = `${window.location.origin}/puzzle/${puzzle.id}`;
     const shareData = {
-      title: `Chessbitz Tactics Puzzle: ${puzzle.title}`,
-      text: `Can you solve this chess puzzle? (${puzzle.objective}) on Chessbitz`,
+      title: `PlyQuest Tactics Puzzle: ${puzzle.title}`,
+      text: `Can you solve this chess puzzle? (${puzzle.objective}) on PlyQuest`,
       url: shareUrl,
     };
 
@@ -587,7 +587,7 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
               </div>
             </div>
             <p className="text-[10px] text-slate-400 dark:text-slate-500 leading-tight">
-              Chessbitz is independent and not affiliated with or endorsed by Lichess. All moves verified client-side.
+              PlyQuest is independent and not affiliated with or endorsed by Lichess. All moves verified client-side.
             </p>
           </div>
         </div>

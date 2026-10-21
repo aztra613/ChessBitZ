@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "description": "Chessbitz Disputed & Retracted Puzzles Denylist. Puzzles listed here are automatically suppressed during static build.",
+  "description": "PlyQuest Disputed & Retracted Puzzles Denylist. Puzzles listed here are automatically suppressed during static build.",
   "version": "1.0.0",
   "lastUpdated": "2026-10-21T00:00:00Z",
   "retractedPuzzleIds": [],

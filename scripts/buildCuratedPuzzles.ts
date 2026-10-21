@@ -14,7 +14,7 @@ interface RawPuzzleDef {
   objective: string;
   explanation: string;
   dateAssigned?: string;
-  sourceDataset: 'lichess-open-puzzles' | 'chessbitz-curated';
+  sourceDataset: 'lichess-open-puzzles' | 'plyquest-curated';
   sourceRecordId: string;
   sourceLicense: 'CC0-1.0';
   sourceUrl?: string;
@@ -183,8 +183,8 @@ const rawPuzzles: RawPuzzleDef[] = [
   },
 
   // ==========================================
-  // SECTION 2: CHESSBITZ-CURATED ORIGINAL TACTICAL POSITIONS
-  // Authored by Chessbitz pedagogues, dedicated under CC0-1.0
+  // SECTION 2: PLYQUEST-CURATED ORIGINAL TACTICAL POSITIONS
+  // Authored by PlyQuest pedagogues, dedicated under CC0-1.0
   // ==========================================
   {
     id: 'cb-daily-01',
@@ -196,10 +196,10 @@ const rawPuzzles: RawPuzzleDef[] = [
     difficultyBand: 'intermediate',
     objective: 'White to move and deliver checkmate in 2',
     explanation: 'Sacrifice the Queen on d8 to deflect Black’s defending rook from the back rank, setting up an immediate back-rank mate.',
-    sourceDataset: 'chessbitz-curated',
+    sourceDataset: 'plyquest-curated',
     sourceRecordId: 'cb-proto-00010',
     sourceLicense: 'CC0-1.0',
-    sourceUrl: 'https://chessbitz.com',
+    sourceUrl: 'https://plyquest.pages.dev',
   },
   {
     id: 'cb-mate1-01',
@@ -211,10 +211,10 @@ const rawPuzzles: RawPuzzleDef[] = [
     difficultyBand: 'beginner',
     objective: 'White to move and deliver checkmate in 1',
     explanation: 'Black pushed the b-pawn, leaving the 8th rank completely open. Strike with Ra8#.',
-    sourceDataset: 'chessbitz-curated',
+    sourceDataset: 'plyquest-curated',
     sourceRecordId: 'cb-proto-00101',
     sourceLicense: 'CC0-1.0',
-    sourceUrl: 'https://chessbitz.com',
+    sourceUrl: 'https://plyquest.pages.dev',
   },
   {
     id: 'cb-mate1-02',
@@ -226,10 +226,10 @@ const rawPuzzles: RawPuzzleDef[] = [
     difficultyBand: 'beginner',
     objective: 'Black to move and deliver checkmate in 1',
     explanation: 'White stepped the King to h1 into a corner trap. Deliver checkmate with Ra1#.',
-    sourceDataset: 'chessbitz-curated',
+    sourceDataset: 'plyquest-curated',
     sourceRecordId: 'cb-proto-00102',
     sourceLicense: 'CC0-1.0',
-    sourceUrl: 'https://chessbitz.com',
+    sourceUrl: 'https://plyquest.pages.dev',
   },
   {
     id: 'cb-mate1-03',
@@ -241,10 +241,10 @@ const rawPuzzles: RawPuzzleDef[] = [
     difficultyBand: 'beginner',
     objective: 'White to move and deliver checkmate in 1',
     explanation: 'Black left f7 under attack by both the Queen and Bishop. Strike with Qxf7#.',
-    sourceDataset: 'chessbitz-curated',
+    sourceDataset: 'plyquest-curated',
     sourceRecordId: 'cb-proto-00103',
     sourceLicense: 'CC0-1.0',
-    sourceUrl: 'https://chessbitz.com',
+    sourceUrl: 'https://plyquest.pages.dev',
   },
   {
     id: 'cb-fork-01',
@@ -256,10 +256,10 @@ const rawPuzzles: RawPuzzleDef[] = [
     difficultyBand: 'beginner',
     objective: 'Black to move and eliminate the bishop pair',
     explanation: 'The knight jumps into f4 and snipes the vital white bishop on e2.',
-    sourceDataset: 'chessbitz-curated',
+    sourceDataset: 'plyquest-curated',
     sourceRecordId: 'cb-proto-00301',
     sourceLicense: 'CC0-1.0',
-    sourceUrl: 'https://chessbitz.com',
+    sourceUrl: 'https://plyquest.pages.dev',
   },
   {
     id: 'cb-pin-01',
@@ -271,10 +271,10 @@ const rawPuzzles: RawPuzzleDef[] = [
     difficultyBand: 'intermediate',
     objective: 'White to move and neutralize the pin',
     explanation: 'Block the check and regain dynamic diagonal pressure with Bxc3.',
-    sourceDataset: 'chessbitz-curated',
+    sourceDataset: 'plyquest-curated',
     sourceRecordId: 'cb-proto-00401',
     sourceLicense: 'CC0-1.0',
-    sourceUrl: 'https://chessbitz.com',
+    sourceUrl: 'https://plyquest.pages.dev',
   },
   {
     id: 'cb-skewer-01',
@@ -286,10 +286,10 @@ const rawPuzzles: RawPuzzleDef[] = [
     difficultyBand: 'intermediate',
     objective: 'Black to move and skewer White’s King and Rook',
     explanation: 'Check the king along the 1st rank; once the king moves aside, White’s unprotected rook on h1 falls.',
-    sourceDataset: 'chessbitz-curated',
+    sourceDataset: 'plyquest-curated',
     sourceRecordId: 'cb-proto-00501',
     sourceLicense: 'CC0-1.0',
-    sourceUrl: 'https://chessbitz.com',
+    sourceUrl: 'https://plyquest.pages.dev',
   },
   {
     id: 'cb-disc-01',
@@ -301,10 +301,10 @@ const rawPuzzles: RawPuzzleDef[] = [
     difficultyBand: 'intermediate',
     objective: 'Black to move and capture material on c3',
     explanation: 'Target the weakened c3 square and dismantle White’s central pawn barrier.',
-    sourceDataset: 'chessbitz-curated',
+    sourceDataset: 'plyquest-curated',
     sourceRecordId: 'cb-proto-00601',
     sourceLicense: 'CC0-1.0',
-    sourceUrl: 'https://chessbitz.com',
+    sourceUrl: 'https://plyquest.pages.dev',
   },
   {
     id: 'cb-sac-01',
@@ -316,10 +316,10 @@ const rawPuzzles: RawPuzzleDef[] = [
     difficultyBand: 'master',
     objective: 'White to move and seize open diagonal control',
     explanation: 'Recapture dynamically with the bishop targeting the weak b5 and e6 complexes.',
-    sourceDataset: 'chessbitz-curated',
+    sourceDataset: 'plyquest-curated',
     sourceRecordId: 'cb-proto-00801',
     sourceLicense: 'CC0-1.0',
-    sourceUrl: 'https://chessbitz.com',
+    sourceUrl: 'https://plyquest.pages.dev',
   },
 ];
 
@@ -457,7 +457,7 @@ for (const pid of ['cb-mate1-01', 'cb-skewer-01']) {
             objective: `${newSideName} to move and find the winning continuation`,
             explanation: `${pToTransform.explanation} (Mathematically validated rank-reflected symmetric variant).`,
             provenance: {
-              sourceDataset: 'chessbitz-transformed-variant',
+              sourceDataset: 'plyquest-transformed-variant',
               sourceRecordId: pToTransform.id,
               sourceLicense: 'CC0-1.0',
               sourceLicenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/',
@@ -481,7 +481,7 @@ for (const pid of ['cb-mate1-01', 'cb-skewer-01']) {
 const fileContent = `import { PuzzleRecord } from '../types/puzzle';
 
 /**
- * Curated Puzzles Corpus for Chessbitz
+ * Curated Puzzles Corpus for PlyQuest
  * All records strictly conform to CC0 standards with verifiable provenance:
  * - \`initialFen\`: Position before opponent setup move
  * - \`solverFen\`: Position presented to solver (after opponent move 0)
@@ -537,8 +537,8 @@ const manifest = {
   suppressedByDenylist: suppressedCount,
   datasets: {
     'lichess-open-puzzles': validatedPuzzles.filter((p) => p.provenance.sourceDataset === 'lichess-open-puzzles').length,
-    'chessbitz-curated': validatedPuzzles.filter((p) => p.provenance.sourceDataset === 'chessbitz-curated').length,
-    'chessbitz-transformed-variant': validatedPuzzles.filter((p) => p.provenance.sourceDataset === 'chessbitz-transformed-variant').length,
+    'plyquest-curated': validatedPuzzles.filter((p) => p.provenance.sourceDataset === 'plyquest-curated').length,
+    'plyquest-transformed-variant': validatedPuzzles.filter((p) => p.provenance.sourceDataset === 'plyquest-transformed-variant').length,
   },
   difficultyBreakdown: {
     beginner: validatedPuzzles.filter((p) => p.difficultyBand === 'beginner').length,

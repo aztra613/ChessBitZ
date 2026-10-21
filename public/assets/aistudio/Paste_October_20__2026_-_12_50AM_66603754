@@ -1,4 +1,4 @@
-Chessbitz
+PlyQuest
 Product Requirements Document v2.2
 Date: 20 October 2026
 
@@ -18,19 +18,19 @@ Version 2.2 change log
 - Specified white/indigo Staunton piece fills and outlines, annotation colours, focus state, theme previews and contrast checks.
 - Updated the dedicated Google AI Studio build prompt to use the same tokens and require the same visual results.
 1. Executive decision
-Build Chessbitz as a static-site-generated (SSG) chess puzzle platform. Puzzle moves, board state, progressive hints, local progress, sharing, and worksheet generation should run in the browser. GitHub Actions (GHA) should curate and validate data, run tests, create a pre-generated date-to-puzzle manifest, and deploy the static site. A daily puzzle must not depend on a successful scheduled workflow at the moment of the daily reset.
+Build PlyQuest as a static-site-generated (SSG) chess puzzle platform. Puzzle moves, board state, progressive hints, local progress, sharing, and worksheet generation should run in the browser. GitHub Actions (GHA) should curate and validate data, run tests, create a pre-generated date-to-puzzle manifest, and deploy the static site. A daily puzzle must not depend on a successful scheduled workflow at the moment of the daily reset.
 
 The revised product remains no-login and subscription-free, but treats legal provenance, privacy, advertising behaviour, child safety, software licensing, security, and takedown handling as release requirements rather than optional documentation.
 1.1 Decisions
 - Puzzle source: use the specific Lichess open puzzle dataset stated as CC0, and preserve downloaded source evidence, checksum, retrieval date, schema version, and per-puzzle provenance. The Lichess database page states that the exports may be used commercially, modified, and redistributed. Do not scrape commercial chess sites or assume all Lichess datasets/assets share the puzzle dataset's licence. [R1][R15]
 - Colour-swapped variants: may be generated as a product feature only through a mathematically defined board symmetry transform and full legal-move validation. This is not a way to “escape compliance”; CC0 already permits modification and redistribution of that specific dataset. Never falsify, delete or obscure source provenance. [R1][R16]
 - Browser rules: use chess.js for move legality and state management, after pinning and recording the exact version/licence. [R2]
-- Board UI: prefer a version of react-chessboard whose exact package version and MIT licence are verified at build time. Do not adopt Chessground unless Chessbitz deliberately accepts GPL obligations, including making the covered combined work/source available as required by the licence. [R3][R4]
+- Board UI: prefer a version of react-chessboard whose exact package version and MIT licence are verified at build time. Do not adopt Chessground unless PlyQuest deliberately accepts GPL obligations, including making the covered combined work/source available as required by the licence. [R3][R4]
 - Engine: do not ship Stockfish in the MVP. If added later, make a separate GPLv3 distribution-compliance decision, including required licence and corresponding-source availability for the exact distributed build. [R5]
 - Advertising: Monetag is a third-party ad provider, not a component of the chess engine. Its scripts must not block the board, hide controls, redirect unexpectedly, or trigger monetisation on core puzzle clicks. Launch with a conservative format approved in the publisher dashboard and verify every format under the publisher agreement. [R6]
 - Privacy: no account or upload does not mean no data processing. Hosting/CDN logs and advertising tags can process IP addresses, browser/device data, identifiers, and interaction data. Maintain a vendor/data-flow inventory and gate non-essential tracking using a consent mechanism where required. [R7][R8]
-- Children: design for general audiences and safe use. Do not profile children or intentionally serve behavioural advertising to child users. Because chess worksheets may attract minors, obtain legal/ad-network confirmation before promoting Chessbitz specifically to children or schools. [R9]
-- Brand: “Chessbitz” is not cleared by this document. Complete an Indian trademark and common-law search, including phonetic variants and related software/education/advertising classes, before spending materially on branding. [R10]
+- Children: design for general audiences and safe use. Do not profile children or intentionally serve behavioural advertising to child users. Because chess worksheets may attract minors, obtain legal/ad-network confirmation before promoting PlyQuest specifically to children or schools. [R9]
+- Brand: “PlyQuest” is not cleared by this document. Complete an Indian trademark and common-law search, including phonetic variants and related software/education/advertising classes, before spending materially on branding. [R10]
 1.2 What this revision adds to v2.0
 - A formal legal and compliance risk register with owners and launch gates.
 - An explicit no-evasion policy for colour-swapped/mirrored puzzles and a validated transformation specification.
@@ -41,7 +41,7 @@ The revised product remains no-login and subscription-free, but treats legal pro
 - Copyright complaint/takedown workflow and content provenance records.
 - Security architecture, GitHub Actions hardening, incident response and hosting-log review.
 - Monetag implementation guardrails, anti-invalid-traffic rules and ad-review checklist.
-- Website-ready policy templates in the companion Chessbitz Compliance Pack v1.0. Those templates must be completed against the actual deployed site before publication.
+- Website-ready policy templates in the companion PlyQuest Compliance Pack v1.0. Those templates must be completed against the actual deployed site before publication.
 2. Product vision, goals and boundaries
 2.1 Vision
 Make high-quality, short-form chess tactics easy to solve on any device. The player sees one position, identifies the best move or sequence, receives progressively more informative hints, then can review the line, share the puzzle, or print a worksheet without creating an account.
@@ -82,7 +82,7 @@ P0 - launch requirements
 - Daily puzzle and date archive; globally consistent reset timezone stated in the UI.
 - Curated library with filters for difficulty, theme, mate length and rating band.
 - Interactive responsive board; click/tap-to-move and drag-and-drop; keyboard-supported alternatives where practical.
-- Local board-theme selector with Ocean Slate as default plus Classic Tournament, Rosewood and High Contrast; keep the Chessbitz brand palette indigo regardless of board theme.
+- Local board-theme selector with Ocean Slate as default plus Classic Tournament, Rosewood and High Contrast; keep the PlyQuest brand palette indigo regardless of board theme.
 - Progressive hints, reset, retry, show solution and line playback.
 - Stable puzzle pages with canonical metadata and spoiler-free social previews.
 - Share/copy link and Web Share support when available.
@@ -98,7 +98,7 @@ P1 - after launch stability
 - Coach/teacher worksheet presets: 1, 2, 4 or 6 puzzles per page; answers at end; optional student name/date fields processed only in browser.
 - Hindi and Tamil UI after demand and translation QA.
 - Small offline pack/PWA if caching and update invalidation are tested.
-- Embeddable puzzle widget with clear Chessbitz attribution and safe sizing.
+- Embeddable puzzle widget with clear PlyQuest attribution and safe sizing.
 P2 - evidence-led only
 - Curated curriculum and club packs.
 - User-submitted positions only after a separate legal, privacy, validation, moderation and abuse-control design.
@@ -122,7 +122,7 @@ Route	Purpose	Rule
 Do not publish thousands of near-identical SEO pages with a templated paragraph and no meaningful user value. Google explicitly identifies scaled content produced primarily to manipulate rankings and unhelpful scraped/duplicative pages as spam risk. [R11] Start with roughly 2,000-5,000 validated puzzles in the curated corpus but index only the pages that merit independent discovery. Every indexable page should add useful context, taxonomy, difficulty, a spoiler-controlled objective, a concise original explanation and links to genuinely related puzzles.
 6. Visual design system and user experience
 6.1 Design intent
-Chessbitz should look like a polished, editorial chess-learning product rather than a casino, ad-network landing page, or full-game client. The default brand identity is Midnight Indigo with blue-gray and warm-ivory chessboard squares; green is not the brand colour. The board and tactical task are the visual priority. Use familiar Staunton piece silhouettes, concise instructions, predictable controls, and clear post-move feedback. Indian and international users should see the same core visual system; language is not encoded only by colour or icon.
+PlyQuest should look like a polished, editorial chess-learning product rather than a casino, ad-network landing page, or full-game client. The default brand identity is Midnight Indigo with blue-gray and warm-ivory chessboard squares; green is not the brand colour. The board and tactical task are the visual priority. Use familiar Staunton piece silhouettes, concise instructions, predictable controls, and clear post-move feedback. Indian and international users should see the same core visual system; language is not encoded only by colour or icon.
 
 Design principles:
 - Board-first layout; ads never overlay the board, move targets, hints, reset, solution playback, or print/share controls.
@@ -156,7 +156,7 @@ dark-ink	#F3F5FC	Dark-theme text
 
 Board themes: Keep brand identity and board theme separate. The user can select a tested board theme in settings; the selection is local to the browser and does not require an account.
 Theme name	Light square	Dark square	Role
-Ocean Slate	#F3E8D2	#657D9B	Default Chessbitz board; warm and distinctive without green branding
+Ocean Slate	#F3E8D2	#657D9B	Default PlyQuest board; warm and distinctive without green branding
 Classic Tournament	#F0D9B5	#779556	Optional familiar green board for players who prefer tradition
 Rosewood	#F5E4D8	#956675	Optional muted rose board
 High Contrast	#FFFFFF	#5E6678	Accessibility-oriented option; piece outlines remain mandatory
@@ -192,7 +192,7 @@ Board annotations and state
 - Include undo/reset, show solution, and move-list playback as distinct controls. No Monetag click handler may attach to any board or puzzle control.
 6.4 Page-by-page UI and UX
 Landing page (/)
-1. Header: Chessbitz wordmark; Daily Puzzle, Themes, Print Worksheets, and How to Play; a compact theme toggle and accessible mobile menu.
+1. Header: PlyQuest wordmark; Daily Puzzle, Themes, Print Worksheets, and How to Play; a compact theme toggle and accessible mobile menu.
 2. Hero: heading “Train your tactics, one move at a time.”; one sentence explaining free, no-account puzzles; primary Solve today's puzzle CTA and secondary Build a worksheet CTA.
 3. Daily preview: board preview with objective, difficulty band, and a clear start action; do not show solution moves before interaction.
 4. Discovery: visual cards for Mate in 1, Mate in 2, Forks, Pins, Beginner, and Mixed Practice.
@@ -211,7 +211,7 @@ Theme/archive pages
 Worksheet studio
 - Client-side selection of puzzle IDs; previews separate from the export controls.
 - A4 and US Letter; options for 1/2/4/6 puzzles per page; question-only, answer key at end, and separate answer-key PDF.
-- Default to no student-identifying fields. Optional name/date fields stay in-browser and are never transmitted by Chessbitz.
+- Default to no student-identifying fields. Optional name/date fields stay in-browser and are never transmitted by PlyQuest.
 - QR codes link to stable interactive puzzle URLs. The questions-only export must not leak answers through text layers, alt text, metadata or filenames.
 6.5 Typography, spacing and interaction sizing
 - Use a self-hosted, licence-cleared font if a bundled webfont is needed; otherwise use a stable system stack such as Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif. Avoid remote font calls by default to reduce third-party network requests.
@@ -225,7 +225,7 @@ Worksheet studio
 - Test with keyboard only, at least one screen reader, zoom to 200%, narrow viewports, and a colour-vision simulation. Document known limitations honestly.
 6.7 Google AI Studio implementation requirements
 Google AI Studio Build mode can generate and iterate a web application from a natural-language brief, and its documented workflow supports code inspection and GitHub import/sync. Its web builds may include a Node.js server runtime, so do not assume an AI Studio preview is automatically an SSG site. The final repository must pass the static-export and clean-hosting checks in this PRD. [R17]
-- Use the separate Chessbitz_Google_AI_Studio_Build_Prompt_v1.1.md as the implementation prompt. It repeats the visual tokens and interaction contracts so they are not left to model invention.
+- Use the separate PlyQuest_Google_AI_Studio_Build_Prompt_v1.1.md as the implementation prompt. It repeats the visual tokens and interaction contracts so they are not left to model invention.
 - Final deployment target: static files, with generated puzzle/theme/archive routes and assets available at build time; final output must be deployable to Cloudflare Pages or equivalent static hosting through GitHub Actions.
 - No runtime server, database, account system, remote chess engine, Gemini API call, or secret key is needed for solving, hints, local progress, share links or PDF generation.
 - Use a chess legality library for moves; never ask an LLM to determine whether a chess move is legal or to invent a solution line.
@@ -250,7 +250,7 @@ Google AI Studio Build mode can generate and iterate a web application from a na
 6. Deploy stage: least-privilege GitHub Actions deploy to the selected static host; retain a deploy rollback path.
 7. Maintenance stage: scheduled workflow extends the daily manifest and updates source data; if it fails, the previously deployed manifest remains valid.
 7.2 Core data and privacy boundary
-Puzzle metadata is static public content. Board moves and hints run locally. Progress/preference data stays in the browser unless the user explicitly exports it. No move history, puzzle progress, student name, or worksheet metadata is uploaded by Chessbitz in the MVP. Hosting/security logs and third-party advertising requests are separate flows and must be explained honestly.
+Puzzle metadata is static public content. Board moves and hints run locally. Progress/preference data stays in the browser unless the user explicitly exports it. No move history, puzzle progress, student name, or worksheet metadata is uploaded by PlyQuest in the MVP. Hosting/security logs and third-party advertising requests are separate flows and must be explained honestly.
 7.3 Puzzle source processing rules
 - Use the puzzle dataset specifically documented as CC0; do not infer the licence of all game broadcasts, studies, pieces, themes, software or media from the dataset licence.
 - Apply the first Moves token to the source FEN before presenting the puzzle; that first token is the opponent/setup move, and the next token begins the solver's line. Add fixtures proving this behaviour. [R1]
@@ -276,7 +276,7 @@ Fonts/icons/images/pieces	Original or documented compatible licence	Keep source 
 
 At each production release, create an SBOM and a THIRD_PARTY_NOTICES.md with package name, exact version, licence, copyright notice, source, changes and licence text/notice where required. Fail the build on unknown, missing, incompatible or prohibited licences until reviewed. A permissive dependency licence does not automatically clear separately bundled artwork or its transitive dependencies.
 8.3 Brand, domain and identity
-Before public marketing, search the Indian Trade Marks Registry, domain registries, company names, app stores, social handles and general web for Chessbitz, spacing variants, phonetic variants and similar marks. Relevant classes may include software, education/entertainment and advertising; counsel should select classes and search scope. The public trademark portal requires user interaction, so this document does not claim a completed clearance. [R10]
+Before public marketing, search the Indian Trade Marks Registry, domain registries, company names, app stores, social handles and general web for PlyQuest, spacing variants, phonetic variants and similar marks. Relevant classes may include software, education/entertainment and advertising; counsel should select classes and search scope. The public trademark portal requires user interaction, so this document does not claim a completed clearance. [R10]
 
 Avoid competitor logos, trade dress and branding that may imply affiliation. Include a clear “independent project; not affiliated with Lichess, Chess.com, FIDE or other chess organisations” statement where appropriate. Descriptive nominative mentions should be accurate, non-misleading and no broader than needed.
 8.4 Colour-swapped and mirrored puzzle variants: rules and compliance
@@ -289,12 +289,12 @@ Approved transformation (standard chess only): create a mathematically symmetric
 2. Reflect every square vertically: files remain the same and each rank r maps to 9 - r (for example, e2 maps to e7). Swap the colour of every piece at the same time. This allows white pawn movement to correspond to black pawn movement.
 3. Flip the active side (w to b, b to w). Swap castling-right case (K to k, Q to q, and conversely), preserving kingside/queenside. Reflect the en-passant target square's rank if present. Normalize FEN castling-right order and counters according to the chess library's accepted FEN representation.
 4. Apply the same square transform to every UCI move in the solution: transform the from-square and to-square; retain promotion piece type. Replay the transformed line from the transformed position using a rules library. This must cover castling, en passant, promotion/underpromotion and terminal states. Exclude a record if any transformed move is illegal or the transformed line/objective is inconsistent.
-5. Generate a distinct Chessbitz variant ID and record transformed_from, source dataset and source ID, source licence, retrieval date, source checksum, transform version, validation version, and resulting FEN/moves. Never replace or discard the original source record from the internal provenance registry.
-6. Recheck metadata: recompute or label the difficulty/rating as an estimate rather than assuming the source user rating remains valid for the new Chessbitz variant; check tactical-theme labels, objective text and all solution/hint outputs. For mate puzzles, verify the transformed mate sequence and exact mate length through legal replay; any stronger uniqueness claim requires separate validation.
+5. Generate a distinct PlyQuest variant ID and record transformed_from, source dataset and source ID, source licence, retrieval date, source checksum, transform version, validation version, and resulting FEN/moves. Never replace or discard the original source record from the internal provenance registry.
+6. Recheck metadata: recompute or label the difficulty/rating as an estimate rather than assuming the source user rating remains valid for the new PlyQuest variant; check tactical-theme labels, objective text and all solution/hint outputs. For mate puzzles, verify the transformed mate sequence and exact mate length through legal replay; any stronger uniqueness claim requires separate validation.
 7. Test round-trip symmetry where appropriate: transform a source puzzle twice and confirm it returns to the normalized source position/move line, subject to FEN normalization. Keep fixtures for every special-move class.
-Do not do these things: simply swap piece colours in-place; alter “White” to “Black” in a title while retaining the old position; delete source fields in order to make origins harder to identify; label a transformed line as original analysis authored by Chessbitz; or claim that transformation itself makes content legally safer. For the CC0 puzzle data, modification is already permitted by the documented dataset licence; provenance, correctness and other rights still require appropriate controls.
+Do not do these things: simply swap piece colours in-place; alter “White” to “Black” in a title while retaining the old position; delete source fields in order to make origins harder to identify; label a transformed line as original analysis authored by PlyQuest; or claim that transformation itself makes content legally safer. For the CC0 puzzle data, modification is already permitted by the documented dataset licence; provenance, correctness and other rights still require appropriate controls.
 
-Public disclosure: on the /licenses page, it is good practice to say that Chessbitz uses the Lichess open puzzle database (CC0) and may normalize or symmetry-transform positions. CC0 does not itself make attribution a condition, but transparent source acknowledgement is recommended. Do not use Lichess logos or imply affiliation. [R16]
+Public disclosure: on the /licenses page, it is good practice to say that PlyQuest uses the Lichess open puzzle database (CC0) and may normalize or symmetry-transform positions. CC0 does not itself make attribution a condition, but transparent source acknowledgement is recommended. Do not use Lichess logos or imply affiliation. [R16]
 9. Data protection, cookies and third-party advertising
 9.1 Data inventory
 Data/source	Default treatment	Required notice/control
@@ -319,7 +319,7 @@ Use a consent-management platform (CMP) compatible with the selected Monetag imp
 9.4 Cookie and local storage inventory
 Before production, run a clean-browser scan on first visit, after Accept, Reject and Settings, and after withdrawal. Record all first- and third-party cookies, localStorage, sessionStorage, IndexedDB entries, pixels, beacons, network requests, identifiers, purpose, vendor, duration, region, consent state and deletion behaviour. The public cookie policy must list actual names and lifetimes from this scan. Do not publish invented or assumed cookie names.
 
-Local progress is not uploaded by the Chessbitz application. Provide controls to clear progress. If privacy law treats local storage or similar device access as consent-controlled in a visitor's jurisdiction, gate optional storage appropriately. Essential functionality should be limited to what the user requested or what is genuinely required to operate the requested service.
+Local progress is not uploaded by the PlyQuest application. Provide controls to clear progress. If privacy law treats local storage or similar device access as consent-controlled in a visitor's jurisdiction, gate optional storage appropriately. Essential functionality should be limited to what the user requested or what is genuinely required to operate the requested service.
 9.5 Monetag rules
 - Re-read the live Monetag publisher agreement/content rules before approval and whenever the vendor changes terms. Monetag states publisher content must not infringe third-party rights or violate law. [R6]
 - Do not generate artificial traffic, use bots, buy incentivised/invalid traffic, click your own ads, ask users to click ads, rotate tags to fabricate impressions, or place ads where a board interaction is mistaken for an ad click.
@@ -328,7 +328,7 @@ Local progress is not uploaded by the Chessbitz application. Provide controls to
 - Test ads on mobile and desktop, including keyboard and touch. Monitor complaints, deceptive/malicious creatives, redirects, CLS/LCP, bounce rate and revenue. Pause the affected format if it disrupts primary tasks or a harmful ad is detected.
 - Do not assume Monetag's consent or privacy obligations are automatically solved by putting its name in the privacy policy.
 10. Children and family use
-Chessbitz may be used by minors even without accounts. US COPPA can apply to services directed to children under 13 or to services with actual knowledge of collecting personal information from them. India’s DPDP framework defines children as under 18 and includes special treatment for children's data and tracking/targeted advertising; the relevant provisions must be checked against their commencement date. [R7][R9]
+PlyQuest may be used by minors even without accounts. US COPPA can apply to services directed to children under 13 or to services with actual knowledge of collecting personal information from them. India’s DPDP framework defines children as under 18 and includes special treatment for children's data and tracking/targeted advertising; the relevant provisions must be checked against their commencement date. [R7][R9]
 
 For the MVP:
 - Do not request date of birth, school, precise location, real name, photo, account identifier or other child-specific data.
@@ -392,7 +392,7 @@ Internal response sequence:
 5. Correct or roll back, verify the fix, document decisions and follow up with affected people/regulators where required.
 6. Review root cause, update controls and retain an incident record without keeping unnecessary personal data.
 14. Copyright and content complaint workflow
-Although the MVP has no user uploads, Chessbitz republishes a curated dataset and therefore needs a clear process for source disputes, copyright claims, trademark complaints, incorrect positions and defective solutions.
+Although the MVP has no user uploads, PlyQuest republishes a curated dataset and therefore needs a clear process for source disputes, copyright claims, trademark complaints, incorrect positions and defective solutions.
 
 A report should request: reporter name and contact; exact URL and puzzle ID; work alleged to be infringed; basis/authority to act; source URL or evidence; requested action; good-faith statement and declaration of accuracy; electronic signature/name. Do not demand sensitive identity documents unless necessary and lawful. A legal contact reviews promptly, may temporarily suppress the puzzle through the denylist, preserves necessary evidence, contacts counsel for disputed/complex cases, and records action/reason/date. Provide a counter-notice/response path without promising a specific statutory safe harbour. Restore only after review and where appropriate. Repeatedly disputed content stays excluded pending resolution.
 15. Static content quality and puzzle correctness
@@ -408,7 +408,7 @@ Hints must derive from validated solution metadata and not invent unsupported va
 - Ad scripts are loaded only with approved configuration and are covered by regression checks.
 - Compare Core Web Vitals and solve completion before/after enabling ads; roll back formats that cause substantial UX degradation or complaints.
 - No incentivised, purchased bot, click-exchange or self-generated traffic.
-- Clearly mark advertisements as ads where the creative or placement could otherwise be confused with Chessbitz content.
+- Clearly mark advertisements as ads where the creative or placement could otherwise be confused with PlyQuest content.
 17. Release gates
 Gate A - identity and rights
 - Trademark/domain/social clearance documented; decision on name and logo recorded.
@@ -449,7 +449,7 @@ Medium	Policy templates may not match code	Review against production scan before
 
 Immediate next steps
 1. Confirm the exact domain, business/operator identity, public contact address and legal-report email.
-2. Run trademark clearance for Chessbitz and alternatives.
+2. Run trademark clearance for PlyQuest and alternatives.
 3. Build the puzzle and package provenance pipeline first; exclude unreviewed assets/software.
 4. Integrate no ads on local development and validate the full app; add Monetag separately behind a simple feature flag.
 5. Test actual Monetag requests and storage; select and verify a region-aware CMP before advertising to regulated regions.
@@ -474,4 +474,4 @@ All references were accessed for this planning revision on 20 October 2026. Link
 - [R15] Lichess open database - puzzle schema and usage: https://database.lichess.org/ - states the exports are CC0, may be used commercially, modified and redistributed; documents puzzle CSV fields and setup-move semantics.
 - [R16] Creative Commons CC0 FAQ: https://wiki.creativecommons.org/wiki/CC0_FAQ - explains that CC0 has no attribution conditions, while voluntary attribution may still be appropriate.
 - [R17] Google AI Studio Build mode documentation: https://ai.google.dev/gemini-api/docs/aistudio-build-mode - current documented workflow for web-app generation, code inspection and GitHub integration. Verify current product behavior before implementation.
-End of Chessbitz PRD v2.2
+End of PlyQuest PRD v2.2

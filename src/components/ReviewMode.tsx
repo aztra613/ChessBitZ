@@ -1,5 +1,5 @@
 /**
- * Chessbitz — Spaced Repetition Review Component
+ * PlyQuest — Spaced Repetition Review Component
  *
  * Shows puzzles due for review based on the SM-2 spaced repetition algorithm.
  * Tracks puzzle mastery entirely in browser localStorage.

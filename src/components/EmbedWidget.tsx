@@ -97,14 +97,14 @@ export const EmbedWidget: React.FC<EmbedWidgetProps> = ({
     }
   };
 
-  const fullUrl = `https://chessbitz.com/puzzle/${puzzle.id}`;
+  const fullUrl = `https://plyquest.pages.dev/puzzle/${puzzle.id}`;
 
   return (
     <div className="w-full max-w-sm mx-auto p-3 bg-white dark:bg-[#161C2E] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md flex flex-col items-center select-none text-slate-900 dark:text-white font-sans">
       {/* Mini Brand & Tactic Title */}
       <div className="w-full flex items-center justify-between mb-2">
         <div className="flex items-center gap-1.5">
-          <span className="font-black text-xs text-[#3548C5] dark:text-[#818CF8]">Chessbitz</span>
+          <span className="font-black text-xs text-[#3548C5] dark:text-[#818CF8]">PlyQuest</span>
           <span className="text-[10px] text-slate-400">• Rated {puzzle.rating}</span>
         </div>
         <a

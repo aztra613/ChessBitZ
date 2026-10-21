@@ -3,7 +3,7 @@ import { PUZZLES } from '../src/data/puzzles';
 import * as fs from 'fs';
 import * as path from 'path';
 
-console.log(`=== Chessbitz Automated Puzzle Verification Suite ===`);
+console.log(`=== PlyQuest Automated Puzzle Verification Suite ===`);
 console.log(`Auditing ${PUZZLES.length} puzzles in curated corpus...\n`);
 
 let failed = 0;

@@ -1,5 +1,5 @@
 /**
- * Chessbitz — Local Spaced Repetition Engine
+ * PlyQuest — Local Spaced Repetition Engine
  *
  * Implements a lightweight SM-2 inspired spaced repetition algorithm
  * entirely in browser localStorage. No backend required.

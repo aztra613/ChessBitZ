@@ -8,7 +8,7 @@ interface AdSlotProps {
 }
 
 /**
- * AdSlot Component - Inactive by default as specified in Chessbitz PRD v2.2
+ * AdSlot Component - Inactive by default as specified in PlyQuest PRD v2.2
  *
  * Strict Isolation Guarantees:
  * 1. Zero runtime third-party scripts loaded without explicit consent & configuration.

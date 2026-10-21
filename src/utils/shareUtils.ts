@@ -25,7 +25,7 @@ export interface PuzzleResultStats {
 export function getPuzzleShareUrl(puzzleId: string, isDaily = false): string {
   const origin = typeof window !== 'undefined' && window.location.origin
     ? window.location.origin
-    : 'https://chessbitz.com';
+    : 'https://plyquest.pages.dev';
   return isDaily ? `${origin}/daily` : `${origin}/puzzle/${puzzleId}`;
 }
 
@@ -33,7 +33,7 @@ export function getPuzzleShareUrl(puzzleId: string, isDaily = false): string {
  * Generates a challenge message that never spoils the solution
  */
 export function getChallengeMessage(puzzle: PuzzleRecord, shareUrl: string): string {
-  return `Can you solve this Chessbitz chess puzzle? Find the winning move: ${shareUrl}`;
+  return `Can you solve this PlyQuest chess puzzle? Find the winning move: ${shareUrl}`;
 }
 
 /**
@@ -41,7 +41,7 @@ export function getChallengeMessage(puzzle: PuzzleRecord, shareUrl: string): str
  */
 export function getStandardShareMessage(puzzle: PuzzleRecord): string {
   const side = puzzle.sideToMove === 'w' ? 'White' : 'Black';
-  return `Try this chess tactic on Chessbitz: ${puzzle.title} (${puzzle.difficultyBand.toUpperCase()} • ${side} to move). Can you spot the win?`;
+  return `Try this chess tactic on PlyQuest: ${puzzle.title} (${puzzle.difficultyBand.toUpperCase()} • ${side} to move). Can you spot the win?`;
 }
 
 /**
@@ -54,8 +54,8 @@ export function getResultShareText(puzzle: PuzzleRecord, stats: PuzzleResultStat
   const ratingBadge = puzzle.rating ? ` (${puzzle.rating})` : '';
 
   const header = stats.isDaily
-    ? `♟️ Chessbitz Daily Tactics • ${stats.dateStr || new Date().toISOString().split('T')[0]}`
-    : `♟️ Chessbitz Tactics • ${puzzle.title}`;
+    ? `♟️ PlyQuest Daily Tactics • ${stats.dateStr || new Date().toISOString().split('T')[0]}`
+    : `♟️ PlyQuest Tactics • ${puzzle.title}`;
 
   return `${header}
 🎯 Difficulty: ${puzzle.difficultyBand.toUpperCase()}${ratingBadge}
@@ -76,7 +76,7 @@ export function getWhatsAppShareUrl(text: string, url: string): string {
 }
 
 export function getXShareUrl(text: string, url: string): string {
-  return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=chess,chesstactics,chessbitz`;
+  return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=chess,chesstactics,plyquest`;
 }
 
 export function getFacebookShareUrl(url: string): string {

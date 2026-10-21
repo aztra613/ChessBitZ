@@ -1,0 +1,74 @@
+{
+  "config": {
+    "tierAMin": 4,
+    "tierAMax": 9,
+    "tierBMin": 10,
+    "tierBMax": 12,
+    "hardMax": 12,
+    "coinedSeed": 1592639710,
+    "coinedAttempts": 4000,
+    "coinedMinLength": 6,
+    "shortlistSize": 100,
+    "maxPerCategoryInShortlist": 14,
+    "maxPerNoisyCategoryInShortlist": 8,
+    "noisyCategories": [
+      "triple-word",
+      "coined-word",
+      "chess-term-beyond-chess"
+    ]
+  },
+  "rules": {
+    "R1": "concat(fundamental + action) - two complete words",
+    "R2": "concat(action + fundamental) - reversed two complete words",
+    "R3": "triple(short + short + short) - three short words within char limit",
+    "R4": "suffix(fundamental + brandable suffix)",
+    "R5": "term-suffix(chess term beyond 'chess' + brandable suffix)",
+    "R6": "action-suffix(action/skill word + brandable suffix)",
+    "R7": "strategy-suffix(strategy/calculation stem + brandable suffix)",
+    "R8": "prefix(meaningful prefix + word)",
+    "R9": "blend(overlapping portmanteau merge)",
+    "R10": "coined(seeded pronounceable syllable synthesis)"
+  },
+  "rawGenerated": 15434,
+  "afterFilters": 7572,
+  "rejected": 7862,
+  "shortlist": 100,
+  "byRule": {
+    "R9": 176,
+    "R4": 246,
+    "R8": 352,
+    "R10": 710,
+    "R2": 251,
+    "R1": 220,
+    "R5": 153,
+    "R3": 5022,
+    "R6": 253,
+    "R7": 189
+  },
+  "byCategory": {
+    "portmanteau": 176,
+    "chess-explicit-strong": 493,
+    "prefix-word": 352,
+    "coined-word": 710,
+    "chess-term-beyond-chess": 153,
+    "chess-explicit-generic": 224,
+    "triple-word": 5022,
+    "action-skill": 253,
+    "strategy-calculation": 189
+  },
+  "byTier": {
+    "A": 1451,
+    "B": 6121
+  },
+  "rejectionsByReason": {
+    "low-pronounceability": 5558,
+    "blocked-substring": 227,
+    "existing-chess-brand": 4,
+    "length-out-of-range": 332,
+    "tier-b-and-irrelevant": 882,
+    "risky-meaning": 5,
+    "coined-implausible-bigrams": 844,
+    "coined-too-short": 10
+  },
+  "generatedAt": "2026-10-21T15:22:18.988Z"
+}

@@ -11,7 +11,9 @@
     "lint": "tsc --noEmit",
     "test": "tsx src/tests/chessUtils.test.ts",
     "build:puzzles": "tsx scripts/buildCuratedPuzzles.ts",
-    "verify:puzzles": "tsx scripts/verifyPuzzles.ts"
+    "verify:puzzles": "tsx scripts/verifyPuzzles.ts",
+    "brand:generate": "tsx scripts/generate-brand-names.ts",
+    "brand:research": "tsx scripts/brand-research.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

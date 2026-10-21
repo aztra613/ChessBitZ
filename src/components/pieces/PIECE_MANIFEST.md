@@ -1,6 +1,6 @@
-# Chessbitz Staunton Piece Set Asset & Licence Manifest
+# PlyQuest Staunton Piece Set Asset & Licence Manifest
 
-This manifest documents the provenance, design specification, and licensing for all 12 Staunton chess piece vectors used in Chessbitz.
+This manifest documents the provenance, design specification, and licensing for all 12 Staunton chess piece vectors used in PlyQuest.
 
 ## Specifications
 - **Design Family**: Conventional Staunton silhouette
@@ -9,7 +9,7 @@ This manifest documents the provenance, design specification, and licensing for 
 - **Black Piece Fill**: `#252B52` (Midnight Indigo - `brand-800`)
 - **Black Piece Outline & Inner Detailing**: `#FFFFFF` (pure white)
 - **Format**: Vector SVG, deterministic inline rendering, 0 runtime remote requests.
-- **Licence**: Public Domain / CC0-compatible vector geometry adapted for the Chessbitz Midnight Indigo visual identity.
+- **Licence**: Public Domain / CC0-compatible vector geometry adapted for the PlyQuest Midnight Indigo visual identity.
 - **Accessibility**: Tested for silhouette recognisability on all four supported board themes: Ocean Slate, Classic Tournament, Rosewood, and High Contrast.
 
 ## Manifest of Assets

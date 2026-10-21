@@ -50,12 +50,12 @@ export const Header: React.FC<HeaderProps> = ({
             whileTap={{ scale: 0.97 }}
             onClick={() => handleNav('/')}
             className="flex items-center gap-2.5 text-left group focus-visible:ring-2 focus-visible:ring-[#3548C5] rounded-xl p-1 -ml-1 cursor-pointer shrink-0"
-            aria-label="Chessbitz Home"
+            aria-label="PlyQuest Home"
           >
             <div className="w-9 h-9 rounded-xl overflow-hidden border border-indigo-500/30 shadow-md group-hover:shadow-indigo-500/40 transition-all shrink-0 bg-[#0F1222]">
               <img
                 src="/logo.png"
-                alt="Chessbitz Logo"
+                alt="PlyQuest Logo"
                 className="w-full h-full object-cover"
                 width={36}
                 height={36}
@@ -63,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-black tracking-tight text-slate-950 dark:text-white leading-none">
-                Chessbitz
+                PlyQuest
               </span>
               <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest mt-0.5">
                 Tactics Studio

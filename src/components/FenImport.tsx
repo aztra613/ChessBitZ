@@ -1,5 +1,5 @@
 /**
- * Chessbitz — Private FEN/PGN Import Component
+ * PlyQuest — Private FEN/PGN Import Component
  *
  * Lets users paste a FEN string or PGN notation to analyze a position
  * locally in the browser. No data is sent to any server.

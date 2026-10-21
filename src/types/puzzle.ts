@@ -1,5 +1,5 @@
 /**
- * Chessbitz Core Types & Schemas
+ * PlyQuest Core Types & Schemas
  * PRD v2.2 compliant data structures
  */
 
@@ -37,7 +37,7 @@ export type TacticalTheme =
 export type DifficultyBand = 'beginner' | 'intermediate' | 'advanced' | 'master';
 
 export interface PuzzleProvenance {
-  sourceDataset: 'lichess-open-puzzles' | 'chessbitz-transformed-variant' | 'chessbitz-curated';
+  sourceDataset: 'lichess-open-puzzles' | 'plyquest-transformed-variant' | 'plyquest-curated';
   sourceRecordId: string;
   sourceLicense: 'CC0-1.0' | 'Public-Domain';
   sourceLicenseUrl?: string;

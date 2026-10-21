@@ -100,32 +100,32 @@ export default function App() {
   // Synchronize document title without leaking puzzle answers
   useEffect(() => {
     if (currentRoute === '/') {
-      document.title = 'Chessbitz - Premium Free Chess Tactics Puzzles & Worksheets';
+      document.title = 'PlyQuest - Premium Free Chess Tactics Puzzles & Worksheets';
     } else if (currentRoute === '/daily') {
-      document.title = 'Daily Chess Puzzle - Chessbitz';
+      document.title = 'Daily Chess Puzzle - PlyQuest';
     } else if (currentRoute.startsWith('/puzzle/')) {
       const id = currentRoute.replace('/puzzle/', '');
       const pz = PUZZLES.find((p) => p.id === id);
-      document.title = pz ? `${pz.title} - Tactics Puzzle - Chessbitz` : 'Chess Puzzle - Chessbitz';
+      document.title = pz ? `${pz.title} - Tactics Puzzle - PlyQuest` : 'Chess Puzzle - PlyQuest';
     } else if (currentRoute === '/printable-chess-puzzles') {
-      document.title = 'Printable Chess Worksheets Studio (PDF) - Chessbitz';
+      document.title = 'Printable Chess Worksheets Studio (PDF) - PlyQuest';
     } else if (currentRoute === '/sprint') {
-      document.title = 'Sprint Mode - Timed Puzzle Challenge - Chessbitz';
+      document.title = 'Sprint Mode - Timed Puzzle Challenge - PlyQuest';
     } else if (currentRoute === '/review') {
-      document.title = 'Spaced Repetition Review - Chessbitz';
+      document.title = 'Spaced Repetition Review - PlyQuest';
     } else if (currentRoute === '/import') {
-      document.title = 'Import FEN Position - Private Analysis - Chessbitz';
+      document.title = 'Import FEN Position - Private Analysis - PlyQuest';
     } else if (currentRoute === '/clock') {
-      document.title = 'Digital Chess Clock & Timer — Chessbitz';
+      document.title = 'Digital Chess Clock & Timer — PlyQuest';
     } else if (currentRoute.startsWith('/mate-in-')) {
       const n = currentRoute.replace('/mate-in-', '');
-      document.title = `Mate in ${n} Puzzles - Chessbitz`;
+      document.title = `Mate in ${n} Puzzles - PlyQuest`;
     } else if (currentRoute.startsWith('/themes/')) {
       const theme = currentRoute.replace('/themes/', '');
-      document.title = `${theme.toUpperCase()} Tactics - Chessbitz`;
+      document.title = `${theme.toUpperCase()} Tactics - PlyQuest`;
     } else {
       const clean = currentRoute.replace('/', '');
-      document.title = `${clean.charAt(0).toUpperCase() + clean.slice(1)} - Chessbitz`;
+      document.title = `${clean.charAt(0).toUpperCase() + clean.slice(1)} - PlyQuest`;
     }
   }, [currentRoute]);
 
@@ -167,7 +167,7 @@ export default function App() {
         return (
           <NotFound
             onNavigate={navigate}
-            message={`Puzzle ID "${id}" does not exist in the curated Chessbitz corpus.`}
+            message={`Puzzle ID "${id}" does not exist in the curated PlyQuest corpus.`}
           />
         );
       }
@@ -357,7 +357,7 @@ export default function App() {
     return (
       <NotFound
         onNavigate={navigate}
-        message="The page you requested could not be located in Chessbitz."
+        message="The page you requested could not be located in PlyQuest."
       />
     );
   };

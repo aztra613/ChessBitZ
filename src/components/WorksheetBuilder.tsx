@@ -25,7 +25,7 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
     includeQrCode: false,
     studentNameField: true,
     dateField: true,
-    title: 'Chessbitz Tactical Training Worksheet',
+    title: 'PlyQuest Tactical Training Worksheet',
   });
 
   const [filterTheme, setFilterTheme] = useState<string>('all');
@@ -328,7 +328,7 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
               {/* Sheet header */}
               <div className="border-b border-slate-200 pb-2 mb-3">
                 <div className="text-[11px] font-black truncate">{options.title}</div>
-                <div className="text-[8px] text-slate-500 font-semibold">chessbitz.com • Free chess worksheets</div>
+                <div className="text-[8px] text-slate-500 font-semibold">plyquest.pages.dev • Free chess worksheets</div>
                 {(options.studentNameField || options.dateField) && (
                   <div className="flex justify-between text-[8px] mt-1 text-slate-700 font-bold">
                     {options.studentNameField && <span>Name: _______________</span>}

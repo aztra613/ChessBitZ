@@ -1,9 +1,9 @@
-# Chessbitz - Static Site Generation (SSG) & Static Export Guide
+# PlyQuest - Static Site Generation (SSG) & Static Export Guide
 
 ## 1. Overview
-Chessbitz is architected as a **static-first, zero-backend** chess tactics and printable worksheet web platform. All move validation, progressive hints, board rendering, local solving progress, and PDF generation execute purely client-side inside the user's browser.
+PlyQuest is architected as a **static-first, zero-backend** chess tactics and printable worksheet web platform. All move validation, progressive hints, board rendering, local solving progress, and PDF generation execute purely client-side inside the user's browser.
 
-No runtime database, server-side puzzle APIs, authentication services, or Gemini API keys are needed to serve or use Chessbitz.
+No runtime database, server-side puzzle APIs, authentication services, or Gemini API keys are needed to serve or use PlyQuest.
 
 ---
 

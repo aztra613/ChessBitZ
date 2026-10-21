@@ -1,0 +1,101 @@
+rank,candidate,char_count,tier,generation_rule,generation_detail,naming_category,syllables_estimate,pronounceability_15,distinctiveness_20,relevance_15,pre_score_50
+1,forkit,6,A,R9,blend(fork ^ kit),portmanteau,2,15,17,15,47
+2,pinova,6,A,R9,blend(pin ^ nova),portmanteau,3,15,17,15,47
+3,blitzen,7,A,R9,blend(blitz ^ zen),portmanteau,2,15,15,15,45
+4,kitempo,7,A,R9,blend(kit ^ tempo),portmanteau,3,15,15,15,45
+5,matempo,7,A,R9,blend(mate ^ tempo),portmanteau,3,15,15,15,45
+6,sharpin,7,A,R9,blend(sharp ^ pin),portmanteau,2,15,15,15,45
+7,bishopin,8,A,R9,blend(bishop ^ pin),portmanteau,3,15,15,15,45
+8,hubishop,8,A,R9,blend(hub ^ bishop),portmanteau,3,15,15,15,45
+9,labishop,8,A,R9,blend(lab ^ bishop),portmanteau,3,15,15,15,45
+10,memorook,8,A,R9,blend(memor ^ rook),portmanteau,3,15,15,15,45
+11,mintempo,8,A,R9,blend(mint ^ tempo),portmanteau,3,15,15,15,45
+12,centerook,9,A,R9,blend(center ^ rook),portmanteau,3,15,15,15,45
+13,cleverook,9,A,R9,blend(clever ^ rook),portmanteau,3,15,15,15,45
+14,craftempo,9,A,R9,blend(craft ^ tempo),portmanteau,3,15,15,15,45
+15,pingo,5,A,R4,suffix(pin + go),chess-explicit-strong,2,15,14,15,44
+16,pinio,5,A,R4,suffix(pin + io),chess-explicit-strong,2,15,14,15,44
+17,pinly,5,A,R4,suffix(pin + ly),chess-explicit-strong,2,15,14,15,44
+18,forkio,6,A,R4,suffix(fork + io),chess-explicit-strong,2,15,14,15,44
+19,matego,6,A,R4,suffix(mate + go),chess-explicit-strong,3,15,14,15,44
+20,mateio,6,A,R4,suffix(mate + io),chess-explicit-strong,3,15,14,15,44
+21,mateup,6,A,R4,suffix(mate + up),chess-explicit-strong,2,15,14,15,44
+22,neopin,6,A,R8,prefix(neo + pin),prefix-word,2,15,14,15,44
+23,pinace,6,A,R4,suffix(pin + ace),chess-explicit-strong,3,15,14,15,44
+24,pinfox,6,A,R4,suffix(pin + fox),chess-explicit-strong,2,15,14,15,44
+25,rookgo,6,A,R4,suffix(rook + go),chess-explicit-strong,2,15,14,15,44
+26,rookio,6,A,R4,suffix(rook + io),chess-explicit-strong,2,15,14,15,44
+27,rookly,6,A,R4,suffix(rook + ly),chess-explicit-strong,2,15,14,15,44
+28,rookup,6,A,R4,suffix(rook + up),chess-explicit-strong,2,15,14,15,44
+29,blitzio,7,A,R4,suffix(blitz + io),chess-explicit-strong,2,15,12,15,42
+30,neofork,7,A,R8,prefix(neo + fork),prefix-word,2,15,12,15,42
+31,neomate,7,A,R8,prefix(neo + mate),prefix-word,3,15,12,15,42
+32,neorook,7,A,R8,prefix(neo + rook),prefix-word,2,15,12,15,42
+33,novapin,7,A,R8,prefix(nova + pin),prefix-word,3,15,12,15,42
+34,profork,7,A,R8,prefix(pro + fork),prefix-word,2,15,12,15,42
+35,promate,7,A,R8,prefix(pro + mate),prefix-word,3,15,12,15,42
+36,prorook,7,A,R8,prefix(pro + rook),prefix-word,2,15,12,15,42
+37,unifork,7,A,R8,prefix(uni + fork),prefix-word,3,15,12,15,42
+38,zenfork,7,A,R8,prefix(zen + fork),prefix-word,2,15,12,15,42
+39,zenmate,7,A,R8,prefix(zen + mate),prefix-word,3,15,12,15,42
+40,neotempo,8,A,R8,prefix(neo + tempo),prefix-word,3,15,12,15,42
+41,protempo,8,A,R8,prefix(pro + tempo),prefix-word,3,15,12,15,42
+42,neobishop,9,A,R8,prefix(neo + bishop),prefix-word,3,15,12,15,42
+43,filego,6,A,R5,term-suffix(file + go),chess-term-beyond-chess,3,15,14,9,38
+44,fileio,6,A,R5,term-suffix(file + io),chess-term-beyond-chess,3,15,14,9,38
+45,fileup,6,A,R5,term-suffix(file + up),chess-term-beyond-chess,2,15,14,9,38
+46,kingio,6,A,R4,suffix(king + io),chess-explicit-generic,2,15,14,9,38
+47,kingup,6,A,R4,suffix(king + up),chess-explicit-generic,2,15,14,9,38
+48,movego,6,A,R4,suffix(move + go),chess-explicit-generic,3,15,14,9,38
+49,moveio,6,A,R4,suffix(move + io),chess-explicit-generic,3,15,14,9,38
+50,rankio,6,A,R5,term-suffix(rank + io),chess-term-beyond-chess,2,15,14,9,38
+51,rankup,6,A,R5,term-suffix(rank + up),chess-term-beyond-chess,2,15,14,9,38
+52,grippinking,11,B,R3,triple(grip + pin + king),triple-word,3,13,10,15,38
+53,grippinrank,11,B,R3,triple(grip + pin + rank),triple-word,3,13,10,15,38
+54,peakpinking,11,B,R3,triple(peak + pin + king),triple-word,3,13,10,15,38
+55,peakpinrank,11,B,R3,triple(peak + pin + rank),triple-word,3,13,10,15,38
+56,pinpeakking,11,B,R3,triple(pin + peak + king),triple-word,3,13,10,15,38
+57,pinpeakrank,11,B,R3,triple(pin + peak + rank),triple-word,3,13,10,15,38
+58,pinquizking,11,B,R3,triple(pin + quiz + king),triple-word,3,13,10,15,38
+59,pinquizrank,11,B,R3,triple(pin + quiz + rank),triple-word,3,13,10,15,38
+60,diagonalgo,10,B,R5,term-suffix(diagonal + go),chess-term-beyond-chess,4,15,7,15,37
+61,diagonalio,10,B,R5,term-suffix(diagonal + io),chess-term-beyond-chess,4,15,7,15,37
+62,diagonally,10,B,R5,term-suffix(diagonal + ly),chess-term-beyond-chess,4,15,7,15,37
+63,butnex,6,A,R10,"coined(seed=1592639710, attempt=3059)",coined-word,2,15,18,3,36
+64,ciantu,6,A,R10,"coined(seed=1592639710, attempt=1428)",coined-word,2,15,18,3,36
+65,coolee,6,A,R10,"coined(seed=1592639710, attempt=769)",coined-word,2,15,18,3,36
+66,hojost,6,A,R10,"coined(seed=1592639710, attempt=1973)",coined-word,2,15,18,3,36
+67,jounva,6,A,R10,"coined(seed=1592639710, attempt=2987)",coined-word,2,15,18,3,36
+68,juchin,6,A,R10,"coined(seed=1592639710, attempt=95)",coined-word,2,15,18,3,36
+69,brainking,9,A,R2,concat(brain + king),chess-explicit-generic,2,15,12,9,36
+70,brainmove,9,A,R2,concat(brain + move),chess-explicit-generic,3,15,12,9,36
+71,focusking,9,A,R2,concat(focus + king),chess-explicit-generic,3,15,12,9,36
+72,logicking,9,A,R2,concat(logic + king),chess-explicit-generic,3,15,12,9,36
+73,movebrain,9,A,R1,concat(move + brain),chess-explicit-generic,3,15,12,9,36
+74,movelearn,9,A,R1,concat(move + learn),chess-explicit-generic,3,15,12,9,36
+75,movequest,9,A,R1,concat(move + quest),chess-explicit-generic,3,15,12,9,36
+76,movethink,9,A,R1,concat(move + think),chess-explicit-generic,3,15,12,9,36
+77,movetrain,9,A,R1,concat(move + train),chess-explicit-generic,3,15,12,9,36
+78,solveking,9,A,R2,concat(solve + king),chess-explicit-generic,3,15,12,9,36
+79,rirbaup,7,A,R10,"coined(seed=1592639710, attempt=2318)",coined-word,2,15,16,3,34
+80,skiplup,7,A,R10,"coined(seed=1592639710, attempt=2100)",coined-word,2,15,16,3,34
+81,playio,6,A,R6,action-suffix(play + io),action-skill,2,15,12,6,33
+82,playup,6,A,R6,action-suffix(play + up),action-skill,2,15,12,6,33
+83,arenaup,7,A,R6,action-suffix(arena + up),action-skill,3,15,12,6,33
+84,braingo,7,A,R6,action-suffix(brain + go),action-skill,2,15,12,6,33
+85,brainio,7,A,R6,action-suffix(brain + io),action-skill,2,15,12,6,33
+86,brainly,7,A,R6,action-suffix(brain + ly),action-skill,2,15,12,6,33
+87,focusgo,7,A,R6,action-suffix(focus + go),action-skill,3,15,12,6,33
+88,focusio,7,A,R6,action-suffix(focus + io),action-skill,3,15,12,6,33
+89,focusly,7,A,R6,action-suffix(focus + ly),action-skill,3,15,12,6,33
+90,focusup,7,A,R6,action-suffix(focus + up),action-skill,3,15,12,6,33
+91,learnio,7,A,R6,action-suffix(learn + io),action-skill,2,15,12,6,33
+92,learnup,7,A,R6,action-suffix(learn + up),action-skill,2,15,12,6,33
+93,logicio,7,A,R6,action-suffix(logic + io),action-skill,3,15,12,6,33
+94,logicly,7,A,R6,action-suffix(logic + ly),action-skill,3,15,12,6,33
+95,sharpengo,9,A,R7,strategy-suffix(sharpen + go),strategy-calculation,3,15,12,6,33
+96,sharpenio,9,A,R7,strategy-suffix(sharpen + io),strategy-calculation,3,15,12,6,33
+97,sharpenly,9,A,R7,strategy-suffix(sharpen + ly),strategy-calculation,3,15,12,6,33
+98,sharpenup,9,A,R7,strategy-suffix(sharpen + up),strategy-calculation,3,15,12,6,33
+99,memorgo,7,A,R7,strategy-suffix(memor + go),strategy-calculation,3,15,12,5,32
+100,memorio,7,A,R7,strategy-suffix(memor + io),strategy-calculation,3,15,12,5,32

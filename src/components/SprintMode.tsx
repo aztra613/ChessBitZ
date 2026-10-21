@@ -1,5 +1,5 @@
 /**
- * Chessbitz — Sprint Mode Component
+ * PlyQuest — Sprint Mode Component
  *
  * A timed puzzle challenge: solve N puzzles as fast as possible
  * or as many puzzles as you can within a time limit.

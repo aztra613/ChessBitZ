@@ -47,7 +47,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `chessbitz_export_${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `plyquest_export_${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -67,10 +67,10 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
             Product Mission & Architecture
           </div>
           <h1 className="text-3xl font-extrabold text-[#171B34] dark:text-[#F3F5FC]">
-            About Chessbitz
+            About PlyQuest
           </h1>
           <p className="text-base text-[#626C82] dark:text-[#8E9BB5] leading-relaxed">
-            Chessbitz is a free, fast, static-first chess tactics training platform. Our vision is to make high-quality, short-form chess tactical practice effortless on any device.
+            PlyQuest is a free, fast, static-first chess tactics training platform. Our vision is to make high-quality, short-form chess tactical practice effortless on any device.
           </p>
 
           <div className="p-6 bg-white dark:bg-[#1A2032] border border-[#DCE1EC] dark:border-[#2B334D] rounded-xl space-y-4">
@@ -98,7 +98,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
           </div>
 
           <div className="p-4 bg-[#F7F8FC] dark:bg-[#101321] border border-[#DCE1EC] dark:border-[#2B334D] rounded-lg text-xs text-[#626C82] dark:text-[#8E9BB5]">
-            <strong>Notice of Non-Affiliation:</strong> Chessbitz is an independent educational product. It is not affiliated with, endorsed by, or connected to Lichess, Chess.com, or the International Chess Federation (FIDE).
+            <strong>Notice of Non-Affiliation:</strong> PlyQuest is an independent educational product. It is not affiliated with, endorsed by, or connected to Lichess, Chess.com, or the International Chess Federation (FIDE).
           </div>
         </div>
       )}
@@ -122,7 +122,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
               1. Our Data Commitment
             </h2>
             <p>
-              Chessbitz is built on a <em>data-minimisation baseline</em>. We do not require registration, passwords, email addresses, phone numbers, or social media logins.
+              PlyQuest is built on a <em>data-minimisation baseline</em>. We do not require registration, passwords, email addresses, phone numbers, or social media logins.
             </p>
 
             <h2 className="text-base font-bold text-[#171B34] dark:text-[#F3F5FC]">
@@ -171,14 +171,14 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
               3. Children and Family Safety
             </h2>
             <p>
-              Chessbitz does not collect personal identifiers from minors, does not operate user chatrooms, and does not conduct behavioral profiling on children. Optional classroom worksheet features print blank fields locally for handwriting.
+              PlyQuest does not collect personal identifiers from minors, does not operate user chatrooms, and does not conduct behavioral profiling on children. Optional classroom worksheet features print blank fields locally for handwriting.
             </p>
 
             <h2 className="text-base font-bold text-[#171B34] dark:text-[#F3F5FC]">
               4. Your Data Rights & Controls
             </h2>
             <p>
-              You maintain absolute control over all data stored by Chessbitz in your browser. You can export or delete your local solving streak at any time.
+              You maintain absolute control over all data stored by PlyQuest in your browser. You can export or delete your local solving streak at any time.
             </p>
           </div>
 
@@ -229,7 +229,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
             Cookie & Local Storage Policy
           </h1>
           <p className="text-sm text-[#626C82] dark:text-[#8E9BB5]">
-            Transparent accounting of all device storage used by Chessbitz.
+            Transparent accounting of all device storage used by PlyQuest.
           </p>
 
           <div className="space-y-4 text-sm text-[#626C82] dark:text-[#8E9BB5] leading-relaxed">
@@ -319,7 +319,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
             Terms of Service
           </h1>
           <p className="text-sm text-[#626C82] dark:text-[#8E9BB5]">
-            Please read these terms carefully before using Chessbitz.
+            Please read these terms carefully before using PlyQuest.
           </p>
 
           <div className="space-y-4 text-sm text-[#626C82] dark:text-[#8E9BB5] leading-relaxed">
@@ -327,7 +327,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
               1. Educational Use Only
             </h2>
             <p>
-              Chessbitz provides tactical chess puzzles and worksheet generation tools for recreational, learning, and instructional purposes only. We do not provide official chess rating certifications, FIDE ratings, or commercial warranties.
+              PlyQuest provides tactical chess puzzles and worksheet generation tools for recreational, learning, and instructional purposes only. We do not provide official chess rating certifications, FIDE ratings, or commercial warranties.
             </p>
 
             <h2 className="text-base font-bold text-[#171B34] dark:text-[#F3F5FC]">
@@ -346,7 +346,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
               3. Service Availability & Changes
             </h2>
             <p>
-              Chessbitz is provided on an "as is" and "as available" basis without warranties of any kind. We reserve the right to update, modify, or remove puzzle content to correct tactical defects or comply with intellectual property requirements.
+              PlyQuest is provided on an "as is" and "as available" basis without warranties of any kind. We reserve the right to update, modify, or remove puzzle content to correct tactical defects or comply with intellectual property requirements.
             </p>
           </div>
         </div>
@@ -364,7 +364,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
           </h1>
           <div className="space-y-4 text-sm text-[#626C82] dark:text-[#8E9BB5] leading-relaxed">
             <p>
-              All tactical puzzles on Chessbitz are provided strictly for educational practice and enjoyment. While all puzzle positions and solutions undergo rules-engine verification with <code>chess.js</code>, historical chess positions may occasionally have alternative winning defenses or dual lines.
+              All tactical puzzles on PlyQuest are provided strictly for educational practice and enjoyment. While all puzzle positions and solutions undergo rules-engine verification with <code>chess.js</code>, historical chess positions may occasionally have alternative winning defenses or dual lines.
             </p>
             <p>
               Ratings shown for puzzles represent approximate historical difficulty classifications and do not constitute an official FIDE, USCF, or national federation rating.
@@ -384,7 +384,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
             Copyright & Takedown
           </h1>
           <p className="text-sm text-[#626C82] dark:text-[#8E9BB5]">
-            Chessbitz respects all intellectual property rights and maintains a responsive removal and correction procedure.
+            PlyQuest respects all intellectual property rights and maintains a responsive removal and correction procedure.
           </p>
 
           <div className="space-y-4 text-sm text-[#626C82] dark:text-[#8E9BB5] leading-relaxed">
@@ -392,7 +392,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
               Notice & Takedown Protocol
             </h2>
             <p>
-              If you believe any content or tactical record on Chessbitz infringes your rights or contains defective source data, please email our designated content agent at:
+              If you believe any content or tactical record on PlyQuest infringes your rights or contains defective source data, please email our designated content agent at:
             </p>
             <div className="p-4 bg-white dark:bg-[#1A2032] border border-[#DCE1EC] dark:border-[#2B334D] rounded-lg font-mono text-xs text-[#4658C9]">
               austinthambi85@gmail.com
@@ -422,7 +422,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
                 1. Chess Puzzle Corpus Provenance
               </h2>
               <p className="text-xs leading-relaxed mb-3">
-                Tactical chess positions on Chessbitz originate from the open chess puzzle dataset published by Lichess.org, dedicated to the public domain under the Creative Commons Zero (CC0 1.0 Universal) license. The dataset permits free commercial use, modification, and redistribution.
+                Tactical chess positions on PlyQuest originate from the open chess puzzle dataset published by Lichess.org, dedicated to the public domain under the Creative Commons Zero (CC0 1.0 Universal) license. The dataset permits free commercial use, modification, and redistribution.
               </p>
               <div className="text-xs space-y-1 font-mono text-[#626C82]">
                 <p>Dataset: Lichess Open Puzzles (CC0)</p>
@@ -484,7 +484,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
           </h1>
           <div className="space-y-4 text-sm text-[#626C82] dark:text-[#8E9BB5] leading-relaxed">
             <p>
-              Chessbitz employs a static-first, zero-backend attack surface:
+              PlyQuest employs a static-first, zero-backend attack surface:
             </p>
             <ul className="list-disc pl-5 space-y-1">
               <li>No database containing user credentials, passwords, or emails.</li>
@@ -513,7 +513,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
           </h1>
           <div className="space-y-4 text-sm text-[#626C82] dark:text-[#8E9BB5] leading-relaxed">
             <p>
-              Chessbitz targets full compliance with Web Content Accessibility Guidelines (WCAG) 2.2 Level AA.
+              PlyQuest targets full compliance with Web Content Accessibility Guidelines (WCAG) 2.2 Level AA.
             </p>
             <h2 className="text-base font-bold text-[#171B34] dark:text-[#F3F5FC]">
               Key Accessibility Features
@@ -547,7 +547,7 @@ export const LegalPages: React.FC<LegalPagesProps> = ({ page, onNavigate }) => {
             Get in Touch
           </div>
           <h1 className="text-3xl font-extrabold text-[#171B34] dark:text-[#F3F5FC]">
-            Contact Chessbitz
+            Contact PlyQuest
           </h1>
           <p className="text-sm text-[#626C82] dark:text-[#8E9BB5]">
             Have feedback, noticed an incorrect puzzle solution, or want to suggest a new tactical feature?

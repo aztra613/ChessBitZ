@@ -1,8 +1,8 @@
-# Chessbitz
+# PlyQuest
 
 > Premium, responsive, static-first chess tactics puzzle and printable worksheet training platform.
 
-Chessbitz is a free, no-login, no-subscription chess training product designed to deliver high-quality short-form chess tactics, progressive hints, daily challenges, and printable PDF worksheets.
+PlyQuest is a free, no-login, no-subscription chess training product designed to deliver high-quality short-form chess tactics, progressive hints, daily challenges, and printable PDF worksheets.
 
 ---
 

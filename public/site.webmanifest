@@ -1,6 +1,6 @@
 {
-  "name": "Chessbitz — Tactics Studio & Worksheets",
-  "short_name": "Chessbitz",
+  "name": "PlyQuest — Tactics Studio & Worksheets",
+  "short_name": "PlyQuest",
   "description": "Free tactical chess puzzles, progressive hints, daily challenges, printable worksheets, and chess clock.",
   "start_url": "/",
   "display": "standalone",

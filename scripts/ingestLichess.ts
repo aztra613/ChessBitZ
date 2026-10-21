@@ -1,5 +1,5 @@
 /**
- * Chessbitz — Lichess Open Database Ingestion & Verification Pipeline
+ * PlyQuest — Lichess Open Database Ingestion & Verification Pipeline
  *
  * Implements bounded-memory streaming ingestion of the Lichess Open Puzzle Database:
  * 1. Reads line-by-line using Node.js readline (zero OOM risk on large archives)

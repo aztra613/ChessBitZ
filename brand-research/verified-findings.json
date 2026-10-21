@@ -1,0 +1,370 @@
+{
+  "description": "Manually verified web findings for shortlisted candidates, produced with an independent search provider (the web_search tool) rather than the automated Bing screen used by scripts/brand-research.ts. This file exists because the automated screen has a documented blind spot: Bing answers a zero-match query with unrelated fallback results, and when that happens the automated screen cannot distinguish 'not indexed' from 'not found'. Every entry below was read from the live result and the source URLs are recorded. This is still desk research, NOT legal clearance.",
+  "methodology": {
+    "provider": "web_search tool (independent of the Bing HTML screen used by the automated harness)",
+    "queries": "Exact-phrase query in quotation marks for each candidate, plus a chess-qualified variant where the plain phrase was ambiguous.",
+    "whatCountsAsAConflict": "An exact-name match tied to a chess product (high), an exact-name match tied to an active business or app (high or medium), an exact-name social handle or channel (medium or low), or an incidental mention in unrelated prose or a forum username (incidental - documented but not treated as a brand conflict).",
+    "severityMapping": {
+      "high": "Escalated to High risk - a potentially material existing brand conflict requiring professional clearance.",
+      "medium": "Escalated to Needs review - a real exact-name use exists that is not clearly a chess product.",
+      "low": "Escalated to Needs review - a real but marginal exact-name use exists (dormant page, personal account).",
+      "incidental": "No escalation - the match is unrelated prose or a personal username, not a brand. Recorded for transparency."
+    }
+  },
+  "checkedOn": "2026-10-21",
+  "findings": [
+    {
+      "name": "rookly",
+      "conflict": "chess",
+      "severity": "high",
+      "summary": "Rookly is an active chess brand: 'Rookly | Chess Esports League' at rookly.com, running K-12 school chess leagues nationally in the US, with its own blog. This is a direct chess-industry conflict and would be highly confusing to chess audiences.",
+      "sources": [
+        "https://rookly.com/",
+        "https://rookly.com/how-rookly-works",
+        "https://rookly.com/about",
+        "https://blog.rookly.com/"
+      ]
+    },
+    {
+      "name": "zenmate",
+      "conflict": "commercial",
+      "severity": "high",
+      "summary": "ZenMate is an established consumer VPN brand (zenmate.com, ZenMate VPN for Chrome/Firefox/Edge). A well-known security brand with the same name and a similar software/service category.",
+      "sources": [
+        "https://zenmate.com/",
+        "https://zenmate.com/free/",
+        "https://account.zenmate.com/en_US/login"
+      ]
+    },
+    {
+      "name": "pingo",
+      "conflict": "commercial",
+      "severity": "high",
+      "summary": "Two active businesses use this exact name: Pingo AI, an AI language-learning app (pingo.ai), and Pingo, an international calling and mobile recharge service (pingo.com). Pingo AI is in the online-learning space, adjacent to this product's education positioning.",
+      "sources": [
+        "https://pingo.ai/",
+        "https://pingo.com/",
+        "https://en.wikipedia.org/wiki/Pingo"
+      ]
+    },
+    {
+      "name": "neofork",
+      "conflict": "commercial",
+      "severity": "high",
+      "summary": "Neofork is an active software company (neofork.com) providing DevOps, cloud architecture and SRE services, with a LinkedIn company page and a Crunchbase profile. Same name in the software services sector.",
+      "sources": [
+        "https://neofork.com/",
+        "https://www.linkedin.com/company/neofork",
+        "https://www.crunchbase.com/organization/neofork"
+      ]
+    },
+    {
+      "name": "cleverook",
+      "conflict": "commercial",
+      "severity": "high",
+      "summary": "CLEVEROOK is an active French SaaS product (cleverook.com) for webhooks and messaging automation, with a GitHub organisation and documentation site. Identical name and identical TOP-LEVEL software/SaaS category.",
+      "sources": [
+        "https://www.cleverook.com/",
+        "https://www.cleverook.com/auth/signin",
+        "https://github.com/cleverook/"
+      ]
+    },
+    {
+      "name": "hubishop",
+      "conflict": "commercial",
+      "severity": "high",
+      "summary": "hubishop.fr is an active French retail business (excess-stock goods), hubishop.com.br is an active Brazilian online shop, and hubishop.com is listed for sale on GoDaddy at USD 4,375. There is also a Twitch channel and a Facebook business page.",
+      "sources": [
+        "https://hubishop.fr/",
+        "http://www.hubishop.com/",
+        "https://hubishop.com.br/",
+        "https://www.twitch.tv/hubishop"
+      ]
+    },
+    {
+      "name": "labishop",
+      "conflict": "commercial",
+      "severity": "high",
+      "summary": "labishop.hu is an active Hungarian gift-box and book shop, labishop.com is used by a Chinese LED display company, and there is an Instagram account @labishop_. labishop.com is also flagged by ScamAdviser and scam-detector, which is a reputation problem independent of the name clash.",
+      "sources": [
+        "https://labishop.hu/en/",
+        "https://www.labishop.com/",
+        "https://www.instagram.com/labishop_/",
+        "https://www.scamadviser.com/check-website/labishop.com"
+      ]
+    },
+    {
+      "name": "pinova",
+      "conflict": "commercial",
+      "severity": "high",
+      "summary": "Pinova is used by several real entities: Pinova GmbH (German performance-rosin plant at Brunswick, Georgia, with a dedicated news site), Pinova Capital (German private equity firm) and Pinova, a German apple cultivar with marketing names Corail / Pinata / Sonata.",
+      "sources": [
+        "https://pinovainfo.com/",
+        "https://www.pinovacapital.com/en/",
+        "https://en.wikipedia.org/wiki/Pinova"
+      ]
+    },
+    {
+      "name": "pinio",
+      "conflict": "commercial",
+      "severity": "medium",
+      "summary": "PINIO is an established technical term in flight-controller firmware (Betaflight, ArduPilot) and an npm package name; also used by Super Benek Pinio cat litter and the Kocmo R-5 Pinio bicycle. Multiple unrelated existing uses in hardware and retail.",
+      "sources": [
+        "https://www.jsdelivr.com/package/npm/pinio",
+        "https://betaflight.com/docs/wiki/app/auxiliary-tab",
+        "https://www.zooplus.co.uk/shop/cats/cat_litter/super_benek/pinio/2225433"
+      ]
+    },
+    {
+      "name": "craftempo",
+      "conflict": "commercial",
+      "severity": "medium",
+      "summary": "An active YouTube channel @Craftempo (food/craft content) and an Indian company listing 'Cauverykarnatkastatearts & Craftempo' in Delhi. The YouTube channel is an active, if unrelated, exact-name brand.",
+      "sources": [
+        "https://www.youtube.com/@Craftempo",
+        "https://www.indiaindustry.biz/company-cauverykarnatkastatearts-craftempo-in-delhi-54132"
+      ]
+    },
+    {
+      "name": "neorook",
+      "conflict": "handles",
+      "severity": "medium",
+      "summary": "The handle is in active use on multiple platforms: a Twitch channel (twitch.tv/neorook), Instagram @neorook, and a YouTube music artist releasing tracks as 'neorook' (2025-2026 releases). Handle consistency would be poor.",
+      "sources": [
+        "https://www.twitch.tv/neorook",
+        "https://www.instagram.com/neorook/",
+        "https://www.youtube.com/watch?v=gqdaJ4jTZkA"
+      ]
+    },
+    {
+      "name": "blitzio",
+      "conflict": "handles",
+      "severity": "medium",
+      "summary": "The name is taken across gaming platforms: multiple Twitch channels (blitzio, blitzio_), an X account @blitzio, and YouTube channels. Non-commercial, but it occupies the exact handle everywhere and signals a gaming community, not chess.",
+      "sources": [
+        "https://www.twitch.tv/blitzio",
+        "https://x.com/blitzio",
+        "https://www.youtube.com/channel/UC7BTJ5o_z6dDeFZwjqBtgMQ"
+      ]
+    },
+    {
+      "name": "mintempo",
+      "conflict": "handles",
+      "severity": "low",
+      "summary": "An Instagram account @mintempo (9 followers, 7 posts) and a Facebook personal profile 'Mintempo Jiao' exist. Marginal, non-commercial uses.",
+      "sources": [
+        "https://www.instagram.com/mintempo/",
+        "https://www.facebook.com/mintempo.jiao.3/"
+      ]
+    },
+    {
+      "name": "memorook",
+      "conflict": "handles",
+      "severity": "low",
+      "summary": "A Facebook page 'Memorook' exists (2 likes) for an Italian bereavement-writing project. Dormant and unrelated, but it is a real exact-name page.",
+      "sources": [
+        "https://www.facebook.com/memorook2023/"
+      ]
+    },
+    {
+      "name": "kitempo",
+      "conflict": "incidental",
+      "severity": "incidental",
+      "summary": "Only incidental matches were found: a nickname in a 1999 IRC log and a Steam profile name in a game key listing. No brand, business, app or product uses the name. Not treated as a brand conflict, but recorded because search evidence is inherently incomplete.",
+      "sources": [
+        "https://www.deep13.org/logfiles/%23Deep13_991113.log.html",
+        "https://gg.deals/game/no-more-room-in-hell-2/"
+      ]
+    },
+    {
+      "name": "matempo",
+      "conflict": "incidental",
+      "severity": "incidental",
+      "summary": "Only matches are blog-comment author names and one occurrence inside a Bugis-language Bible translation. No brand, business, app or product uses the name.",
+      "sources": [
+        "https://www.tune.com/blog/tracking-mobile-ads-world-udid/",
+        "https://www.gospelgo.com/p/bugis_nt.htm"
+      ]
+    },
+    {
+      "name": "centerook",
+      "conflict": "incidental",
+      "severity": "incidental",
+      "summary": "Matches are incidental prose: a 2001 New York Times dining article and a fan-fiction snippet, both apparently garbling 'Centerbrook'. No brand or business uses the name.",
+      "sources": [
+        "https://www.nytimes.com/2001/02/04/nyregion/dining-out-easy-on-the-eyes-and-fresh-on-the-palate.html"
+      ]
+    },
+    {
+      "name": "bishopin",
+      "conflict": "incidental",
+      "severity": "incidental",
+      "summary": "Every match is the ordinary English phrase 'a bishop in <place>' split across a line break by the indexer. No brand or business uses the name as a word. Note: the name reads as two words ('bishop in'), which is a usability weakness rather than a legal conflict.",
+      "sources": [
+        "https://rorate-caeli.blogspot.com/2008/05/first-traditional-mass-publicly.html",
+        "https://en.wikipedia.org/wiki/Benoni_Defense"
+      ]
+    },
+    {
+      "name": "neobishop",
+      "conflict": "commercial",
+      "severity": "medium",
+      "summary": "The exact string is in use as a SoundCloud artist name, a YouTube channel (@neobishop), a game account, and a 'NeoBishop' storefront selling in-game items on G2G. Non-chess and mostly low-profile, but the exact name is occupied across several platforms.",
+      "sources": [
+        "https://soundcloud.com/neobishop",
+        "https://www.youtube.com/@neobishop",
+        "https://www.g2g.com/NeoBishop/store"
+      ]
+    },
+    {
+      "name": "mateio",
+      "conflict": "commercial",
+      "severity": "medium",
+      "summary": "Mateio is an active Brazilian retail brand (mateio.com.br) selling premium chimarrao and mate gourds, with an Instagram account @mateiooficial that has roughly 99,000 followers. Mateio is also an established Romanian masculine given name. A real commercial entity holds the exact name.",
+      "sources": [
+        "https://mateio.com.br/",
+        "https://www.instagram.com/mateiooficial/",
+        "https://www.names.org/n/mateio/about"
+      ]
+    },
+    {
+      "name": "matego",
+      "conflict": "commercial",
+      "severity": "medium",
+      "summary": "MATEGO is an active French natural energy-drink brand (mategodrinks.com) built on mate. The exact name is a live consumer product brand.",
+      "sources": [
+        "https://mategodrinks.com/"
+      ]
+    },
+    {
+      "name": "kitactic",
+      "conflict": "handles",
+      "severity": "low",
+      "summary": "Handles only: a YouTube channel (about 1.9K subscribers), a Pinterest profile, and Minecraft skin profiles all use this string. No product or company uses the name.",
+      "sources": [
+        "https://www.youtube.com/@Kitactic4976",
+        "https://www.pinterest.com/kitactic/"
+      ]
+    },
+    {
+      "name": "rookgo",
+      "conflict": "handles",
+      "severity": "low",
+      "summary": "Handles only: a DeviantArt account, an Instagram account with no posts, and a 'Rook Go Go' Facebook page. No product, company or chess service uses the name.",
+      "sources": [
+        "https://www.deviantart.com/rookgo",
+        "https://www.instagram.com/rookgo/"
+      ]
+    },
+    {
+      "name": "jounva",
+      "conflict": "handles",
+      "severity": "low",
+      "summary": "A single Facebook personal profile uses this string. No brand, business or product uses the name.",
+      "sources": [
+        "https://www.facebook.com/jony.p.poenya/"
+      ]
+    },
+    {
+      "name": "ciantu",
+      "conflict": "incidental",
+      "severity": "incidental",
+      "summary": "The only result is an auto-generated stub page on definitions.net. No brand, business, product or person of note uses the name.",
+      "sources": [
+        "https://www.definitions.net/definition/ciantu"
+      ]
+    },
+    {
+      "name": "hojost",
+      "conflict": "incidental",
+      "severity": "incidental",
+      "summary": "The string appears as a rare real surname (genealogy and memorial records, one Instagram account, one Pinterest account). A surname is not a commercial conflict, but it does mean the name is not arbitrary - it reads as a family name.",
+      "sources": [
+        "https://forebears.io/surnames/hojost",
+        "https://www.findagrave.com/memorial/213284084/baby-hojost"
+      ]
+    },
+    {
+      "name": "pinace",
+      "conflict": "incidental",
+      "severity": "incidental",
+      "summary": "No organisation uses this name. It is, however, an archaic English word meaning 'pinnace' (a small boat), appearing in 17th-century texts and a 1:12 model-boat article. That makes it a real dictionary word rather than an invented brand.",
+      "sources": [
+        "https://modelengineeringwebsite.com/Pinace_1_12.html",
+        "https://en.wikipedia.org/wiki/Johann_Remmelin"
+      ]
+    },
+    {
+      "name": "rirbaup",
+      "conflict": "none",
+      "severity": "clear",
+      "summary": "Manual check found no exact-name use anywhere. The provider fuzzy-matched the query to unrelated names (Ritchie Bros / rbauction, Arthur Rimbaud). This is a clean name on the evidence available, though search evidence is inherently incomplete.",
+      "sources": [
+        "https://mkt.rbauction.com/",
+        "https://en.wikipedia.org/wiki/Arthur_Rimbaud"
+      ]
+    },
+    {
+      "name": "rookio",
+      "conflict": "chess",
+      "severity": "high",
+      "summary": "rookio.app is an ACTIVE CHESS product: 'Rookio - Your chess psychology, decoded', which analyses a player's last 50 chess games to find behavioural patterns hurting their rating. A direct chess-industry conflict on the exact name, and the closest competitor found in this entire exercise.",
+      "sources": [
+        "https://rookio.app/"
+      ]
+    },
+    {
+      "name": "profork",
+      "conflict": "commercial",
+      "severity": "medium",
+      "summary": "Profork Ltd / ProFork Ltd is an active UK forklift-training company (profork.com), and ARK Therapeutic sells a trademarked product named 'ARK proFork', a feeding-therapy fork. A trademarked product already uses the exact string.",
+      "sources": [
+        "http://www.profork.com/",
+        "https://www.arktherapeutic.com/ark-profork-textured-fork-feeding-therapy/",
+        "https://github.com/profork/"
+      ]
+    },
+    {
+      "name": "pinfox",
+      "conflict": "commercial",
+      "severity": "medium",
+      "summary": "Multiple active commercial uses: PINFOX electronic enclosure products sold on Amazon, pinfox.tech (free browser games and online tools) and pinfox.io (a privacy-first website analytics SaaS product). pinfox.io and pinfox.tech are software/web products, the same broad category as this product.",
+      "sources": [
+        "https://pinfox.tech/en/",
+        "https://www.pinfox.io/docs",
+        "https://www.amazon.com/clp/B09814HGCK"
+      ]
+    },
+    {
+      "name": "forkio",
+      "conflict": "commercial",
+      "severity": "medium",
+      "summary": "forkio.app is an active food-delivery business in Zanzibar. Separately, 'forkIO' is the standard thread-spawning function in Haskell's Control.Concurrent, so the string is a well-known technical identifier that developers already recognise. Two unrelated established uses.",
+      "sources": [
+        "https://forkio.app/",
+        "https://hackage-content.haskell.org/package/base-4.22.0.0/docs/Control-Concurrent.html",
+        "https://stackoverflow.com/questions/56603025/implementation-of-haskells-forkio"
+      ]
+    },
+    {
+      "name": "prorook",
+      "conflict": "handles",
+      "severity": "low",
+      "summary": "Handles only: a YouTube channel, a Twitch channel, an Instagram account with 157 followers, and a DeviantArt profile. No product or company uses the name.",
+      "sources": [
+        "https://www.youtube.com/@prorook/videos",
+        "https://www.instagram.com/prorook/"
+      ]
+    },
+    {
+      "name": "butnex",
+      "conflict": "handles",
+      "severity": "low",
+      "summary": "A Belgian DJ/producer uses the name across SoundCloud, ReverbNation, a Wix site and a YouTube channel. Music branding rather than a software or chess product, but it is a real exact-name person/brand.",
+      "sources": [
+        "https://soundcloud.com/butnex/dubstep-mix",
+        "https://www.reverbnation.com/butnex"
+      ]
+    }
+  ]
+}

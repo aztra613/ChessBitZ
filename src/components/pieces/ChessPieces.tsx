@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Chessbitz Conventional Staunton Piece Set
+ * PlyQuest Conventional Staunton Piece Set
  * Fills & outlines strictly follow PRD v2.2 specification:
  * - White pieces: #FFFFFF fill, #252B52 stroke/details
  * - Black pieces: #252B52 fill, #FFFFFF stroke/details

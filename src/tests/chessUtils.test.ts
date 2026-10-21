@@ -16,7 +16,7 @@ import {
   getArchivePuzzlesForMonth,
 } from '../utils/dailySchedule';
 
-console.log('=== Running Chessbitz Core Test Suite ===\n');
+console.log('=== Running PlyQuest Core Test Suite ===\n');
 
 let testsPassed = 0;
 let testsFailed = 0;

@@ -52,7 +52,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({
                 </h3>
               </div>
               <p className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
-                Chessbitz uses browser localStorage strictly to preserve your board theme, puzzle progress, and daily solving streak locally on your device.
+                PlyQuest uses browser localStorage strictly to preserve your board theme, puzzle progress, and daily solving streak locally on your device.
                 Zero tracking cookies, telemetry, or advertising scripts are loaded in this release.{' '}
                 <button
                   type="button"

@@ -1,15 +1,15 @@
-# Chessbitz — Puzzle Source Research & Open-Source Licence Review
+# PlyQuest — Puzzle Source Research & Open-Source Licence Review
 
 **Document Version:** 1.0  
 **Verification Date:** 2026-10-21  
-**Project:** Chessbitz (Static-first, zero-backend chess tactics & worksheet platform)  
+**Project:** PlyQuest (Static-first, zero-backend chess tactics & worksheet platform)  
 **Author:** Senior Full-Stack & Chess-Data Engineer, Open-Source Licence Reviewer  
 
 ---
 
 ## 1. Executive Summary
 
-Chessbitz is architected as a commercial, ad-supported, zero-backend, client-side chess training and printable worksheet platform. Because Chessbitz serves commercial advertising (via an inactive-by-default `AdSlot`), **all ingested tactical puzzle datasets must explicitly grant irrevocable rights for commercial use, modification, and static redistribution.**
+PlyQuest is architected as a commercial, ad-supported, zero-backend, client-side chess training and printable worksheet platform. Because PlyQuest serves commercial advertising (via an inactive-by-default `AdSlot`), **all ingested tactical puzzle datasets must explicitly grant irrevocable rights for commercial use, modification, and static redistribution.**
 
 This research report evaluates public and commercial chess puzzle datasets, establishes legal boundaries, audits the initial codebase corpus, and defines the official allowlist.
 
@@ -38,7 +38,7 @@ This research report evaluates public and commercial chess puzzle datasets, esta
   3. The **first move** (`Moves[0]`) is the opponent's setup move. It must be played onto the `FEN` to obtain the `solverFen` (the position shown to the user).
   4. The **second move** (`Moves[1]`) begins the solver's solution line, followed by the opponent's response (`Moves[2]`), and so on.
 * **Data Quality Notes:** Puzzles are automatically mined from real rated games played on Lichess and analyzed by Stockfish NNUE engines. Every puzzle has a single winning solution line. Outliers with low popularity (`Popularity < 80`) or low play counts (`NbPlays < 50`) can include ambiguous or dry technical lines and should be filtered out.
-* **Attribution & Relationship:** Although CC0 waives copyright and attribution obligations, Chessbitz provides transparent, prominent voluntary attribution. Chessbitz is independent and not affiliated with, sponsored by, or endorsed by Lichess.
+* **Attribution & Relationship:** Although CC0 waives copyright and attribution obligations, PlyQuest provides transparent, prominent voluntary attribution. PlyQuest is independent and not affiliated with, sponsored by, or endorsed by Lichess.
 
 ---
 
@@ -85,7 +85,7 @@ This research report evaluates public and commercial chess puzzle datasets, esta
 
 | Source Name & Official URL | Direct Dataset / Download URL | Data Licence | Commercial Use & Redistribution Allowed? | Attribution Requirement | Terms / Scraping Limits | Format & Operational Size | Update Cadence & Offline Suitability | Known Data-Quality Limitations | Decision | Verification Date & Reasoning |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Lichess Open Puzzles**<br>`https://database.lichess.org/` | `https://database.lichess.org/lichess_db_puzzle.csv.zst` | **CC0 1.0 Universal** (Public Domain) | **YES** (unconditional worldwide) | Voluntary (Chessbitz provides transparent credit) | Official bulk download endpoint; no scraping required | `.csv.zst` compressed (~250 MB), >4.5M rows | Monthly database dumps; ideal for static build-time sharding | Contains some technical endgame positions; requires filtering by popularity & rating | **APPROVED** | **2026-10-21**: Grounded against official Lichess Open Database deed and CSV format. |
+| **Lichess Open Puzzles**<br>`https://database.lichess.org/` | `https://database.lichess.org/lichess_db_puzzle.csv.zst` | **CC0 1.0 Universal** (Public Domain) | **YES** (unconditional worldwide) | Voluntary (PlyQuest provides transparent credit) | Official bulk download endpoint; no scraping required | `.csv.zst` compressed (~250 MB), >4.5M rows | Monthly database dumps; ideal for static build-time sharding | Contains some technical endgame positions; requires filtering by popularity & rating | **APPROVED** | **2026-10-21**: Grounded against official Lichess Open Database deed and CSV format. |
 | **ChessTempo**<br>`https://chesstempo.com/` | None (closed proprietary) | **Proprietary** (Personal Use Only) | **NO** (Strictly prohibited without written agreement) | Mandatory under commercial agreement | Automated scraping & bulk downloading explicitly forbidden by ToS | Web pages / proprietary JSON | Real-time web only; offline static hosting prohibited | Highly rated user tags, but legally inaccessible | **REJECTED** | **2026-10-21**: ToS Section 2 explicitly bans bulk download and commercial extraction. |
 | **Chess.com Puzzles**<br>`https://www.chess.com/` | `https://api.chess.com/pub/puzzle` (PubAPI) | **Proprietary** (Non-commercial API) | **NO** (Commercial use prohibited) | Mandatory | PubAPI rate limits apply; bulk downloading & data mining prohibited | REST JSON (single item endpoints) | Daily endpoints; commercial static export prohibited | High quality, but strictly non-commercial license | **REJECTED** | **2026-10-21**: User Agreement bans scraping, mining, and commercial monetization. |
 | **WFCC / FIDE Albums**<br>`https://www.wfcc.ch/` | None (printed books & PDFs) | **Copyright © WFCC** | **NO** (Anthologies & studies copyrighted) | Ethical requirement in composition community | No programmatic API; print & PDF publications | Books, text descriptions, PGN | Irregular (3-year cycles) | Studies often contain complex sub-variations not suited for fast tactical solving | **REJECTED** | **2026-10-21**: Anthologies and modern compositions protected under copyright. |
@@ -93,25 +93,25 @@ This research report evaluates public and commercial chess puzzle datasets, esta
 
 ---
 
-## 4. Audit of Existing Chessbitz Corpus
+## 4. Audit of Existing PlyQuest Corpus
 
 ### 4.1 Provenance Discrepancy in `src/data/puzzles.ts`
 Inspection of the initial 14 puzzle records in `src/data/puzzles.ts` and `scripts/buildCuratedPuzzles.ts` revealed:
 * Every record had `provenance.sourceDataset: 'lichess-open-puzzles'` and `provenance.sourceRecordId: '00010'`, `'00101'`, `'00102'`, etc.
 * **Audit Finding:** Verification against the official Lichess database and API confirmed that IDs `00010`, `00101`, `00102`, `00103`, etc. do not correspond to these tactical positions in the Lichess Open Database (querying `https://lichess.org/api/puzzle/00010` returns HTTP 404). Real Lichess puzzle IDs are 5-character base-62 identifiers (e.g. `00sHx`, `kRapK`, `00008`).
 * **Corrective Action:**
-  1. The existing hand-authored prototype puzzles must be re-categorized with `sourceDataset: 'chessbitz-curated'` and `sourceLicense: 'CC0-1.0'`. They must **not** be misrepresented as authentic Lichess dataset extracts.
+  1. The existing hand-authored prototype puzzles must be re-categorized with `sourceDataset: 'plyquest-curated'` and `sourceLicense: 'CC0-1.0'`. They must **not** be misrepresented as authentic Lichess dataset extracts.
   2. Authentic Lichess puzzles must be ingested via the reproducible pipeline, retaining their true Lichess `PuzzleId` (e.g. `kRapK`, `00008`, `0000d`), original FEN, exact UCI move sequences, Glicko-2 ratings, and community theme tags.
 
 ### 4.2 Separation of Software, Dataset, Asset, and Content Licences
 The codebase previously grouped different legal concepts under a generic license tag. We establish clear boundaries:
-* **Dataset Licence:** `CC0-1.0 Universal` for Lichess Open Database records and Chessbitz-authored curated puzzles.
+* **Dataset Licence:** `CC0-1.0 Universal` for Lichess Open Database records and PlyQuest-authored curated puzzles.
 * **Software Licences:**
   * `chess.js`: BSD-2-Clause
   * `react`, `react-dom`, `jspdf`: MIT
   * `lucide-react`: ISC
 * **Graphic Asset Licence:** Public Domain / CC0 for the 12 conventional Staunton piece vector silhouettes (`src/components/pieces/ChessPieces.tsx`).
-* **Original Educational Text:** All puzzle titles, instructional objectives, and tactical explanations written by Chessbitz are licensed under **Creative Commons Attribution 4.0 International (CC BY 4.0)** with copyright held by Chessbitz contributors.
+* **Original Educational Text:** All puzzle titles, instructional objectives, and tactical explanations written by PlyQuest are licensed under **Creative Commons Attribution 4.0 International (CC BY 4.0)** with copyright held by PlyQuest contributors.
 
 ### 4.3 Baseline Quality & Tooling Audit
 * **`npm test`**: Passed (39 tests passed, 0 failed). Verified rank-reflection symmetry, hint hierarchy, and move legality.
@@ -125,4 +125,4 @@ The codebase previously grouped different legal concepts under a generic license
 ---
 
 ## 5. Conclusion & Action Plan
-Lichess is verified as the sole open, legal, high-quality, and commercially viable dataset for Chessbitz. The ingestion pipeline documented in `docs/PUZZLE_INGESTION.md` implements streaming decompression, strict move-legality checks, objective verification, and deterministic daily scheduling.
+Lichess is verified as the sole open, legal, high-quality, and commercially viable dataset for PlyQuest. The ingestion pipeline documented in `docs/PUZZLE_INGESTION.md` implements streaming decompression, strict move-legality checks, objective verification, and deterministic daily scheduling.

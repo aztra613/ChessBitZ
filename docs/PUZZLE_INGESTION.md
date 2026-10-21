@@ -1,4 +1,4 @@
-# Chessbitz — Puzzle Ingestion Pipeline, Data Validation & SSG Architecture
+# PlyQuest — Puzzle Ingestion Pipeline, Data Validation & SSG Architecture
 
 **Document Version:** 1.0  
 **Last Updated:** 2026-10-21  
@@ -8,7 +8,7 @@
 
 ## 1. Overview & Architectural Principles
 
-Chessbitz operates under a strict **zero-runtime-backend, static-first constraint**:
+PlyQuest operates under a strict **zero-runtime-backend, static-first constraint**:
 * **No Runtime Database or Puzzle API:** The client application does not query a backend server, database, or external chess API to fetch puzzles.
 * **No Raw Dataset in Production Bundle:** The full multi-million-row Lichess dataset (`lichess_db_puzzle.csv.zst`) must never be bundled into the production static assets.
 * **Curated Static Sharding:** Build-time scripts ingest, filter, validate, and emit curated static JSON files with predictable IDs, split by themes and difficulty bands.
@@ -18,22 +18,22 @@ Chessbitz operates under a strict **zero-runtime-backend, static-first constrain
 
 ## 2. Dataset Licences vs. Software Licences
 
-To avoid copyright confusion and maintain compliance with open-source and open-data standards, Chessbitz models licences into four independent categories:
+To avoid copyright confusion and maintain compliance with open-source and open-data standards, PlyQuest models licences into four independent categories:
 
 ```
 +-----------------------------------------------------------------------------------+
-|                                 CHESSBITZ APPLICATION                             |
+|                                 PLYQUEST APPLICATION                             |
 +-------------------------+-------------------------+-------------------------------+
 | 1. DATASET LICENCE      | 2. SOFTWARE LICENCE     | 3. ASSET & CONTENT LICENCE    |
 | - Lichess Open Puzzles: | - chess.js: BSD-2-Clause| - Staunton Pieces: Public     |
 |   CC0-1.0 Universal     | - React & DOM: MIT      |   Domain / CC0 Silhouettes    |
-| - Chessbitz Curated:    | - jsPDF: MIT            | - Pedagogical Copy / Text:    |
-|   CC0-1.0 Universal     | - lucide-react: ISC     |   CC BY 4.0 (Chessbitz team)  |
+| - PlyQuest Curated:    | - jsPDF: MIT            | - Pedagogical Copy / Text:    |
+|   CC0-1.0 Universal     | - lucide-react: ISC     |   CC BY 4.0 (PlyQuest team)  |
 +-------------------------+-------------------------+-------------------------------+
 ```
 
 * **Dataset Licence (`sourceLicense`):** Governs the board states and move coordinates. `CC0-1.0` allows commercial, ad-supported redistribution and educational transformations.
-* **Software Licence:** Governs the TypeScript/JavaScript logic. Chessbitz adheres to permissive licences (BSD-2-Clause, MIT, ISC, Apache-2.0) and excludes copyleft dependencies (GPL/AGPL).
+* **Software Licence:** Governs the TypeScript/JavaScript logic. PlyQuest adheres to permissive licences (BSD-2-Clause, MIT, ISC, Apache-2.0) and excludes copyleft dependencies (GPL/AGPL).
 * **Asset Licence:** The 12 Staunton vector silhouettes are public domain / CC0 assets embedded as local inline SVGs (zero CDN calls).
 * **Original Educational Text:** Titles, strategic objectives, and tactical explanations are generated original content, clearly distinguished from raw dataset facts.
 
@@ -63,9 +63,9 @@ Every candidate puzzle must pass five verification gates before acceptance:
 6. **Deduplication:** Puzzles with duplicate initial FENs, duplicate solver positions, or identical move lines are eliminated.
 
 ### 3.3 Color-Symmetric Rank-Reflected Variants
-Chessbitz includes mathematically sound color-symmetric rank-reflected variants:
+PlyQuest includes mathematically sound color-symmetric rank-reflected variants:
 * **Purpose:** Educational diversity (training pattern recognition from both White and Black perspectives).
-* **Integrity Rule:** Rank reflection is **never** used as a means to circumvent copyright. All variants are clearly attributed with `sourceDataset: 'chessbitz-transformed-variant'` and `transformedFrom: [sourceRecordId]`.
+* **Integrity Rule:** Rank reflection is **never** used as a means to circumvent copyright. All variants are clearly attributed with `sourceDataset: 'plyquest-transformed-variant'` and `transformedFrom: [sourceRecordId]`.
 * **Validation:** Both the reflected FEN and reflected move sequence must independently pass 100% legal replay in `chess.js`. Variants failing any move legality check are discarded.
 
 ---
@@ -107,7 +107,7 @@ const dailyPuzzle = PUZZLES.find((p) => p.dateAssigned === '2026-10-20') || PUZZ
 This broke after 2026-10-20, returning the same fallback puzzle indefinitely and requiring manual GitHub Action commits every morning.
 
 ### 5.2 Deterministic Date-to-Puzzle Mapping
-Chessbitz implements a deterministic mathematical schedule (`src/utils/dailySchedule.ts`):
+PlyQuest implements a deterministic mathematical schedule (`src/utils/dailySchedule.ts`):
 1. **Documented Timezone:** The global daily reset occurs at **00:00 Asia/Kolkata (UTC+05:30)**.
 2. **Epoch Day Calculation:** Any date `YYYY-MM-DD` is converted to days since epoch.
 3. **Deterministic Permutation:** A seeded pseudorandom permutation of the daily-eligible puzzle corpus ensures:
@@ -123,7 +123,7 @@ Chessbitz implements a deterministic mathematical schedule (`src/utils/dailySche
 ### 6.1 True SSG vs. Client-Rendered SPA
 * **Current State:** The project is a client-rendered React Single Page Application (SPA) bundled with Vite. Static hosts (Cloudflare Pages, Netlify, GitHub Pages) serve `index.html` as the 200/404 fallback for all deep URLs (e.g. `/puzzle/kRapK`, `/daily`, `/mate-in-1`).
 * **SEO Limitation:** While directly accessible in browsers with JavaScript enabled, web crawlers that do not execute JavaScript receive a generic `index.html` shell with the homepage `<title>` and `<meta name="description">`.
-* **Prerender Solution:** Rather than migrating the entire application to an external framework like Astro or Next.js (which would introduce unnecessary build complexity and risk regressions), Chessbitz includes a lightweight **Build-Time Prerender Script** (`scripts/prerender.ts`):
+* **Prerender Solution:** Rather than migrating the entire application to an external framework like Astro or Next.js (which would introduce unnecessary build complexity and risk regressions), PlyQuest includes a lightweight **Build-Time Prerender Script** (`scripts/prerender.ts`):
   1. Executes after `vite build`.
   2. Injects route-specific `<title>`, spoiler-free meta descriptions, canonical URLs, and OpenGraph metadata into dedicated HTML files (`dist/daily/index.html`, `dist/mate-in-1/index.html`, etc.).
   3. Generates a valid `sitemap.xml` listing all indexable static routes.

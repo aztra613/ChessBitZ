@@ -8,7 +8,7 @@ interface NotFoundProps {
 
 export const NotFound: React.FC<NotFoundProps> = ({
   onNavigate,
-  message = 'The requested puzzle or route could not be found in the Chessbitz catalogue.',
+  message = 'The requested puzzle or route could not be found in the PlyQuest catalogue.',
 }) => {
   return (
     <div className="max-w-md mx-auto my-16 px-4 text-center">

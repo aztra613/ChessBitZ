@@ -150,7 +150,7 @@ export function transformPuzzleColorSymmetric(
       objective: transformedObjective || `${sideName} to move and find the best continuation`,
       explanation: `${source.explanation} (Transformed rank-symmetric variant)`,
       provenance: {
-        sourceDataset: 'chessbitz-transformed-variant',
+        sourceDataset: 'plyquest-transformed-variant',
         sourceRecordId: source.id,
         sourceLicense: 'CC0-1.0',
         retrievalDate: new Date().toISOString().split('T')[0],
