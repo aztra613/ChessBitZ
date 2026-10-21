@@ -39,8 +39,8 @@ export function getStaticRoutes(): RouteMeta[] {
       changefreq: 'daily',
       semanticHtml: `
         <header>
-          <h1>Chessbitz — Free Chess Tactics Puzzles & Printable Worksheets</h1>
-          <p>Master tactical chess vision with curated puzzles, progressive hints, and studio-grade printable worksheet generation.</p>
+          <h1>Train your tactics, one move at a time.</h1>
+          <p>Free chess puzzles, helpful hints, and printable worksheets. No account required.</p>
         </header>
       `,
     },
@@ -407,13 +407,16 @@ export function buildPrerender(): void {
   for (const route of routes) {
     const canonicalUrl = `${SITE_URL}${route.path === '/' ? '' : route.path}`;
 
-    // Select appropriate preview image
-    let imageUrl = `${SITE_URL}/assets/og/cover.svg`;
+    // Select appropriate preview image (raster PNG for the home page so it renders on WhatsApp/FB/X)
+    let imageUrl = `${SITE_URL}/assets/og/og-card.png`;
+    let imageType = 'image/png';
     if (route.path.startsWith('/puzzle/') || route.path.startsWith('/embed/puzzle/')) {
       const pId = route.path.split('/').pop();
       imageUrl = `${SITE_URL}/assets/og/puzzle-${pId}.svg`;
+      imageType = 'image/svg+xml';
     } else if (route.path === '/daily') {
       imageUrl = `${SITE_URL}/assets/og/daily.svg`;
+      imageType = 'image/svg+xml';
     }
 
     // Replace meta tags and title
@@ -449,13 +452,55 @@ export function buildPrerender(): void {
   <meta property="og:image" content="${imageUrl}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:type" content="image/svg+xml" />
+  <meta property="og:image:type" content="${imageType}" />
+  <meta property="og:image:alt" content="${route.title}" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${route.title}" />
   <meta name="twitter:description" content="${route.description}" />
   <meta name="twitter:image" content="${imageUrl}" />
+  <meta name="twitter:image:alt" content="${route.title}" />
 `;
     html = html.replace('</head>', `${ogTags}</head>`);
+
+    // FAQ structured data (home page only) for rich results
+    if (route.path === '/') {
+      const faqItems = [
+        {
+          q: 'Is Chessbitz really free?',
+          a: 'Yes. Every puzzle, hint, worksheet, and training tool is 100% free with no account, no subscription, and no paywalled content.',
+        },
+        {
+          q: 'Do I need an account to solve puzzles?',
+          a: 'No account is required. Everything runs in your browser and your progress is saved locally on your own device.',
+        },
+        {
+          q: 'Can I print or download the puzzles?',
+          a: 'Yes. The Worksheet Studio exports ready-to-print A4 or US Letter PDFs with 1, 2, 4, or 6 puzzles per page, plus an optional answer key.',
+        },
+        {
+          q: 'Can I embed puzzles on my own website or blog?',
+          a: 'Yes. Every puzzle ships with a lightweight embeddable widget you can drop into any site.',
+        },
+        {
+          q: 'Does Chessbitz work offline?',
+          a: 'Yes. After the first load the app works fully offline and can be installed to your home screen.',
+        },
+        {
+          q: 'Is my data private?',
+          a: 'Yes. All solving, review, and worksheet generation happens locally in your browser — no server uploads and no third-party trackers.',
+        },
+      ];
+      const faqJsonLd = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.q,
+          acceptedAnswer: { '@type': 'Answer', text: item.a },
+        })),
+      });
+      html = html.replace('</head>', `  <script type="application/ld+json">\n${faqJsonLd}\n  </script>\n</head>`);
+    }
 
     // Inject semantic server HTML inside #root
     if (route.semanticHtml) {

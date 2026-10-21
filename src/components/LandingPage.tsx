@@ -1,11 +1,27 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Printer, Sparkles, Target, Zap, Shield, BookOpen, Layers, CheckCircle2, Brain, Upload, Timer } from 'lucide-react';
+import {
+  ArrowRight,
+  Printer,
+  Sparkles,
+  Target,
+  Zap,
+  Shield,
+  ShieldCheck,
+  WifiOff,
+  Lock,
+  Clock,
+  Share2,
+  ChevronDown,
+  CheckCircle2,
+  Brain,
+  Upload,
+  Timer,
+} from 'lucide-react';
 import { PUZZLES } from '../data/puzzles';
 import { getDailyPuzzle } from '../utils/dailySchedule';
 import { ChessBoard } from './ChessBoard';
 import { BoardThemeId } from '../types/puzzle';
-import { AdSlot } from './AdSlot';
 
 interface LandingPageProps {
   boardTheme: BoardThemeId;
@@ -63,6 +79,159 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       badge: 'Curated',
       route: '/puzzles',
       count: PUZZLES.length,
+    },
+  ];
+
+  // "Everything you get" pillars — the full training kit beyond standard puzzles
+  const pillars = [
+    {
+      title: 'Digital Chess Clock',
+      description:
+        'A full-featured chess clock with 9 bullet, blitz, rapid and classical presets, increments, and crisp sound.',
+      route: '/clock',
+      icon: Clock,
+      iconWrap: 'bg-sky-500/10 dark:bg-sky-500/20',
+      iconColor: 'text-sky-500',
+      hoverBorder: 'hover:border-sky-400 dark:hover:border-sky-500',
+      hoverTitle: 'group-hover:text-sky-600 dark:group-hover:text-sky-400',
+      footerIcon: Timer,
+      footerText: 'Bullet → Classical • Web Audio',
+      footerColor: 'text-sky-600 dark:text-sky-400',
+    },
+    {
+      title: 'Share & Challenge',
+      description:
+        'Challenge friends with spoiler-free links and download shareable QR result cards in one tap.',
+      route: '/daily',
+      icon: Share2,
+      iconWrap: 'bg-emerald-500/10 dark:bg-emerald-500/20',
+      iconColor: 'text-emerald-500',
+      hoverBorder: 'hover:border-emerald-400 dark:hover:border-emerald-500',
+      hoverTitle: 'group-hover:text-emerald-600 dark:group-hover:text-emerald-400',
+      footerIcon: Share2,
+      footerText: 'WhatsApp • X • Facebook • Telegram',
+      footerColor: 'text-emerald-600 dark:text-emerald-400',
+    },
+    {
+      title: 'Worksheet Studio',
+      description:
+        'Print ready-to-use A4 or US Letter PDF worksheets with 1, 2, 4, or 6 puzzles per page and answer keys.',
+      route: '/printable-chess-puzzles',
+      icon: Printer,
+      iconWrap: 'bg-[#4658C9]/10 dark:bg-[#4658C9]/25',
+      iconColor: 'text-[#4658C9] dark:text-[#818CF8]',
+      hoverBorder: 'hover:border-[#4658C9] dark:hover:border-[#818CF8]',
+      hoverTitle: 'group-hover:text-[#4658C9] dark:group-hover:text-[#818CF8]',
+      footerIcon: Printer,
+      footerText: 'Vector diagrams • Answer keys',
+      footerColor: 'text-[#4658C9] dark:text-[#818CF8]',
+    },
+    {
+      title: 'Spaced Repetition',
+      description:
+        'Smart review system that repeats puzzles you struggle with at optimal intervals. Build lasting tactical memory.',
+      route: '/review',
+      icon: Brain,
+      iconWrap: 'bg-violet-500/10 dark:bg-violet-500/20',
+      iconColor: 'text-violet-500',
+      hoverBorder: 'hover:border-violet-400 dark:hover:border-violet-500',
+      hoverTitle: 'group-hover:text-violet-600 dark:group-hover:text-violet-400',
+      footerIcon: Brain,
+      footerText: 'SM-2 algorithm • 100% local storage',
+      footerColor: 'text-violet-600 dark:text-violet-400',
+    },
+    {
+      title: 'Sprint Mode',
+      description:
+        'Race the clock — solve as many puzzles as you can in 5 minutes, or conquer a fixed set of 10 or 25 puzzles.',
+      route: '/sprint',
+      icon: Zap,
+      iconWrap: 'bg-amber-500/10 dark:bg-amber-500/20',
+      iconColor: 'text-amber-500',
+      hoverBorder: 'hover:border-amber-400 dark:hover:border-amber-500',
+      hoverTitle: 'group-hover:text-amber-600 dark:group-hover:text-amber-400',
+      footerIcon: Timer,
+      footerText: 'Blitz • Quick 10 • Marathon 25',
+      footerColor: 'text-amber-600 dark:text-amber-400',
+    },
+    {
+      title: 'FEN / PGN Import',
+      description:
+        'Paste any position to analyse it locally on an interactive board. Includes undo, flip, and move history.',
+      route: '/import',
+      icon: Upload,
+      iconWrap: 'bg-cyan-500/10 dark:bg-cyan-500/20',
+      iconColor: 'text-cyan-500',
+      hoverBorder: 'hover:border-cyan-400 dark:hover:border-cyan-500',
+      hoverTitle: 'group-hover:text-cyan-600 dark:group-hover:text-cyan-400',
+      footerIcon: Shield,
+      footerText: 'Fully private • No server upload',
+      footerColor: 'text-cyan-600 dark:text-cyan-400',
+    },
+  ];
+
+  const steps = [
+    {
+      title: 'Pick a tactic',
+      description:
+        "Choose a motif, a mate length, or jump straight into today's daily puzzle — no signup, no setup.",
+    },
+    {
+      title: 'Get unstuck with hints',
+      description:
+        'Three progressive hint levels guide you from the key idea to the exact move — never a spoiler.',
+    },
+    {
+      title: 'Track, review & print',
+      description:
+        'Progress saves locally, weak spots return via spaced repetition, and any puzzle becomes a printable worksheet.',
+    },
+  ];
+
+  const lengthPicks = [
+    { label: 'Mate in 1', route: '/mate-in-1' },
+    { label: 'Mate in 2', route: '/mate-in-2' },
+    { label: 'Mate in 3', route: '/mate-in-3' },
+  ];
+
+  const difficultyPicks = [
+    { label: 'Beginner', route: '/difficulty/beginner' },
+    { label: 'Intermediate', route: '/difficulty/intermediate' },
+    { label: 'Advanced', route: '/difficulty/advanced' },
+    { label: 'Master', route: '/difficulty/master' },
+  ];
+
+  const trustItems = [
+    { title: 'Free Forever', description: 'No paywall, ever', icon: CheckCircle2 },
+    { title: 'No Account Needed', description: 'Start in one click', icon: ShieldCheck },
+    { title: 'Works Offline', description: 'Installable app', icon: WifiOff },
+    { title: 'Private by Design', description: 'No trackers or uploads', icon: Lock },
+  ];
+
+  const faqs = [
+    {
+      q: 'Is Chessbitz really free?',
+      a: 'Yes. Every puzzle, hint, worksheet, and training tool is 100% free with no account, no subscription, and no paywalled content.',
+    },
+    {
+      q: 'Do I need an account to solve puzzles?',
+      a: 'No account is required. Everything runs in your browser and your progress is saved locally on your own device.',
+    },
+    {
+      q: 'Can I print or download the puzzles?',
+      a: 'Yes. The Worksheet Studio exports ready-to-print A4 or US Letter PDFs with 1, 2, 4, or 6 puzzles per page, plus an optional answer key.',
+    },
+    {
+      q: 'Can I embed puzzles on my own website or blog?',
+      a: 'Yes. Every puzzle ships with a lightweight embeddable widget you can drop into any site.',
+    },
+    {
+      q: 'Does Chessbitz work offline?',
+      a: 'Yes. After the first load the app works fully offline and can be installed to your home screen.',
+    },
+    {
+      q: 'Is my data private?',
+      a: 'Yes. All solving, review, and worksheet generation happens locally in your browser — no server uploads and no third-party trackers.',
     },
   ];
 
@@ -184,7 +353,44 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* 2. CURATED COLLECTIONS */}
+      {/* 2. EVERYTHING YOU GET */}
+      <section className="py-14 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
+            Everything You Get — Free
+          </h2>
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-2 leading-relaxed">
+            Puzzles are just the start. Chessbitz bundles a full tactical training kit — no account, no paywall.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {pillars.map((pillar) => (
+            <motion.div
+              key={pillar.title}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              onClick={() => onNavigate(pillar.route)}
+              className={`p-6 bg-white dark:bg-[#161C2E] border border-slate-300 dark:border-slate-700 rounded-2xl ${pillar.hoverBorder} hover:shadow-lg transition-all cursor-pointer group flex flex-col`}
+            >
+              <div className={`w-12 h-12 rounded-xl ${pillar.iconWrap} flex items-center justify-center mb-4`}>
+                <pillar.icon className={`w-6 h-6 ${pillar.iconColor}`} />
+              </div>
+              <h3 className={`text-lg font-black text-slate-950 dark:text-white ${pillar.hoverTitle} transition-colors`}>
+                {pillar.title}
+              </h3>
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1.5 leading-relaxed flex-1">
+                {pillar.description}
+              </p>
+              <div className={`mt-4 flex items-center gap-1.5 text-xs font-bold ${pillar.footerColor}`}>
+                <pillar.footerIcon className="w-3.5 h-3.5" />
+                <span>{pillar.footerText}</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. CURATED COLLECTIONS */}
       <section className="py-14 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
@@ -229,7 +435,38 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* 3. WORKSHEET STUDIO FEATURE SHOWCASE */}
+      {/* 4. HOW IT WORKS */}
+      <section className="py-14 sm:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
+              How It Works
+            </h2>
+            <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-2 leading-relaxed">
+              From your first move to lasting tactical memory in three steps.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {steps.map((step, index) => (
+              <div
+                key={step.title}
+                className="relative p-6 rounded-2xl bg-slate-50 dark:bg-[#161C2E] border border-slate-200 dark:border-slate-700"
+              >
+                <div className="w-10 h-10 rounded-full bg-[#4658C9] text-white flex items-center justify-center font-black text-sm mb-4 shadow-sm">
+                  {index + 1}
+                </div>
+                <h3 className="text-base font-extrabold text-slate-950 dark:text-white">{step.title}</h3>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1.5 leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. WORKSHEET STUDIO FEATURE SHOWCASE */}
       <section className="py-14 bg-white dark:bg-[#1A2032] border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -298,85 +535,99 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* 4. TRAINING TOOLS SHOWCASE */}
+      {/* 6. QUICK PICKER */}
       <section className="py-14 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-10">
+        <div className="text-center max-w-2xl mx-auto mb-8">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
-            Advanced Training Tools
+            Jump Straight In
           </h2>
           <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-2 leading-relaxed">
-            Go beyond standard puzzles with timed challenges, smart review, and private position analysis.
+            Pick a mate length or a difficulty band and start solving immediately.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* Sprint Mode */}
-          <motion.div
-            whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            onClick={() => onNavigate('/sprint')}
-            className="p-6 bg-white dark:bg-[#161C2E] border border-slate-300 dark:border-slate-700 rounded-2xl hover:border-amber-400 dark:hover:border-amber-500 hover:shadow-lg transition-all cursor-pointer group"
-          >
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 flex items-center justify-center mb-4">
-              <Zap className="w-6 h-6 text-amber-500" />
+        <div className="max-w-3xl mx-auto space-y-6">
+          <div>
+            <div className="text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5 text-center">
+              By Mate Length
             </div>
-            <h3 className="text-lg font-black text-slate-950 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-              Sprint Mode
-            </h3>
-            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1.5 leading-relaxed">
-              Race against the clock — solve as many puzzles as you can in 5 minutes, or conquer a fixed set of 10 or 25 puzzles.
-            </p>
-            <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400">
-              <Timer className="w-3.5 h-3.5" />
-              <span>Blitz • Quick 10 • Marathon 25</span>
+            <div className="flex flex-wrap justify-center gap-2.5">
+              {lengthPicks.map((pick) => (
+                <button
+                  key={pick.route}
+                  type="button"
+                  onClick={() => onNavigate(pick.route)}
+                  className="px-4 py-2.5 rounded-full bg-white dark:bg-[#161C2E] border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-200 hover:border-[#4658C9] dark:hover:border-[#818CF8] hover:text-[#4658C9] dark:hover:text-[#818CF8] transition-all cursor-pointer shadow-2xs"
+                >
+                  {pick.label}
+                </button>
+              ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Spaced Repetition */}
-          <motion.div
-            whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            onClick={() => onNavigate('/review')}
-            className="p-6 bg-white dark:bg-[#161C2E] border border-slate-300 dark:border-slate-700 rounded-2xl hover:border-violet-400 dark:hover:border-violet-500 hover:shadow-lg transition-all cursor-pointer group"
-          >
-            <div className="w-12 h-12 rounded-xl bg-violet-500/10 dark:bg-violet-500/20 flex items-center justify-center mb-4">
-              <Brain className="w-6 h-6 text-violet-500" />
+          <div>
+            <div className="text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5 text-center">
+              By Difficulty
             </div>
-            <h3 className="text-lg font-black text-slate-950 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
-              Spaced Repetition
-            </h3>
-            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1.5 leading-relaxed">
-              Smart review system that repeats puzzles you struggle with at optimal intervals. Build lasting tactical memory.
-            </p>
-            <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-violet-600 dark:text-violet-400">
-              <Brain className="w-3.5 h-3.5" />
-              <span>SM-2 algorithm • 100% local storage</span>
+            <div className="flex flex-wrap justify-center gap-2.5">
+              {difficultyPicks.map((pick) => (
+                <button
+                  key={pick.route}
+                  type="button"
+                  onClick={() => onNavigate(pick.route)}
+                  className="px-4 py-2.5 rounded-full bg-white dark:bg-[#161C2E] border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-200 hover:border-[#4658C9] dark:hover:border-[#818CF8] hover:text-[#4658C9] dark:hover:text-[#818CF8] transition-all cursor-pointer shadow-2xs"
+                >
+                  {pick.label}
+                </button>
+              ))}
             </div>
-          </motion.div>
-
-          {/* FEN Import */}
-          <motion.div
-            whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            onClick={() => onNavigate('/import')}
-            className="p-6 bg-white dark:bg-[#161C2E] border border-slate-300 dark:border-slate-700 rounded-2xl hover:border-cyan-400 dark:hover:border-cyan-500 hover:shadow-lg transition-all cursor-pointer group"
-          >
-            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/20 flex items-center justify-center mb-4">
-              <Upload className="w-6 h-6 text-cyan-500" />
-            </div>
-            <h3 className="text-lg font-black text-slate-950 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-              FEN Import
-            </h3>
-            <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1.5 leading-relaxed">
-              Paste any FEN position to analyse it locally on an interactive board. Includes undo, flip, and move history.
-            </p>
-            <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-cyan-600 dark:text-cyan-400">
-              <Shield className="w-3.5 h-3.5" />
-              <span>Fully private • No server upload</span>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Ad slot isolated at bottom */}
-      <AdSlot slotId="landing-bottom-slot" format="leaderboard" />
+      {/* 7. TRUST BAR */}
+      <section className="py-12 bg-[#4658C9] dark:bg-[#252B52]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+            {trustItems.map((item) => (
+              <div key={item.title} className="flex flex-col items-center gap-1.5">
+                <item.icon className="w-6 h-6 text-white" />
+                <span className="text-sm font-black text-white">{item.title}</span>
+                <span className="text-[11px] font-medium text-white/80">{item.description}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8. FAQ */}
+      <section className="py-14 sm:py-16 max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-2 leading-relaxed">
+            Everything you need to know before you start.
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {faqs.map((faq) => (
+            <details
+              key={faq.q}
+              className="group p-4 sm:p-5 bg-white dark:bg-[#161C2E] border border-slate-300 dark:border-slate-700 rounded-2xl open:border-[#4658C9] dark:open:border-[#818CF8] transition-colors"
+            >
+              <summary className="flex items-center justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden text-sm font-extrabold text-slate-950 dark:text-white">
+                <span>{faq.q}</span>
+                <ChevronDown className="w-4 h-4 shrink-0 text-[#4658C9] dark:text-[#818CF8] transition-transform group-open:rotate-180" />
+              </summary>
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-3 leading-relaxed">
+                {faq.a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
