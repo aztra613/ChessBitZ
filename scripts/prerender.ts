@@ -438,12 +438,12 @@ export function buildPrerender(): void {
   const routes = getStaticRoutes();
   const daily = DAILY_PUZZLE;
 
-  // Create OG image output directories
+  // OG images are build artifacts: written only into dist/, never back into the
+  // source tree. Previously they were also written to public/assets/og, which
+  // left a stale image behind for every puzzle that ever entered the top 500 and
+  // made every refresh commit a large diff.
   const distOgDir = path.resolve(DIST_DIR, 'assets/og');
-  const publicOgDir = path.resolve(process.cwd(), 'public/assets/og');
-  [distOgDir, publicOgDir].forEach((d) => {
-    if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
-  });
+  if (!fs.existsSync(distOgDir)) fs.mkdirSync(distOgDir, { recursive: true });
 
   // Generate static preview SVG images
   const coverSvg = generateSvgCard(
@@ -453,7 +453,6 @@ export function buildPrerender(): void {
     'w'
   );
   fs.writeFileSync(path.resolve(distOgDir, 'cover.svg'), coverSvg, 'utf-8');
-  fs.writeFileSync(path.resolve(publicOgDir, 'cover.svg'), coverSvg, 'utf-8');
 
   if (daily) {
     const dailySvg = generateSvgCard(
@@ -463,7 +462,6 @@ export function buildPrerender(): void {
       daily.sideToMove
     );
     fs.writeFileSync(path.resolve(distOgDir, 'daily.svg'), dailySvg, 'utf-8');
-    fs.writeFileSync(path.resolve(publicOgDir, 'daily.svg'), dailySvg, 'utf-8');
   }
 
   for (const pz of PRERENDER_PUZZLES) {
@@ -474,7 +472,6 @@ export function buildPrerender(): void {
       pz.sideToMove
     );
     fs.writeFileSync(path.resolve(distOgDir, `puzzle-${pz.id}.svg`), pzSvg, 'utf-8');
-    fs.writeFileSync(path.resolve(publicOgDir, `puzzle-${pz.id}.svg`), pzSvg, 'utf-8');
   }
 
   console.log(`Generated static social preview images for ${PRERENDER_PUZZLES.length} puzzles and core routes.`);

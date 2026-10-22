@@ -15,8 +15,9 @@ permissions:
   contents: write
 
 env:
-  # Kept outside the repository: never committed, removed before the commit step.
-  PUZZLE_DATASET: ${{ runner.temp }}/lichess_db_puzzle.csv.zst
+  # NOTE: the `runner` context is NOT available in a workflow-level `env:` block,
+  # so the dataset path cannot be computed here. It is derived inside the download
+  # step and exported to later steps via $GITHUB_ENV.
   TARGET_PUZZLES: '8000'
 
 jobs:
@@ -35,7 +36,15 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Download Lichess Open Puzzle Database (CC0-1.0)
-        run: curl -fL --retry 3 -o "$PUZZLE_DATASET" https://database.lichess.org/lichess_db_puzzle.csv.zst
+        run: |
+          set -euo pipefail
+          DATASET="$RUNNER_TEMP/lichess_db_puzzle.csv.zst"
+          curl -fL --retry 3 --retry-delay 5 \
+            -o "$DATASET" \
+            https://database.lichess.org/lichess_db_puzzle.csv.zst
+          test -s "$DATASET" || { echo "ERROR: downloaded dataset is empty"; exit 1; }
+          ls -lh "$DATASET"
+          echo "PUZZLE_DATASET=$DATASET" >> "$GITHUB_ENV"
 
       - name: Ingest & Publish Curated Corpus
         # Exits non-zero unless the requested target is met (plan S5).
@@ -90,7 +99,10 @@ jobs:
           echo "SUCCESS: $COUNT files in dist/; zero raw dataset archives."
 
       - name: Delete Dataset Before Commit
-        run: rm -f "$PUZZLE_DATASET"
+        run: |
+          set -euo pipefail
+          rm -f "${PUZZLE_DATASET:?PUZZLE_DATASET is unset}"
+          echo "dataset removed"
 
       - name: Commit Updated Corpus, Ledgers & Manifest (If Changed)
         run: |

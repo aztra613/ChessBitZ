@@ -1,0 +1,73 @@
+name: Validate
+
+# Fast checks that need no dataset download. Safe to run on every push.
+# The corpus refresh (which downloads ~250 MB) is separate: puzzle-refresh.yml.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Type Check
+        run: bun run lint
+
+      - name: Test Suite
+        run: bun run test
+
+      - name: Verify Published Corpus
+        run: bun run verify:puzzles
+
+      - name: Build & Prerender
+        run: bun run build
+
+      - name: Regression Suite (plan S9)
+        run: bun run verify:regressions
+
+      # Guards that must hold on every build, not just the monthly refresh.
+      - name: Assert gitignore Scope (plan S1)
+        run: |
+          set -e
+          for f in src/data/boardThemes.ts src/data/dailySchedule.json src/data/puzzle-registry.json src/data/puzzleIdAliases.json; do
+            if git check-ignore -q "$f"; then
+              echo "ERROR: $f is gitignored but must stay tracked."
+              exit 1
+            fi
+          done
+          if git ls-files | grep -Eq '\.zst$|lichess_db_puzzle\.csv'; then
+            echo "ERROR: the raw dataset is tracked by git."
+            exit 1
+          fi
+          echo "SUCCESS: ledgers are tracked; dataset is not."
+
+      - name: Verify Production Bundle Budget (plan S8)
+        run: |
+          if find dist -type f \( -name "*.csv" -o -name "*.zst" -o -name "*.tar*" -o -name "*.gz" \) | grep -q .; then
+            echo "ERROR: raw dataset archive detected in dist/."
+            exit 1
+          fi
+          COUNT=$(find dist -type f | wc -l)
+          if [ "$COUNT" -gt 5000 ]; then
+            echo "ERROR: dist/ contains $COUNT files, above the 5000 limit."
+            exit 1
+          fi
+          echo "SUCCESS: $COUNT files in dist/; zero raw dataset archives."

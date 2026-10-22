@@ -14,3 +14,10 @@ coverage/
 *.zst
 lichess_db_puzzle.csv*
 
+# Generated OG preview images: rebuilt into dist/ on every build.
+# Tracking them left a stale file behind for every puzzle that ever entered the
+# prerender top-500, so each refresh committed a huge, ever-growing diff.
+/public/assets/og/cover.svg
+/public/assets/og/daily.svg
+/public/assets/og/puzzle-*.svg
+
