@@ -554,6 +554,23 @@ async function main(): Promise<void> {
     throw new Error(`Source file not found: ${opts.source}`);
   }
 
+  // `--limit` is the target TOTAL published corpus size, not additions per run.
+  // Fast path: when the corpus is already at target there is nothing to do, so
+  // skip the multi-minute scan entirely. This is the normal monthly outcome.
+  const published = loadPublishedRecords();
+  const targetTotal = opts.limit;
+  const needed = Math.max(0, targetTotal - published.size);
+
+  console.log(`already published : ${published.size}`);
+  console.log(`need to add       : ${needed}`);
+
+  if (needed === 0) {
+    console.log(
+      `\nOK: corpus is already at target (${published.size} >= ${targetTotal}); nothing to ingest.`
+    );
+    return;
+  }
+
   const retrievedAt = new Date().toISOString();
   const sourceChecksum = await sha256File(opts.source);
   console.log(`sha256          : ${sourceChecksum}`);
@@ -579,18 +596,8 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // `--limit` is the target TOTAL published corpus size, not additions per run.
-  // A monthly refresh against an already-complete corpus therefore adds nothing
-  // instead of growing the corpus forever.
-  const published = loadPublishedRecords();
-  const targetTotal = opts.limit;
-  const needed = Math.max(0, targetTotal - published.size);
-
-  const quota = needed === 0 ? 0 : Math.max(1, Math.ceil(needed / bucketKeys.length));
+  const quota = Math.max(1, Math.ceil(needed / bucketKeys.length));
   const accepted: PuzzleRecord[] = [];
-
-  console.log(`already published : ${published.size}`);
-  console.log(`need to add       : ${needed}\n`);
 
   // Seed dedupe from everything already published, so a monthly refresh can
   // never append a near-duplicate of an existing puzzle.
@@ -602,6 +609,12 @@ async function main(): Promise<void> {
   }
   const cursors = new Map<string, number>();
   const perBucket = new Map<string, { requested: number; accepted: number; exhausted: boolean }>();
+
+  // Pre-populate every bucket so the final report never dereferences a missing
+  // entry, even when Pass A breaks out early.
+  for (const key of bucketKeys) {
+    perBucket.set(key, { requested: quota, accepted: 0, exhausted: false });
+  }
 
   const tryAccept = (candidate: Candidate): boolean => {
     const result = validateLichessRow(candidate);
@@ -626,7 +639,7 @@ async function main(): Promise<void> {
       if (tryAccept(queue[idx++])) taken += 1;
     }
     cursors.set(key, idx);
-    perBucket.set(key, { requested: quota, accepted: taken, exhausted: false });
+    perBucket.get(key)!.accepted = taken;
   }
 
   // Pass B — round-robin backfill so rejected or deduped candidates are replaced
