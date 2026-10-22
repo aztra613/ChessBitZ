@@ -1,5 +1,6 @@
 import React from 'react';
-import { Shield, Lock, FileText, HelpCircle, Heart, Scale, AlertTriangle, Eye } from 'lucide-react';
+import { Shield, Lock, FileText, HelpCircle, Heart, Scale, AlertTriangle, Eye, ExternalLink } from 'lucide-react';
+import { MONETAG_DIRECT_LINK } from '../utils/monetag';
 
 interface FooterProps {
   onNavigate: (route: string) => void;
@@ -307,6 +308,22 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenCookieSettings
               )}
             </ul>
           </div>
+        </div>
+
+        {/* Sponsored Partner Link */}
+        <div className="mb-8 flex flex-wrap items-center justify-center gap-3 px-4 py-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-[#101321]">
+          <span className="text-[10px] uppercase font-black tracking-wider px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+            Sponsored
+          </span>
+          <a
+            href={MONETAG_DIRECT_LINK}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4658C9] dark:text-[#A5B4FC] hover:underline transition-colors"
+          >
+            <span>Offers from our partners</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
         </div>
 
         {/* Aztras AI Tech Solutions & Legal Links Row */}

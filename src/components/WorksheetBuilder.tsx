@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Download, FileText, CheckSquare, Square, Printer, Eye, Sliders, ShieldCheck } from 'lucide-react';
+import { Download, FileText, CheckSquare, Square, Printer, Eye, Sliders, ShieldCheck, ExternalLink } from 'lucide-react';
 import { PUZZLES } from '../data/puzzles';
 import { PuzzleRecord } from '../types/puzzle';
 import { WorksheetOptions, generateWorksheetPdf, generateAnswerKeyPdf } from '../utils/worksheetPdf';
+import { MONETAG_DIRECT_LINK, openDirectLink } from '../utils/monetag';
 import { ChessBoard } from './ChessBoard';
 
 interface WorksheetBuilderProps {
@@ -49,6 +50,7 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
 
   const handleDownload = () => {
     if (selectedPuzzles.length === 0) return;
+    openDirectLink();
     setIsExporting(true);
     try {
       generateWorksheetPdf(selectedPuzzles, options);
@@ -409,6 +411,21 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
                   <span>Download Separate Answer Key PDF</span>
                 </button>
               )}
+
+              <a
+                href={MONETAG_DIRECT_LINK}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-dashed border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer shadow-2xs"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                <span>
+                  <span className="uppercase text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 mr-1.5">
+                    Sponsored
+                  </span>
+                  Offers from our partners
+                </span>
+              </a>
             </div>
           </div>
         </div>
