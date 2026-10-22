@@ -8,7 +8,7 @@ import { HintPanel } from './HintPanel';
 import { MoveStatus, MoveStatusType } from './MoveStatus';
 import { getHintContent, formatThemeLabel, uciToSan } from '../utils/chessUtils';
 import { recordPuzzleSolved } from '../utils/storage';
-import { Share2, Check, ArrowRight, Shield, Award, Sparkles, Flag, ExternalLink, Zap, Compass, Swords } from 'lucide-react';
+import { Share2, Check, ArrowRight, Shield, Award, Sparkles, Zap, Compass, Swords } from 'lucide-react';
 import { AdSlot } from './AdSlot';
 import { ShareModal } from './ShareModal';
 
@@ -54,8 +54,6 @@ export const PuzzlePlayer: React.FC<PuzzlePlayerProps> = ({
   const playbackTimerRef = useRef<NodeJS.Timeout | null>(null);
   // Share copy confirmation
   const [shareCopied, setShareCopied] = useState<boolean>(false);
-  // Report copy confirmation
-  const [reportCopied, setReportCopied] = useState<boolean>(false);
   // Social share & challenge modal state
   const [shareModalOpen, setShareModalOpen] = useState<boolean>(false);
   const [shareModalTab, setShareModalTab] = useState<'share' | 'challenge' | 'result'>('share');
@@ -63,31 +61,6 @@ export const PuzzlePlayer: React.FC<PuzzlePlayerProps> = ({
   const [attempts, setAttempts] = useState<number>(1);
   const startTimeRef = useRef<number>(Date.now());
   const [durationSeconds, setDurationSeconds] = useState<number>(0);
-
-  // Handle reporting a puzzle with no backend ticket dependency
-  const handleReportPuzzle = () => {
-    const reportText = `[PlyQuest Puzzle Report]
-Puzzle ID: ${puzzle.id}
-Source: ${puzzle.provenance.sourceDataset} (#${puzzle.provenance.sourceRecordId})
-Rating: ${puzzle.rating}
-Side to move: ${puzzle.sideToMove}
-Solver FEN: ${puzzle.solverFen}
-Line: ${puzzle.moves.join(' ')}
-Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
-
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(reportText).catch(() => {});
-    }
-    setReportCopied(true);
-    setTimeout(() => setReportCopied(false), 3500);
-
-    const mailtoUrl = `mailto:support@plyquest.pages.dev?subject=${encodeURIComponent(
-      `[PlyQuest Puzzle Report] ${puzzle.id}`
-    )}&body=${encodeURIComponent(reportText)}`;
-    if (typeof window !== 'undefined') {
-      window.open(mailtoUrl, '_blank');
-    }
-  };
 
   // Initialize or reset puzzle state when puzzle changes
   const resetPuzzle = useCallback(() => {
@@ -438,7 +411,7 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
             canStepForward={playbackIndex < puzzle.moves.length - 1}
           />
 
-          {/* Share & Report Notifications */}
+          {/* Share Notifications */}
           <AnimatePresence>
             {shareCopied && (
               <motion.div
@@ -449,17 +422,6 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
               >
                 <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>Spoiler-free puzzle link copied to clipboard!</span>
-              </motion.div>
-            )}
-            {reportCopied && (
-              <motion.div
-                initial={{ opacity: 0, y: -8, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8, scale: 0.95 }}
-                className="p-3 bg-amber-50 dark:bg-[#2A200E] border-2 border-amber-400 dark:border-amber-600 rounded-xl text-xs font-bold text-amber-950 dark:text-amber-100 flex items-center gap-2 shadow-xs"
-              >
-                <Check className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
-                <span>Issue details copied to clipboard & email client opened!</span>
               </motion.div>
             )}
           </AnimatePresence>
@@ -550,46 +512,6 @@ Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}`;
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Source Provenance Card with Report Issue Action */}
-          <div className="p-3 bg-white dark:bg-[#161C2E] border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-700 dark:text-slate-300 space-y-2 shadow-2xs">
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <span>Source:</span>
-                <strong className="text-slate-950 dark:text-white font-bold">{puzzle.provenance.sourceDataset}</strong>
-                {puzzle.provenance.sourceUrl ? (
-                  <a
-                    href={puzzle.provenance.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-0.5 text-[#4658C9] dark:text-[#818CF8] hover:underline"
-                    title="View source on official database"
-                  >
-                    <span>(#{puzzle.provenance.sourceRecordId})</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                ) : (
-                  <span>(#{puzzle.provenance.sourceRecordId})</span>
-                )}
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="font-mono font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800 text-[11px]">
-                  {puzzle.provenance.sourceLicense}
-                </span>
-                <button
-                  onClick={handleReportPuzzle}
-                  className="px-2 py-0.5 text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 border border-slate-200 dark:border-slate-700 hover:border-rose-300 rounded text-[11px] font-medium flex items-center gap-1 transition-colors cursor-pointer"
-                  title="Report flawed, dual-solution, or corrupt puzzle"
-                >
-                  <Flag className="w-3 h-3" />
-                  <span>Report</span>
-                </button>
-              </div>
-            </div>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 leading-tight">
-              PlyQuest is independent and not affiliated with or endorsed by Lichess. All moves verified client-side.
-            </p>
-          </div>
         </div>
       </div>
 
