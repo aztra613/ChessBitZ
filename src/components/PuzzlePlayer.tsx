@@ -403,6 +403,11 @@ export const PuzzlePlayer: React.FC<PuzzlePlayerProps> = ({
               setShareModalOpen(true);
             }}
             onPrint={() => onOpenWorksheet && onOpenWorksheet(puzzle.id)}
+            onNextPuzzle={
+              onNavigatePuzzle && status !== 'solved'
+                ? () => onNavigatePuzzle('next')
+                : undefined
+            }
             isPlayingSolution={isPlayingSolution}
             onTogglePlaySolution={handleTogglePlaySolution}
             onStepBack={handleStepBack}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Lightbulb, RotateCcw, Eye, Share2, Printer, RotateCw, Play, Pause, SkipBack, SkipForward, Swords } from 'lucide-react';
+import { Lightbulb, RotateCcw, Eye, Share2, Printer, RotateCw, Play, Pause, SkipBack, SkipForward, Swords, ChevronRight } from 'lucide-react';
 
 interface PuzzleControlsProps {
   onHint: () => void;
@@ -13,6 +13,7 @@ interface PuzzleControlsProps {
   onShare: () => void;
   onChallenge?: () => void;
   onPrint: () => void;
+  onNextPuzzle?: () => void;
   // Solution playback state
   isPlayingSolution?: boolean;
   onTogglePlaySolution?: () => void;
@@ -34,6 +35,7 @@ export const PuzzleControls: React.FC<PuzzleControlsProps> = ({
   onShare,
   onChallenge,
   onPrint,
+  onNextPuzzle,
   isPlayingSolution = false,
   onTogglePlaySolution,
   onStepBack,
@@ -207,6 +209,21 @@ export const PuzzleControls: React.FC<PuzzleControlsProps> = ({
           <span>Print</span>
         </motion.button>
       </div>
+
+      {/* Always-available navigation, full width so the 4-up row above keeps its layout */}
+      {onNextPuzzle && (
+        <motion.button
+          type="button"
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={onNextPuzzle}
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 min-h-[42px] rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 hover:bg-white dark:bg-[#161C2E] dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 hover:text-[#4658C9] dark:hover:text-[#818CF8] hover:border-slate-300 transition-all shadow-2xs cursor-pointer"
+          aria-label="Go to the next puzzle"
+        >
+          <span>Next Puzzle</span>
+          <ChevronRight className="w-3.5 h-3.5 text-[#4658C9] dark:text-[#818CF8]" />
+        </motion.button>
+      )}
     </div>
   );
 };
