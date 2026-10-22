@@ -15,24 +15,73 @@ export interface BoardThemeConfig {
 }
 
 export type TacticalTheme =
+  // Mate length (Lichess tags up to mate in 5)
   | 'mateIn1'
   | 'mateIn2'
   | 'mateIn3'
+  | 'mateIn4'
+  | 'mateIn5'
+  // Core tactical motifs
   | 'fork'
   | 'pin'
   | 'skewer'
   | 'discoveredAttack'
+  | 'discoveredCheck'
+  | 'doubleCheck'
   | 'deflection'
   | 'sacrifice'
-  | 'backRankMate'
-  | 'doubleCheck'
-  | 'endgame'
-  | 'hangingPiece'
-  | 'trappedPiece'
-  | 'quietMove'
   | 'clearance'
   | 'interference'
-  | 'smotheredMate';
+  | 'xRayAttack'
+  | 'capturingDefender'
+  | 'attraction'
+  | 'intermezzo'
+  | 'quietMove'
+  | 'zugzwang'
+  // Piece and king safety
+  | 'hangingPiece'
+  | 'trappedPiece'
+  | 'exposedKing'
+  | 'backRankMate'
+  | 'smotheredMate'
+  | 'kingsideAttack'
+  | 'queensideAttack'
+  | 'attackingF2F7'
+  // Pawns, promotion and special moves
+  | 'advancedPawn'
+  | 'promotion'
+  | 'underPromotion'
+  | 'enPassant'
+  | 'castling'
+  // Endgames
+  | 'endgame'
+  | 'rookEndgame'
+  | 'pawnEndgame'
+  | 'bishopEndgame'
+  | 'knightEndgame'
+  | 'queenEndgame'
+  | 'queenRookEndgame'
+  // Named checkmate patterns
+  | 'operaMate'
+  | 'pillsburysMate'
+  | 'arabianMate'
+  | 'anastasiaMate'
+  | 'bodenMate'
+  | 'dovetailMate'
+  | 'doubleBishopMate'
+  | 'epauletteMate'
+  | 'hookMate'
+  | 'cornerMate'
+  | 'swallowstailMate'
+  | 'triangleMate'
+  | 'killBoxMate'
+  | 'morphysMate'
+  | 'blindSwineMate'
+  | 'vukovicMate'
+  | 'balestraMate'
+  // Structural / defensive
+  | 'defensiveMove'
+  | 'collinearMove';
 
 export type DifficultyBand = 'beginner' | 'intermediate' | 'advanced' | 'master';
 

@@ -17,7 +17,7 @@ permissions:
 env:
   # Kept outside the repository: never committed, removed before the commit step.
   PUZZLE_DATASET: ${{ runner.temp }}/lichess_db_puzzle.csv.zst
-  TARGET_PUZZLES: '5000'
+  TARGET_PUZZLES: '8000'
 
 jobs:
   refresh-and-validate:

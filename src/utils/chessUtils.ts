@@ -318,6 +318,29 @@ export function formatThemeLabel(theme: TacticalTheme | string): string {
     case 'trappedPiece': return 'Trapped Piece';
     case 'clearance': return 'Clearance';
     case 'interference': return 'Interference';
-    default: return theme;
+    case 'mateIn4': return 'Mate in 4';
+    case 'mateIn5': return 'Mate in 5';
+    case 'kingsideAttack': return 'Kingside Attack';
+    case 'queensideAttack': return 'Queenside Attack';
+    case 'advancedPawn': return 'Advanced Pawn';
+    case 'exposedKing': return 'Exposed King';
+    case 'discoveredCheck': return 'Discovered Check';
+    case 'xRayAttack': return 'X-Ray Attack';
+    case 'attackingF2F7': return 'Attacking f2/f7';
+    case 'capturingDefender': return "Removing the Defender";
+    case 'enPassant': return 'En Passant';
+    case 'underPromotion': return 'Underpromotion';
+    case 'pillsburysMate': return "Pillsbury's Mate";
+    case 'morphysMate': return "Morphy's Mate";
+    case 'swallowstailMate': return "Swallow's Tail Mate";
+    case 'blindSwineMate': return 'Blind Swine Mate';
+    case 'killBoxMate': return 'Kill Box Mate';
+    case 'doubleBishopMate': return 'Double Bishop Mate';
+    case 'queenRookEndgame': return 'Queen & Rook Endgame';
+    default: {
+      // "kingsideAttack" -> "Kingside Attack"; covers every remaining theme.
+      const spaced = String(theme).replace(/([a-z0-9])([A-Z])/g, '$1 $2');
+      return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+    }
   }
 }

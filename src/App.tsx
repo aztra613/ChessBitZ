@@ -21,6 +21,7 @@ import { CookieBanner } from './components/CookieBanner';
 import { PuzzleProvider, usePuzzle, usePuzzleManifest } from './components/PuzzleProvider';
 import { getDailyPuzzleId } from './utils/dailySchedule';
 import { getIndexEntry, nextIndexId } from './utils/puzzleStore';
+import { formatThemeLabel } from './utils/chessUtils';
 import { BoardThemeId } from './types/puzzle';
 import {
   getStoredBoardTheme,
@@ -213,7 +214,7 @@ function AppShell() {
       document.title = `Mate in ${n} Puzzles - PlyQuest`;
     } else if (currentRoute.startsWith('/themes/')) {
       const theme = currentRoute.replace('/themes/', '');
-      document.title = `${theme.toUpperCase()} Tactics - PlyQuest`;
+      document.title = `${formatThemeLabel(theme)} Tactics - PlyQuest`;
     } else {
       const clean = currentRoute.replace('/', '');
       document.title = `${clean.charAt(0).toUpperCase() + clean.slice(1)} - PlyQuest`;
@@ -288,6 +289,16 @@ function AppShell() {
       return (
         <PuzzleCatalog
           initialMateFilter={3}
+          boardTheme={boardTheme}
+          onSelectPuzzle={(id) => navigate(`/puzzle/${id}`)}
+          onNavigate={navigate}
+        />
+      );
+    }
+    if (currentRoute === '/mate-in-4' || currentRoute === '/mate-in-5') {
+      return (
+        <PuzzleCatalog
+          initialMateFilter={currentRoute === '/mate-in-4' ? 4 : 5}
           boardTheme={boardTheme}
           onSelectPuzzle={(id) => navigate(`/puzzle/${id}`)}
           onNavigate={navigate}

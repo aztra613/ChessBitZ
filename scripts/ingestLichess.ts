@@ -49,24 +49,73 @@ export const KEEP_PER_BUCKET = 500;
 // ---------------------------------------------------------------------------
 
 export const SUPPORTED_TACTICAL_THEMES: Record<string, TacticalTheme> = {
+  // Mate length (Lichess does not tag beyond mate in 5)
   matein1: 'mateIn1',
   matein2: 'mateIn2',
   matein3: 'mateIn3',
+  matein4: 'mateIn4',
+  matein5: 'mateIn5',
+  // Core tactical motifs
   fork: 'fork',
   pin: 'pin',
   skewer: 'skewer',
   discoveredattack: 'discoveredAttack',
+  discoveredcheck: 'discoveredCheck',
+  doublecheck: 'doubleCheck',
   deflection: 'deflection',
   sacrifice: 'sacrifice',
-  backrankmate: 'backRankMate',
-  doublecheck: 'doubleCheck',
-  endgame: 'endgame',
-  hangingpiece: 'hangingPiece',
-  trappedpiece: 'trappedPiece',
-  quietmove: 'quietMove',
   clearance: 'clearance',
   interference: 'interference',
+  xrayattack: 'xRayAttack',
+  capturingdefender: 'capturingDefender',
+  attraction: 'attraction',
+  intermezzo: 'intermezzo',
+  quietmove: 'quietMove',
+  zugzwang: 'zugzwang',
+  // Piece and king safety
+  hangingpiece: 'hangingPiece',
+  trappedpiece: 'trappedPiece',
+  exposedking: 'exposedKing',
+  backrankmate: 'backRankMate',
   smotheredmate: 'smotheredMate',
+  kingsideattack: 'kingsideAttack',
+  queensideattack: 'queensideAttack',
+  attackingf2f7: 'attackingF2F7',
+  // Pawns, promotion and special moves
+  advancedpawn: 'advancedPawn',
+  promotion: 'promotion',
+  underpromotion: 'underPromotion',
+  enpassant: 'enPassant',
+  castling: 'castling',
+  // Endgames
+  endgame: 'endgame',
+  rookendgame: 'rookEndgame',
+  pawnendgame: 'pawnEndgame',
+  bishopendgame: 'bishopEndgame',
+  knightendgame: 'knightEndgame',
+  queenendgame: 'queenEndgame',
+  queenrookendgame: 'queenRookEndgame',
+  // Named checkmate patterns
+  operamate: 'operaMate',
+  pillsburysmate: 'pillsburysMate',
+  arabianmate: 'arabianMate',
+  anastasiamate: 'anastasiaMate',
+  bodenmate: 'bodenMate',
+  dovetailmate: 'dovetailMate',
+  doublebishopmate: 'doubleBishopMate',
+  epaulettemate: 'epauletteMate',
+  hookmate: 'hookMate',
+  cornermate: 'cornerMate',
+  swallowstailmate: 'swallowstailMate',
+  trianglemate: 'triangleMate',
+  killboxmate: 'killBoxMate',
+  morphysmate: 'morphysMate',
+  blindswinemate: 'blindSwineMate',
+  vukovicmate: 'vukovicMate',
+  balestramate: 'balestraMate',
+  // Structural / defensive
+  defensivemove: 'defensiveMove',
+  collinearmove: 'collinearMove',
 };
 
 export function determineDifficulty(rating: number): DifficultyBand {
@@ -138,6 +187,86 @@ export function generateEducationalExplanation(
       objective: `${sideName} to move and exploit the trapped back rank`,
       explanation:
         "Penetrate the opponent's 1st or 8th rank where friendly pawns prevent the king from escaping the check.",
+    };
+  }
+
+  // Additional motifs, expressed as [objective tail, explanation].
+  const motifCopy: Partial<Record<TacticalTheme, [string, string]>> = {
+    mateIn4: [
+      'force checkmate in 4',
+      'Chain four forcing moves so the king is driven into an unavoidable mating net.',
+    ],
+    mateIn5: [
+      'force checkmate in 5',
+      "Calculate a long forcing sequence where every check narrows the king's escape squares.",
+    ],
+    kingsideAttack: [
+      'break through on the kingside',
+      'Throw pawns and pieces at the castled king to tear open the files around it.',
+    ],
+    queensideAttack: [
+      'break through on the queenside',
+      'Open lines on the queenside and exploit the space behind the enemy pawns.',
+    ],
+    advancedPawn: [
+      'exploit the advanced pawn',
+      'A far-advanced pawn cramps the opponent and creates promotion threats that tie down their pieces.',
+    ],
+    promotion: [
+      'promote a pawn',
+      'Escort the pawn to the last rank, using the promotion threat to win material or force mate.',
+    ],
+    underPromotion: [
+      'choose the right promotion piece',
+      'A knight or rook promotion can be stronger than a queen — look for the mate or fork it unlocks.',
+    ],
+    exposedKing: [
+      'punish the exposed king',
+      'The king has lost its pawn shield; open a line and bring a heavy piece to bear.',
+    ],
+    attackingF2F7: [
+      'strike the weakest square',
+      'f2 (or f7) is defended only by the king — pile on it to break through immediately.',
+    ],
+    discoveredCheck: [
+      'unleash a discovered check',
+      'Move the front piece so the piece behind it gives check, gaining tempo for a second threat.',
+    ],
+    zugzwang: [
+      'put the opponent in zugzwang',
+      'Every legal move makes their position worse — force them to move when they would rather pass.',
+    ],
+    intermezzo: [
+      'find the in-between move',
+      'Before recapturing, insert a forcing check or threat that changes the position to your advantage.',
+    ],
+    xRayAttack: [
+      'use an x-ray attack',
+      'Attack through an enemy piece to the square or piece behind it.',
+    ],
+    capturingDefender: [
+      'remove the defender',
+      'Capture or deflect the piece guarding the target, then strike the now-undefended point.',
+    ],
+    enPassant: [
+      'use the en passant capture',
+      'The pawn just jumped two squares past your pawn — take it en passant.',
+    ],
+    castling: [
+      'exploit the castled king',
+      "Castling can walk into a tactic; punish the king's new square.",
+    ],
+    defensiveMove: [
+      'find the defensive resource',
+      'There is no winning tactic here — locate the move that holds the position together.',
+    ],
+  };
+
+  const motif = themes.map((t) => motifCopy[t]).find((entry) => entry !== undefined);
+  if (motif) {
+    return {
+      objective: `${sideName} to move and ${motif[0]}`,
+      explanation: motif[1],
     };
   }
 
@@ -291,7 +420,7 @@ function parseArgs(argv: string[]): Options {
   };
   return {
     source: get('--source') ?? DEFAULT_SOURCE_URL,
-    limit: parseInt(get('--limit') ?? '2000', 10),
+    limit: parseInt(get('--limit') ?? '8000', 10),
     minPopularity: parseInt(get('--minPopularity') ?? '80', 10),
     minPlays: parseInt(get('--minPlays') ?? '100', 10),
     minRating: parseInt(get('--minRating') ?? '600', 10),
@@ -412,7 +541,7 @@ async function main(): Promise<void> {
 
   console.log('=== PlyQuest Lichess ingestion ===\n');
   console.log(`source          : ${opts.source}`);
-  console.log(`target limit    : ${opts.limit}`);
+  console.log(`target corpus   : ${opts.limit} total (not per-run additions)`);
   console.log(`filters         : popularity>=${opts.minPopularity} plays>=${opts.minPlays} rating ${opts.minRating}-${opts.maxRating}`);
 
   const isUrl = /^https?:\/\//.test(opts.source);
@@ -450,11 +579,18 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // Quota per bucket is a distribution guideline, not the success criterion.
-  // The overall requested target is what must be met (plan S5).
-  const quota = Math.max(1, Math.ceil(opts.limit / bucketKeys.length));
+  // `--limit` is the target TOTAL published corpus size, not additions per run.
+  // A monthly refresh against an already-complete corpus therefore adds nothing
+  // instead of growing the corpus forever.
   const published = loadPublishedRecords();
+  const targetTotal = opts.limit;
+  const needed = Math.max(0, targetTotal - published.size);
+
+  const quota = needed === 0 ? 0 : Math.max(1, Math.ceil(needed / bucketKeys.length));
   const accepted: PuzzleRecord[] = [];
+
+  console.log(`already published : ${published.size}`);
+  console.log(`need to add       : ${needed}\n`);
 
   // Seed dedupe from everything already published, so a monthly refresh can
   // never append a near-duplicate of an existing puzzle.
@@ -482,10 +618,11 @@ async function main(): Promise<void> {
 
   // Pass A — give each bucket its share of the target.
   for (const key of bucketKeys) {
+    if (accepted.length >= needed) break;
     const queue = queues.get(key)!;
     let idx = 0;
     let taken = 0;
-    while (idx < queue.length && taken < quota) {
+    while (idx < queue.length && taken < quota && accepted.length < needed) {
       if (tryAccept(queue[idx++])) taken += 1;
     }
     cursors.set(key, idx);
@@ -495,10 +632,10 @@ async function main(): Promise<void> {
   // Pass B — round-robin backfill so rejected or deduped candidates are replaced
   // until the target is met or every ranked queue is drained.
   let progressed = true;
-  while (accepted.length < opts.limit && progressed) {
+  while (accepted.length < needed && progressed) {
     progressed = false;
     for (const key of bucketKeys) {
-      if (accepted.length >= opts.limit) break;
+      if (accepted.length >= needed) break;
       const queue = queues.get(key)!;
       let idx = cursors.get(key) ?? 0;
       while (idx < queue.length) {
@@ -516,7 +653,7 @@ async function main(): Promise<void> {
     perBucket.get(key)!.exhausted = (cursors.get(key) ?? 0) >= queues.get(key)!.length;
   }
 
-  const status = accepted.length >= opts.limit ? 'complete' : 'partial';
+  const status = accepted.length >= needed ? 'complete' : 'partial';
   const shortfalls = [...perBucket.entries()].filter(([, v]) => v.accepted < v.requested);
   const bucketsReport = [...perBucket.entries()].map(([key, v]) => ({ key, ...v }));
 
@@ -530,7 +667,8 @@ async function main(): Promise<void> {
 
   if (status === 'partial' && !opts.allowPartial) {
     console.error(
-      `\nFAILED: only ${accepted.length} of ${opts.limit} requested puzzles passed validation.\n` +
+      `\nFAILED: only ${accepted.length} of ${needed} needed puzzles passed validation ` +
+        `(corpus would be ${published.size + accepted.length} of ${targetTotal}).\n` +
         `Widen the filters (--minPopularity/--minPlays), raise --scanRows, or pass --allow-partial\n` +
         `to publish a partial corpus deliberately.`
     );

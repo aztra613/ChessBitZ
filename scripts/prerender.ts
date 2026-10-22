@@ -14,6 +14,7 @@ import * as path from 'path';
 import { loadRegistry } from './lib/registry';
 import { loadPublishedRecords, orderByRegistry } from './lib/shards';
 import { getDailyPuzzle } from '../src/utils/dailySchedule';
+import { formatThemeLabel } from '../src/utils/chessUtils';
 
 const SITE_URL = 'https://plyquest.pages.dev';
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
@@ -38,6 +39,43 @@ const PRERENDER_PUZZLES = [...ALL_RECORDS]
   .slice(0, PRERENDER_PUZZLE_LIMIT);
 
 const DAILY_PUZZLE = getDailyPuzzle(undefined, ALL_RECORDS);
+
+/** Themes that get their own landing page. */
+const THEME_PAGE_MIN_PUZZLES = 20;
+
+/** Metadata tags that are not tactical motifs and should not get a page. */
+const NON_MOTIF_THEMES = new Set([
+  'short',
+  'long',
+  'veryLong',
+  'oneMove',
+  'opening',
+  'middlegame',
+  'crushing',
+  'advantage',
+  'equality',
+  'master',
+  'masterVsMaster',
+  'superGM',
+  'mate',
+]);
+
+/**
+ * Derived from the corpus, so a theme with too few puzzles never becomes an
+ * empty or near-empty indexable page.
+ */
+const THEME_COUNTS = (() => {
+  const counts = new Map<string, number>();
+  for (const record of ALL_RECORDS) {
+    for (const theme of record.themes) counts.set(theme, (counts.get(theme) || 0) + 1);
+  }
+  return counts;
+})();
+
+const PRERENDER_THEMES = [...THEME_COUNTS.entries()]
+  .filter(([theme, count]) => count >= THEME_PAGE_MIN_PUZZLES && !NON_MOTIF_THEMES.has(theme))
+  .map(([theme]) => theme)
+  .sort();
 
 interface RouteMeta {
   path: string;
@@ -198,20 +236,37 @@ export function getStaticRoutes(): RouteMeta[] {
     },
   ];
 
-  // Tactical themes
-  const themeList = ['fork', 'pin', 'skewer', 'discoveredAttack', 'backRankMate', 'sacrifice'];
-  for (const th of themeList) {
-    const formatted = th.replace(/([A-Z])/g, ' $1').toLowerCase();
+  // Longer forced mates, only when the corpus actually has enough of them.
+  for (const n of [4, 5]) {
+    if ((THEME_COUNTS.get(`mateIn${n}`) ?? 0) < THEME_PAGE_MIN_PUZZLES) continue;
     coreRoutes.push({
-      path: `/themes/${th}`,
-      title: `${formatted.charAt(0).toUpperCase() + formatted.slice(1)} Tactics — PlyQuest`,
-      description: `Train tactical pattern recognition for ${formatted} motifs with interactive solving and progressive hints.`,
+      path: `/mate-in-${n}`,
+      title: `Mate in ${n} Chess Puzzles — PlyQuest`,
+      description: `Long forcing sequences that end in checkmate in ${n} moves. Extended calculation training.`,
       priority: '0.7',
       changefreq: 'weekly',
       semanticHtml: `
         <section>
-          <h1>${formatted.toUpperCase()} Chess Tactics</h1>
-          <p>Interactive pattern training for ${formatted} tactical motifs.</p>
+          <h1>Mate in ${n} Tactical Puzzles</h1>
+          <p>Extended forced mating sequences requiring ${n} moves of precise calculation.</p>
+        </section>
+      `,
+    });
+  }
+
+  // Tactical themes (one page each, only for themes with enough puzzles)
+  for (const th of PRERENDER_THEMES) {
+    const label = formatThemeLabel(th);
+    coreRoutes.push({
+      path: `/themes/${th}`,
+      title: `${label} Tactics — PlyQuest`,
+      description: `Train ${label.toLowerCase()} pattern recognition with interactive solving and progressive hints.`,
+      priority: '0.7',
+      changefreq: 'weekly',
+      semanticHtml: `
+        <section>
+          <h1>${label} Chess Tactics</h1>
+          <p>Interactive pattern training for ${label.toLowerCase()} tactical motifs.</p>
         </section>
       `,
     });

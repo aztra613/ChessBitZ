@@ -40,6 +40,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   const { manifest } = usePuzzleManifest();
   const themeCounts = manifest?.themeCounts ?? {};
   const difficultyCounts = manifest?.difficultyCounts ?? {};
+  const themeCount = Object.keys(themeCounts).length;
 
   const dailyId = getDailyPuzzleId() ?? undefined;
   const { puzzle: dailyPuzzle } = usePuzzle(dailyId);
@@ -301,6 +302,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="pt-4 flex flex-wrap items-center gap-5 text-xs text-slate-700 dark:text-slate-300 font-semibold">
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  {themeCount > 0 ? `${themeCount} tactical themes` : 'All tactical themes'}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   Lichess CC0 verified data
                 </span>
                 <span className="flex items-center gap-1.5">
@@ -418,7 +423,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             Curated Tactical Motifs
           </h2>
           <p className="text-sm text-slate-700 dark:text-slate-300 font-medium mt-2 leading-relaxed">
-            Target specific blindspots with focused tactical categories from beginner mates to sharp skewers.
+            {themeCount > 0 ? (
+              <>
+                Target specific blindspots across{' '}
+                <strong className="font-black text-slate-950 dark:text-white">
+                  {themeCount} tactical themes
+                </strong>{' '}
+                — mate in 1 through mate in 5, forks, pins, skewers, promotion races, endgames and
+                named checkmate patterns.
+              </>
+            ) : (
+              <>Target specific blindspots with focused tactical categories from beginner mates to sharp skewers.</>
+            )}
           </p>
         </div>
 

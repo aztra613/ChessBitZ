@@ -144,19 +144,50 @@ export const PuzzleCatalog: React.FC<PuzzleCatalogProps> = ({
             aria-label="Filter by Tactical Motif"
           >
             <option value="all">All Tactical Themes</option>
-            <option value="mateIn1">Mate in 1</option>
-            <option value="mateIn2">Mate in 2</option>
-            <option value="mateIn3">Mate in 3</option>
-            <option value="fork">Forks</option>
-            <option value="pin">Pins</option>
-            <option value="skewer">Skewers</option>
-            <option value="backRankMate">Back-Rank Mate</option>
-            <option value="sacrifice">Sacrifice & Decoy</option>
-            <option value="discoveredAttack">Discovered Attack</option>
-            <option value="endgame">Endgame</option>
-            <option value="hangingPiece">Hanging Piece</option>
-            <option value="quietMove">Quiet Move</option>
-            <option value="deflection">Deflection</option>
+            <optgroup label="Mate">
+              {['mateIn1', 'mateIn2', 'mateIn3', 'mateIn4', 'mateIn5'].map((t) => (
+                <option key={t} value={t}>{formatThemeLabel(t)}</option>
+              ))}
+            </optgroup>
+            <optgroup label="Core motifs">
+              {[
+                'fork', 'pin', 'skewer', 'discoveredAttack', 'discoveredCheck', 'doubleCheck',
+                'deflection', 'sacrifice', 'clearance', 'interference', 'xRayAttack',
+                'capturingDefender', 'attraction', 'intermezzo', 'quietMove', 'zugzwang',
+              ].map((t) => (
+                <option key={t} value={t}>{formatThemeLabel(t)}</option>
+              ))}
+            </optgroup>
+            <optgroup label="King safety">
+              {['exposedKing', 'backRankMate', 'smotheredMate', 'kingsideAttack', 'queensideAttack', 'attackingF2F7'].map((t) => (
+                <option key={t} value={t}>{formatThemeLabel(t)}</option>
+              ))}
+            </optgroup>
+            <optgroup label="Pieces & pawns">
+              {['hangingPiece', 'trappedPiece', 'advancedPawn', 'promotion', 'underPromotion', 'enPassant', 'castling'].map((t) => (
+                <option key={t} value={t}>{formatThemeLabel(t)}</option>
+              ))}
+            </optgroup>
+            <optgroup label="Endgames">
+              {['endgame', 'rookEndgame', 'pawnEndgame', 'bishopEndgame', 'knightEndgame', 'queenEndgame', 'queenRookEndgame'].map((t) => (
+                <option key={t} value={t}>{formatThemeLabel(t)}</option>
+              ))}
+            </optgroup>
+            <optgroup label="Checkmate patterns">
+              {[
+                'operaMate', 'pillsburysMate', 'arabianMate', 'anastasiaMate', 'bodenMate',
+                'dovetailMate', 'doubleBishopMate', 'epauletteMate', 'hookMate', 'cornerMate',
+                'swallowstailMate', 'triangleMate', 'killBoxMate', 'morphysMate',
+                'blindSwineMate', 'vukovicMate', 'balestraMate',
+              ].map((t) => (
+                <option key={t} value={t}>{formatThemeLabel(t)}</option>
+              ))}
+            </optgroup>
+            <optgroup label="Defensive">
+              {['defensiveMove', 'collinearMove'].map((t) => (
+                <option key={t} value={t}>{formatThemeLabel(t)}</option>
+              ))}
+            </optgroup>
           </select>
         </div>
 

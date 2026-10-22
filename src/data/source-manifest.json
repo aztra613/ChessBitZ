@@ -1,11 +1,11 @@
 {
   "manifestVersion": "2.0.0",
-  "generatedAt": "2026-10-22T08:42:10.407Z",
+  "generatedAt": "2026-10-22T10:03:47.446Z",
   "validatorVersion": "3.0.0",
   "ingestion": {
     "sourceUrl": "https://database.lichess.org/lichess_db_puzzle.csv.zst",
     "sourceFile": "lichess_db_puzzle.csv.zst",
-    "retrievedAt": "2026-10-22T08:40:08.869Z",
+    "retrievedAt": "2026-10-22T10:01:21.596Z",
     "sourceChecksumSha256": "76335bfa7d7c4a7f93c1366d81549e53951ebb79dd43d34904cab8f22d962f8d",
     "decompressor": "fzstd@0.1.1",
     "csvParser": "csv-parse@7.0.3",
@@ -16,443 +16,1097 @@
       "maxRating": 2600
     },
     "rowsRead": 6157341,
-    "rowsFiltered": 2686242,
-    "candidatesKept": 32743
+    "rowsFiltered": 2513583,
+    "candidatesKept": 76202
   },
-  "requestedTarget": 1000,
-  "acceptedThisRun": 1005,
-  "acceptedCount": 4022,
+  "requestedTarget": 8000,
+  "acceptedThisRun": 4017,
+  "acceptedCount": 8039,
   "status": "complete",
   "buckets": [
     {
       "key": "hangingPiece|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "endgame|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "interference|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "mateIn2|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "hangingPiece|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "endgame|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "endgame|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "mateIn1|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "key": "kingsideAttack|beginner",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "fork|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "discoveredAttack|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "bishopEndgame|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "deflection|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "pin|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "mateIn2|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn1|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "advancedPawn|beginner",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "fork|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "sacrifice|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "deflection|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "pin|master",
-      "requested": 15,
-      "accepted": 15,
+      "key": "cornerMate|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "kingsideAttack|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "defensiveMove|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "defensiveMove|master",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "quietMove|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "endgame|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "defensiveMove|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "pin|master",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "pin|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "backRankMate|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "skewer|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "key": "advancedPawn|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "exposedKing|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "defensiveMove|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "attraction|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "discoveredAttack|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "advancedPawn|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "cornerMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "deflection|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "interference|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "clearance|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "clearance|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "backRankMate|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "enPassant|advanced",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "mateIn3|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "deflection|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "advancedPawn|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "kingsideAttack|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "attackingF2F7|beginner",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "discoveredAttack|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "fork|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "key": "attraction|advanced",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "trappedPiece|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "exposedKing|master",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "trappedPiece|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "hookMate|beginner",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "mateIn1|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "clearance|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "key": "intermezzo|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "bishopEndgame|advanced",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "clearance|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "mateIn3|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "key": "capturingDefender|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "kingsideAttack|advanced",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "hangingPiece|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "attraction|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "bishopEndgame|master",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "mateIn3|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "attackingF2F7|advanced",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "sacrifice|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "sacrifice|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "key": "exposedKing|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "doubleCheck|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "key": "bishopEndgame|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "arabianMate|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "fork|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "intermezzo|beginner",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "skewer|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "mateIn2|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "doubleCheck|master",
-      "requested": 15,
-      "accepted": 15,
+      "key": "exposedKing|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "skewer|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "epauletteMate|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "clearance|beginner",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "quietMove|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "intermezzo|master",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "discoveredAttack|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "queensideAttack|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "pin|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "hangingPiece|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "doubleCheck|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "key": "discoveredCheck|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "skewer|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "intermezzo|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "arabianMate|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "queensideAttack|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "dovetailMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "fork|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "enPassant|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "cornerMate|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "balestraMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "queensideAttack|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "attraction|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "attackingF2F7|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "discoveredCheck|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn3|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "skewer|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "mateIn1|advanced",
-      "requested": 15,
-      "accepted": 15,
-      "exhausted": false
-    },
-    {
-      "key": "quietMove|intermediate",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "trappedPiece|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "doubleCheck|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "key": "killBoxMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "anastasiaMate|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "sacrifice|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "capturingDefender|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "quietMove|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "discoveredCheck|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "blindSwineMate|beginner",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "backRankMate|advanced",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "mateIn2|master",
-      "requested": 15,
-      "accepted": 15,
+      "key": "collinearMove|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
-      "key": "mateIn3|master",
-      "requested": 15,
-      "accepted": 15,
+      "key": "capturingDefender|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn4|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "doubleCheck|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "bodenMate|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "hookMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "epauletteMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "doubleCheck|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "anastasiaMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "arabianMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "doubleBishopMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "queensideAttack|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "blindSwineMate|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "doubleBishopMate|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "collinearMove|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "castling|advanced",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "trappedPiece|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "balestraMate|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn2|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "dovetailMate|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "xRayAttack|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "enPassant|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn3|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "capturingDefender|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "collinearMove|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "bodenMate|advanced",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "interference|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "discoveredCheck|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn4|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "castling|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "arabianMate|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "collinearMove|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "castling|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "balestraMate|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "killBoxMate|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "dovetailMate|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "xRayAttack|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "blindSwineMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "bodenMate|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "epauletteMate|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "doubleCheck|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "attackingF2F7|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "xRayAttack|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn5|beginner",
+      "requested": 23,
+      "accepted": 18,
+      "exhausted": true
+    },
+    {
+      "key": "mateIn5|intermediate",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "sacrifice|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "doubleCheck|intermediate",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "killBoxMate|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "xRayAttack|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "doubleBishopMate|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "killBoxMate|advanced",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "interference|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "anastasiaMate|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "hookMate|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "epauletteMate|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn4|beginner",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn4|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "dovetailMate|master",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "quietMove|beginner",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 2,
+      "exhausted": true
+    },
+    {
+      "key": "mateIn5|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn5|advanced",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "cornerMate|master",
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "backRankMate|master",
-      "requested": 15,
-      "accepted": 15,
+      "requested": 23,
+      "accepted": 23,
       "exhausted": false
     },
     {
       "key": "mateIn1|master",
-      "requested": 15,
+      "requested": 23,
       "accepted": 0,
       "exhausted": true
     },
     {
-      "key": "smotheredMate|intermediate",
-      "requested": 15,
-      "accepted": 0,
+      "key": "balestraMate|master",
+      "requested": 23,
+      "accepted": 22,
       "exhausted": true
     },
     {
-      "key": "smotheredMate|advanced",
-      "requested": 15,
-      "accepted": 0,
+      "key": "blindSwineMate|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "anastasiaMate|master",
+      "requested": 23,
+      "accepted": 23,
+      "exhausted": false
+    },
+    {
+      "key": "hookMate|master",
+      "requested": 23,
+      "accepted": 17,
       "exhausted": true
     },
     {
-      "key": "smotheredMate|beginner",
-      "requested": 15,
-      "accepted": 0,
+      "key": "doubleBishopMate|master",
+      "requested": 23,
+      "accepted": 6,
+      "exhausted": true
+    },
+    {
+      "key": "enPassant|beginner",
+      "requested": 23,
+      "accepted": 9,
+      "exhausted": true
+    },
+    {
+      "key": "bodenMate|master",
+      "requested": 23,
+      "accepted": 9,
+      "exhausted": true
+    },
+    {
+      "key": "castling|beginner",
+      "requested": 23,
+      "accepted": 1,
       "exhausted": true
     }
   ],
-  "totalPuzzles": 4022,
-  "bucketsWritten": 41,
+  "totalPuzzles": 8039,
+  "bucketsWritten": 81,
   "licensingSummary": {
     "dataLicense": "CC0-1.0 Universal",
     "dataLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
