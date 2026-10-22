@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Chess, Square } from 'chess.js';
 import { renderPiece } from './pieces/ChessPieces';
 import { BoardThemeId } from '../types/puzzle';
-import { BOARD_THEMES } from '../data/puzzles';
+import { BOARD_THEMES } from '../data/boardThemes';
 
 interface ChessBoardProps {
   fen: string;

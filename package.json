@@ -10,8 +10,11 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "test": "tsx src/tests/chessUtils.test.ts",
-    "build:puzzles": "tsx scripts/buildCuratedPuzzles.ts",
+    "ingest": "tsx scripts/ingestLichess.ts",
+    "rebuild:shards": "tsx scripts/migrate-to-registry.ts",
+    "schedule:daily": "tsx scripts/buildDailySchedule.ts",
     "verify:puzzles": "tsx scripts/verifyPuzzles.ts",
+    "verify:regressions": "tsx scripts/verifyRegressions.ts",
     "brand:generate": "tsx scripts/generate-brand-names.ts",
     "brand:research": "tsx scripts/brand-research.ts"
   },
@@ -31,14 +34,16 @@
     "vite": "^8.3.0"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "autoprefixer": "^10.4.21",
+    "csv-parse": "^7.0.3",
     "esbuild": "^0.25.0",
+    "fzstd": "^0.1.1",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.21.0",
-    "typescript": "^7.0.2",
-    "@types/express": "^4.17.21"
+    "typescript": "^7.0.2"
   }
 }

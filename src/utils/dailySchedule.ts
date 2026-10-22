@@ -1,55 +1,44 @@
 /**
  * Deterministic Daily Puzzle Scheduling Engine
  *
- * Implements a static-first, zero-network, deterministic calendar schedule
- * for PlyQuest daily tactics puzzles.
+ * The date → puzzleId mapping is no longer computed from a hash over the corpus.
+ * It is read from src/data/dailySchedule.json, an append-only ledger, so past
+ * dates can never be reshuffled when the corpus grows.
  *
  * Global Reset Timezone: Asia/Kolkata (UTC+05:30)
- * Works indefinitely into future and past dates without requiring daily API calls
- * or GitHub Actions runs.
  */
 
 import { PuzzleRecord } from '../types/puzzle';
-import { PUZZLES } from '../data/puzzles';
+import ledger from '../data/dailySchedule.json';
 
 export const GLOBAL_RESET_TIMEZONE = 'Asia/Kolkata';
 
-/**
- * Returns the current calendar date string in YYYY-MM-DD format
- * under the global reset timezone (Asia/Kolkata).
- */
+const entries = ledger.entries as Record<string, string>;
+
+/** Returns the current calendar date string (YYYY-MM-DD) under the global reset timezone. */
 export function getCurrentGlobalDate(customDate?: Date): string {
   const d = customDate || new Date();
   try {
-    const formatter = new Intl.DateTimeFormat('en-CA', {
+    return new Intl.DateTimeFormat('en-CA', {
       timeZone: GLOBAL_RESET_TIMEZONE,
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
-    });
-    return formatter.format(d);
+    }).format(d);
   } catch {
-    // Fallback if Intl timeZone unavailable
     return d.toISOString().split('T')[0];
   }
 }
 
-/**
- * Converts a YYYY-MM-DD date string to days since Unix epoch (1970-01-01).
- */
+/** Converts a YYYY-MM-DD date string to days since Unix epoch (1970-01-01). */
 export function dateStringToEpochDay(dateStr: string): number {
   const parts = dateStr.split('-').map((p) => parseInt(p, 10));
-  if (parts.length !== 3 || isNaN(parts[0]) || isNaN(parts[1]) || isNaN(parts[2])) {
-    return 0;
-  }
+  if (parts.length !== 3 || parts.some((p) => isNaN(p))) return 0;
   const [year, month, day] = parts;
-  const utcMs = Date.UTC(year, month - 1, day);
-  return Math.floor(utcMs / 86400000);
+  return Math.floor(Date.UTC(year, month - 1, day) / 86400000);
 }
 
-/**
- * Converts days since Unix epoch back to a YYYY-MM-DD date string.
- */
+/** Converts days since Unix epoch back to a YYYY-MM-DD date string. */
 export function epochDayToDateString(epochDay: number): string {
   const date = new Date(epochDay * 86400000);
   const y = date.getUTCFullYear();
@@ -58,94 +47,76 @@ export function epochDayToDateString(epochDay: number): string {
   return `${y}-${m}-${d}`;
 }
 
-/**
- * Deterministic 32-bit integer hash (Murmur3 style)
- */
-function hashInteger(n: number, seed = 0x27d4eb2d): number {
-  let h = (n ^ seed) | 0;
-  h = Math.imul(h ^ (h >>> 16), 0x85ebca6b);
-  h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
-  return (h ^ (h >>> 16)) >>> 0;
+function normaliseDate(dateStr?: string): string {
+  return dateStr && /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr : getCurrentGlobalDate();
+}
+
+/** Ledger lookup. Returns null for dates outside generated coverage. */
+export function getDailyPuzzleId(dateStr?: string): string | null {
+  return entries[normaliseDate(dateStr)] ?? null;
 }
 
 /**
- * Resolves the deterministic daily puzzle for a given date string (YYYY-MM-DD).
- * If no date is provided, defaults to the current date under Asia/Kolkata.
+ * Hydrates the daily puzzle from a supplied corpus. Prefers an explicit
+ * `dateAssigned` override when the corpus carries one.
  */
-export function getDailyPuzzle(dateStr?: string, puzzleCorpus: PuzzleRecord[] = PUZZLES): PuzzleRecord {
-  if (!puzzleCorpus || puzzleCorpus.length === 0) {
-    throw new Error('Puzzle corpus is empty');
-  }
+export function getDailyPuzzle(
+  dateStr?: string,
+  corpus: PuzzleRecord[] = []
+): PuzzleRecord | null {
+  const target = normaliseDate(dateStr);
 
-  const targetDate = dateStr && /^\d{4}-\d{2}-\d{2}$/.test(dateStr)
-    ? dateStr
-    : getCurrentGlobalDate();
+  const explicit = corpus.find((p) => p.dateAssigned === target);
+  if (explicit) return explicit;
 
-  // 1. Highest precedence: Explicit manually assigned date in corpus
-  const explicitlyAssigned = puzzleCorpus.find((p) => p.dateAssigned === targetDate);
-  if (explicitlyAssigned) {
-    return explicitlyAssigned;
-  }
+  const id = entries[target];
+  if (!id) return null;
 
-  // 2. Filter daily-eligible candidates (exclude symmetric variants from daily slot)
-  const eligible = puzzleCorpus.filter((p) => p.provenance.transformType !== 'color-symmetric-rank-reflect');
-  const pool = eligible.length > 0 ? eligible : puzzleCorpus;
-
-  // 3. Deterministic permutation mapping
-  const epochDay = dateStringToEpochDay(targetDate);
-  const index = hashInteger(epochDay) % pool.length;
-  const selected = pool[index];
-
-  // Return a cloned record with dateAssigned populated
-  return {
-    ...selected,
-    dateAssigned: targetDate,
-  };
+  return corpus.find((p) => p.id === id) ?? null;
 }
 
-/**
- * Returns all daily puzzles scheduled for a specific year and month (YYYY-MM).
- * Used to power the deterministic archive browser (/archive/[year]/[month]).
- */
+/** Puzzle ids scheduled for every day of a given month, in date order. */
+export function getArchiveIdsForMonth(year: number | string, month: number | string): string[] {
+  const y = typeof year === 'string' ? parseInt(year, 10) : year;
+  const m = typeof month === 'string' ? parseInt(month, 10) : month;
+  if (isNaN(y) || isNaN(m) || m < 1 || m > 12) return [];
+
+  const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const ids: string[] = [];
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${y}-${String(m).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const id = entries[dateStr];
+    if (id) ids.push(id);
+  }
+
+  return ids;
+}
+
+/** Hydrates a month of archive puzzles from a supplied corpus. */
 export function getArchivePuzzlesForMonth(
   year: number | string,
   month: number | string,
-  puzzleCorpus: PuzzleRecord[] = PUZZLES
+  corpus: PuzzleRecord[] = []
 ): PuzzleRecord[] {
-  const y = typeof year === 'string' ? parseInt(year, 10) : year;
-  const m = typeof month === 'string' ? parseInt(month, 10) : month;
-  if (isNaN(y) || isNaN(m) || m < 1 || m > 12) {
-    return [];
-  }
-
-  const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
-  const results: PuzzleRecord[] = [];
-
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dayStr = String(day).padStart(2, '0');
-    const monthStr = String(m).padStart(2, '0');
-    const dateStr = `${y}-${monthStr}-${dayStr}`;
-    results.push(getDailyPuzzle(dateStr, puzzleCorpus));
-  }
-
-  return results;
+  const byId = new Map(corpus.map((p) => [p.id, p]));
+  return getArchiveIdsForMonth(year, month)
+    .map((id) => byId.get(id))
+    .filter((p): p is PuzzleRecord => Boolean(p));
 }
 
-/**
- * Generates a deterministic static calendar schedule for the next N days.
- */
+/** Deterministic date → id map for the next `daysCount` days. */
 export function generateStaticSchedule(
   startDateStr: string,
-  daysCount = 365,
-  puzzleCorpus: PuzzleRecord[] = PUZZLES
+  daysCount = 365
 ): Record<string, string> {
   const schedule: Record<string, string> = {};
   const startEpoch = dateStringToEpochDay(startDateStr);
 
   for (let i = 0; i < daysCount; i++) {
-    const curDate = epochDayToDateString(startEpoch + i);
-    const puzzle = getDailyPuzzle(curDate, puzzleCorpus);
-    schedule[curDate] = puzzle.id;
+    const dateStr = epochDayToDateString(startEpoch + i);
+    const id = entries[dateStr];
+    if (id) schedule[dateStr] = id;
   }
 
   return schedule;

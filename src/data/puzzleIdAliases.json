@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "description": "Maps retired puzzle ids to their replacements. Empty unless a published id ever has to change. puzzleStore resolves aliases before lookup so historic deep links and stored progress keep working.",
+  "aliases": {}
+}

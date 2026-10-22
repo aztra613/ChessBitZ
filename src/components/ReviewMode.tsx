@@ -9,7 +9,7 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, BarChart3, RefreshCw, CheckCircle2, XCircle, ArrowRight, Sparkles, BookOpen, Trash2 } from 'lucide-react';
 import { PuzzleRecord, BoardThemeId } from '../types/puzzle';
-import { PUZZLES } from '../data/puzzles';
+import { getIndex, loadPuzzlesByIds } from '../utils/puzzleStore';
 import { ChessBoard } from './ChessBoard';
 import { Chess, Square } from 'chess.js';
 import {
@@ -44,16 +44,21 @@ export const ReviewMode: React.FC<ReviewModeProps> = ({ boardTheme, onNavigate }
 
   const currentPuzzle = reviewQueue[currentIndex];
 
-  // Build review queue
-  const buildQueue = useCallback(() => {
-    const due = getDueReviews(PUZZLES, 15);
-    const newPuzzles = getNewPuzzles(PUZZLES, Math.max(0, 10 - due.length));
-    setReviewQueue([...due, ...newPuzzles]);
+  // Build review queue — selection runs over the manifest index, then only the
+  // chosen puzzles are hydrated.
+  const buildQueue = useCallback(async () => {
+    const index = getIndex();
+    const due = getDueReviews(index, 15);
+    const fresh = getNewPuzzles(index, Math.max(0, 10 - due.length));
+    const ids = [...due, ...fresh].map((entry) => entry.id);
+
+    const records = await loadPuzzlesByIds(ids);
+    setReviewQueue(records);
     setStats(getSRSStats());
   }, []);
 
   useEffect(() => {
-    buildQueue();
+    void buildQueue();
   }, [buildQueue]);
 
   // Initialize puzzle board

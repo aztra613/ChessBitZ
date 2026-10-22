@@ -1,7 +1,11 @@
 import { Chess, Square } from 'chess.js';
-import { PUZZLES } from '../src/data/puzzles';
 import * as fs from 'fs';
 import * as path from 'path';
+import { loadRegistry } from './lib/registry';
+import { loadPublishedRecords, orderByRegistry } from './lib/shards';
+
+/** The published corpus, read straight from the committed shards. */
+const PUZZLES = orderByRegistry(loadPublishedRecords(), loadRegistry());
 
 console.log(`=== PlyQuest Automated Puzzle Verification Suite ===`);
 console.log(`Auditing ${PUZZLES.length} puzzles in curated corpus...\n`);

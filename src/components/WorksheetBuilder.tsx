@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
-import { Download, FileText, CheckSquare, Square, Printer, Eye, Sliders, ShieldCheck, ExternalLink } from 'lucide-react';
-import { PUZZLES } from '../data/puzzles';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Download, FileText, CheckSquare, Square, Printer, Eye, Sliders, ShieldCheck, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PuzzleRecord } from '../types/puzzle';
 import { WorksheetOptions, generateWorksheetPdf, generateAnswerKeyPdf } from '../utils/worksheetPdf';
 import { MONETAG_DIRECT_LINK, openDirectLink } from '../utils/monetag';
+import { usePuzzleManifest, usePuzzles } from './PuzzleProvider';
+import { searchIndex, PuzzleIndexEntry } from '../utils/puzzleStore';
 import { ChessBoard } from './ChessBoard';
+
+/** Puzzles listed per page while browsing. */
+const PAGE_SIZE = 24;
 
 interface WorksheetBuilderProps {
   initialSelectedPuzzleId?: string;
@@ -16,7 +20,7 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
   onNavigatePuzzle,
 }) => {
   const [selectedIds, setSelectedIds] = useState<string[]>(
-    initialSelectedPuzzleId ? [initialSelectedPuzzleId] : PUZZLES.slice(0, 4).map((p) => p.id)
+    initialSelectedPuzzleId ? [initialSelectedPuzzleId] : []
   );
 
   const [options, setOptions] = useState<WorksheetOptions>({
@@ -31,8 +35,36 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
 
   const [filterTheme, setFilterTheme] = useState<string>('all');
   const [isExporting, setIsExporting] = useState<boolean>(false);
+  const [page, setPage] = useState(0);
 
-  const selectedPuzzles = PUZZLES.filter((p) => selectedIds.includes(p.id));
+  const { ready } = usePuzzleManifest();
+
+  // Browsing runs off the manifest index; only selected puzzles are hydrated.
+  const filteredEntries: PuzzleIndexEntry[] = useMemo(
+    () => searchIndex('', { theme: filterTheme }),
+    [filterTheme, ready]
+  );
+
+  const pageCount = Math.max(1, Math.ceil(filteredEntries.length / PAGE_SIZE));
+  const safePage = Math.min(page, pageCount - 1);
+  const pageEntries = useMemo(
+    () => filteredEntries.slice(safePage * PAGE_SIZE, (safePage + 1) * PAGE_SIZE),
+    [filteredEntries, safePage]
+  );
+
+  useEffect(() => {
+    setPage(0);
+  }, [filterTheme]);
+
+  // Seed a default selection once the index becomes available.
+  useEffect(() => {
+    if (!ready || initialSelectedPuzzleId) return;
+    setSelectedIds((prev) =>
+      prev.length > 0 ? prev : searchIndex('').slice(0, 4).map((entry) => entry.id)
+    );
+  }, [ready, initialSelectedPuzzleId]);
+
+  const { puzzles: selectedPuzzles } = usePuzzles(selectedIds);
 
   const toggleSelect = (id: string) => {
     setSelectedIds((prev) =>
@@ -40,8 +72,14 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
     );
   };
 
+  // Bounded to the visible page: a worksheet is never thousands of puzzles, and
+  // this keeps the number of hydrated records small.
   const selectAll = () => {
-    setSelectedIds(PUZZLES.map((p) => p.id));
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      for (const entry of pageEntries) next.add(entry.id);
+      return [...next];
+    });
   };
 
   const clearSelection = () => {
@@ -63,10 +101,6 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
     if (selectedPuzzles.length === 0) return;
     generateAnswerKeyPdf(selectedPuzzles, options);
   };
-
-  const filteredPuzzles = filterTheme === 'all'
-    ? PUZZLES
-    : PUZZLES.filter((p) => p.themes.includes(filterTheme as any));
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -234,7 +268,7 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
                   onClick={selectAll}
                   className="text-[#4658C9] dark:text-[#818CF8] hover:underline cursor-pointer"
                 >
-                  Select All
+                  Select Page
                 </button>
                 <span className="text-slate-300 dark:text-slate-600" aria-hidden="true">|</span>
                 <button
@@ -274,7 +308,7 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
 
             {/* Puzzle item checkboxes */}
             <div className="max-h-[380px] overflow-y-auto space-y-2 pr-1">
-              {filteredPuzzles.map((p) => {
+              {pageEntries.map((p) => {
                 const isChecked = selectedIds.includes(p.id);
                 return (
                   <div
@@ -297,7 +331,7 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
                           {p.title}
                         </p>
                         <p className="text-[11px] text-slate-700 dark:text-slate-300 font-semibold truncate">
-                          {p.objective} • Rating {p.rating}
+                          Rating {p.rating} • {p.sideToMove === 'w' ? 'White' : 'Black'} to move
                         </p>
                       </div>
                     </div>
@@ -309,6 +343,35 @@ export const WorksheetBuilder: React.FC<WorksheetBuilderProps> = ({
                 );
               })}
             </div>
+
+            {/* Pagination — records load per page, not for the whole corpus */}
+            {pageCount > 1 && (
+              <div className="mt-4 flex items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setPage((prev) => Math.max(0, prev - 1))}
+                  disabled={safePage === 0}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#1A2032] text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <span>Prev</span>
+                </button>
+
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                  {safePage + 1} / {pageCount}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => setPage((prev) => Math.min(pageCount - 1, prev + 1))}
+                  disabled={safePage >= pageCount - 1}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#1A2032] text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <span>Next</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

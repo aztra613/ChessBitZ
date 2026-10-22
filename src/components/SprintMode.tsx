@@ -15,7 +15,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Timer, Zap, Trophy, Play, RotateCcw, ArrowRight, Pause, X, Target, CheckCircle2, XCircle, ChevronRight } from 'lucide-react';
 import { PuzzleRecord, BoardThemeId } from '../types/puzzle';
 import { ChessBoard } from './ChessBoard';
-import { PUZZLES } from '../data/puzzles';
+import { getIndex, loadPuzzlesByIds } from '../utils/puzzleStore';
 import { Chess, Square } from 'chess.js';
 
 export type SprintType = 'blitz5' | 'quick10' | 'marathon25';
@@ -109,12 +109,17 @@ export const SprintMode: React.FC<SprintModeProps> = ({ boardTheme, onNavigate }
     };
   }, []);
 
-  // Start sprint
-  const startSprint = useCallback(() => {
-    const eligible = PUZZLES.filter(p =>
-      p.provenance.transformType !== 'color-symmetric-rank-reflect'
+  // Start sprint — picks from the manifest index, then hydrates only the chosen run.
+  const startSprint = useCallback(async () => {
+    const eligible = getIndex().filter(
+      (entry) => entry.transformType !== 'color-symmetric-rank-reflect'
     );
-    const queue = shuffleArray(eligible).slice(0, config.puzzleCount || 100);
+    const pickedIds = shuffleArray(eligible)
+      .slice(0, config.puzzleCount || 100)
+      .map((entry) => entry.id);
+
+    const queue = await loadPuzzlesByIds(pickedIds);
+
     setPuzzleQueue(queue);
     setCurrentPuzzleIndex(0);
     setResults([]);

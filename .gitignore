@@ -7,3 +7,10 @@ coverage/
 .env*
 !.env.example
 .commandcode/
+
+# Raw Lichess dataset: supplied by CI or kept locally, never committed.
+# Leading slash keeps this root-only so src/data/ stays tracked.
+/data/
+*.zst
+lichess_db_puzzle.csv*
+

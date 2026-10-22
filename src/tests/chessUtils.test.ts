@@ -7,14 +7,19 @@ import {
   replayMoveLine,
   getHintContent,
 } from '../utils/chessUtils';
-import { PUZZLES } from '../data/puzzles';
 import {
   getCurrentGlobalDate,
   dateStringToEpochDay,
   epochDayToDateString,
   getDailyPuzzle,
+  getDailyPuzzleId,
   getArchivePuzzlesForMonth,
 } from '../utils/dailySchedule';
+import { loadRegistry } from '../../scripts/lib/registry';
+import { loadPublishedRecords, orderByRegistry } from '../../scripts/lib/shards';
+
+/** The published corpus, read straight from the committed shards. */
+const PUZZLES = orderByRegistry(loadPublishedRecords(), loadRegistry());
 
 console.log('=== Running PlyQuest Core Test Suite ===\n');
 
@@ -123,18 +128,33 @@ assert(/^\d{4}-\d{2}-\d{2}$/.test(curGlobal), `getCurrentGlobalDate() returns va
 const testEpoch = dateStringToEpochDay('2026-10-21');
 assert(epochDayToDateString(testEpoch) === '2026-10-21', 'Epoch day round-trip preserves "2026-10-21"');
 
-const dailyToday = getDailyPuzzle('2026-10-21');
-assert(dailyToday && typeof dailyToday.id === 'string', `getDailyPuzzle('2026-10-21') resolves puzzle: ${dailyToday.id}`);
+const dailyToday = getDailyPuzzle('2026-10-21', PUZZLES);
+assert(
+  dailyToday !== null && typeof dailyToday.id === 'string',
+  `getDailyPuzzle('2026-10-21') resolves puzzle: ${dailyToday?.id}`
+);
 
-const dailyFuture = getDailyPuzzle('2027-12-31');
-assert(dailyFuture && typeof dailyFuture.id === 'string', `getDailyPuzzle('2027-12-31') resolves future puzzle: ${dailyFuture.id}`);
+const dailyFuture = getDailyPuzzle('2027-12-31', PUZZLES);
+assert(
+  dailyFuture !== null && typeof dailyFuture.id === 'string',
+  `getDailyPuzzle('2027-12-31') resolves future puzzle: ${dailyFuture?.id}`
+);
 
 // Determinism check: identical inputs must yield identical outputs
-const dailyRepeat = getDailyPuzzle('2026-10-21');
-assert(dailyToday.id === dailyRepeat.id, 'Daily puzzle lookup is strictly deterministic across repeated calls');
+const dailyRepeat = getDailyPuzzle('2026-10-21', PUZZLES);
+assert(
+  dailyToday?.id === dailyRepeat?.id,
+  'Daily puzzle lookup is strictly deterministic across repeated calls'
+);
+
+// The ledger is authoritative and must agree with the hydrated record.
+assert(
+  getDailyPuzzleId('2026-10-21') === dailyToday?.id,
+  'Ledger id and hydrated daily puzzle agree'
+);
 
 // Archive month generation
-const octPuzzles = getArchivePuzzlesForMonth(2026, 10);
+const octPuzzles = getArchivePuzzlesForMonth(2026, 10, PUZZLES);
 assert(octPuzzles.length === 31, 'getArchivePuzzlesForMonth(2026, 10) returns exactly 31 daily puzzles for October');
 
 // 8. Test Social Sharing & Viral Growth Functions

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, RotateCcw } from 'lucide-react';
-import { BOARD_THEMES } from '../data/puzzles';
+import { BOARD_THEMES } from '../data/boardThemes';
 import { BoardThemeId } from '../types/puzzle';
 
 interface BoardThemeSelectorProps {

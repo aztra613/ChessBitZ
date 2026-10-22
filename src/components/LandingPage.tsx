@@ -18,8 +18,9 @@ import {
   Upload,
   Timer,
 } from 'lucide-react';
-import { PUZZLES } from '../data/puzzles';
-import { getDailyPuzzle } from '../utils/dailySchedule';
+import { usePuzzle, usePuzzles, usePuzzleManifest } from './PuzzleProvider';
+import { getCurrentGlobalDate, getDailyPuzzleId } from '../utils/dailySchedule';
+import { getFeaturedIndexEntries, getFeaturedWeekLabel } from '../utils/weeklyRotation';
 import { ChessBoard } from './ChessBoard';
 import { BoardThemeId } from '../types/puzzle';
 
@@ -34,8 +35,22 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   onNavigate,
   onSelectPuzzle,
 }) => {
-  // Today's daily puzzle
-  const dailyPuzzle = getDailyPuzzle();
+  // Counts and the sample grid come from the manifest index, so browsing the
+  // landing page never downloads puzzle records (plan S7).
+  const { manifest } = usePuzzleManifest();
+  const themeCounts = manifest?.themeCounts ?? {};
+  const difficultyCounts = manifest?.difficultyCounts ?? {};
+
+  const dailyId = getDailyPuzzleId() ?? undefined;
+  const { puzzle: dailyPuzzle } = usePuzzle(dailyId);
+
+  // Weekly rotation: the featured set advances with the ISO week. Computed in
+  // the browser, so rotating costs no deploy and never touches the archive.
+  const sampleIds = React.useMemo(
+    () => (manifest ? getFeaturedIndexEntries(4).map((entry) => entry.id) : []),
+    [manifest]
+  );
+  const { puzzles: samplePuzzles } = usePuzzles(sampleIds);
 
   const collections = [
     {
@@ -43,42 +58,42 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       description: 'Instant tactical strikes and mating patterns for developing rapid board vision.',
       badge: 'Beginner',
       route: '/mate-in-1',
-      count: PUZZLES.filter((p) => p.themes.includes('mateIn1')).length,
+      count: themeCounts.mateIn1 ?? 0,
     },
     {
       title: 'Mate in 2',
       description: 'Calculated 2-move forced mating sequences, decoys, and king nets.',
       badge: 'Intermediate',
       route: '/mate-in-2',
-      count: PUZZLES.filter((p) => p.themes.includes('mateIn2')).length,
+      count: themeCounts.mateIn2 ?? 0,
     },
     {
       title: 'Knight & Pawn Forks',
       description: 'Royal forks, double attacks, and decisive tactical piece overloads.',
       badge: 'All Levels',
       route: '/themes/fork',
-      count: PUZZLES.filter((p) => p.themes.includes('fork')).length,
+      count: themeCounts.fork ?? 0,
     },
     {
       title: 'Pins & Skewers',
       description: 'Absolute pins against the monarch and linear skewers across open ranks.',
       badge: 'Intermediate',
       route: '/themes/pin',
-      count: PUZZLES.filter((p) => p.themes.includes('pin') || p.themes.includes('skewer')).length,
+      count: (themeCounts.pin ?? 0) + (themeCounts.skewer ?? 0),
     },
     {
       title: 'Beginner Foundations',
       description: 'Sub-1200 tactical drills to build unshakable calculation fundamentals.',
       badge: '<1200 Rating',
       route: '/difficulty/beginner',
-      count: PUZZLES.filter((p) => p.difficultyBand === 'beginner').length,
+      count: difficultyCounts.beginner ?? 0,
     },
     {
       title: 'Mixed Tactical Practice',
       description: 'Unfiltered combination tactics testing your intuition across all motifs.',
       badge: 'Curated',
       route: '/puzzles',
-      count: PUZZLES.length,
+      count: manifest?.totalPuzzles ?? 0,
     },
   ];
 
@@ -262,7 +277,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   type="button"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.96 }}
-                  onClick={() => onSelectPuzzle(dailyPuzzle.id)}
+                  onClick={() => dailyPuzzle && onSelectPuzzle(dailyPuzzle.id)}
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#4658C9] text-white text-sm font-bold shadow-md hover:bg-[#3548C5] transition-all min-h-[48px] cursor-pointer"
                 >
                   <Target className="w-4 h-4" />
@@ -310,38 +325,44 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <span className="text-[11px] uppercase font-black text-[#4658C9] dark:text-[#818CF8] tracking-wider block">
-                      Daily Challenge • {dailyPuzzle.dateAssigned || 'Today'}
+                      Daily Challenge • {getCurrentGlobalDate()}
                     </span>
                     <h3 className="text-sm font-extrabold text-slate-950 dark:text-white">
-                      {dailyPuzzle.title}
+                      {dailyPuzzle?.title ?? 'Loading today’s puzzle…'}
                     </h3>
                   </div>
                   <span className="text-xs px-2.5 py-1 rounded-full bg-[#4658C9]/10 dark:bg-[#4658C9]/30 text-[#4658C9] dark:text-[#C7D2FE] font-extrabold border border-[#4658C9]/20">
-                    Rating {dailyPuzzle.rating}
+                    Rating {dailyPuzzle?.rating ?? '—'}
                   </span>
                 </div>
 
                 {/* Visible board preview - NO spoilers */}
                 <div className="w-full aspect-square my-2 rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-2xs">
-                  <ChessBoard
-                    fen={dailyPuzzle.solverFen}
-                    orientation={dailyPuzzle.sideToMove}
-                    interactive={false}
-                    showCoordinates={true}
-                    boardTheme={boardTheme}
-                    className="w-full h-full shadow-none"
-                  />
+                  {dailyPuzzle ? (
+                    <ChessBoard
+                      fen={dailyPuzzle.solverFen}
+                      orientation={dailyPuzzle.sideToMove}
+                      interactive={false}
+                      showCoordinates={true}
+                      boardTheme={boardTheme}
+                      className="w-full h-full shadow-none"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-xs font-semibold text-slate-500">
+                      Loading board…
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-3 flex items-center justify-between gap-3 pt-2.5 border-t border-slate-200 dark:border-slate-800">
                   <span className="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">
-                    {dailyPuzzle.objective}
+                    {dailyPuzzle?.objective ?? 'Find the winning continuation'}
                   </span>
                   <motion.button
                     type="button"
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.94 }}
-                    onClick={() => onSelectPuzzle(dailyPuzzle.id)}
+                    onClick={() => dailyPuzzle && onSelectPuzzle(dailyPuzzle.id)}
                     className="px-4 py-2 rounded-xl bg-[#4658C9] hover:bg-[#3548C5] text-white text-xs font-black transition-colors shrink-0 shadow-xs cursor-pointer"
                   >
                     Solve Now &rarr;
@@ -517,7 +538,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <div className="text-[10px] text-slate-600 dark:text-slate-400 font-medium">Name: ____________ Date: _______</div>
                 </div>
                 <div className="grid grid-cols-2 gap-2 my-2">
-                  {PUZZLES.slice(0, 4).map((p, i) => (
+                  {samplePuzzles.map((p, i) => (
                     <div key={p.id} className="p-1 border border-slate-200 dark:border-slate-700 rounded text-center bg-white dark:bg-[#1A2032]">
                       <div className="text-[8px] font-bold text-slate-800 dark:text-slate-200 truncate">#{i + 1} {p.title}</div>
                       <div className="w-16 h-16 mx-auto my-1">
@@ -527,7 +548,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   ))}
                 </div>
                 <div className="text-center text-[10px] text-[#4658C9] dark:text-[#A5B4FC] font-bold">
-                  Sample 4-Puzzle Grid Layout
+                  {getFeaturedWeekLabel()} • Sample 4-Puzzle Grid Layout
                 </div>
               </div>
             </div>

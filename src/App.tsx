@@ -18,8 +18,9 @@ import { ChessClock } from './components/ChessClock';
 import { LegalPages } from './components/LegalPages';
 import { NotFound } from './components/NotFound';
 import { CookieBanner } from './components/CookieBanner';
-import { PUZZLES } from './data/puzzles';
-import { getDailyPuzzle } from './utils/dailySchedule';
+import { PuzzleProvider, usePuzzle, usePuzzleManifest } from './components/PuzzleProvider';
+import { getDailyPuzzleId } from './utils/dailySchedule';
+import { getIndexEntry, nextIndexId } from './utils/puzzleStore';
 import { BoardThemeId } from './types/puzzle';
 import {
   getStoredBoardTheme,
@@ -28,7 +29,97 @@ import {
   setStoredUiMode,
 } from './utils/storage';
 
-export default function App() {
+const RouteLoading: React.FC<{ label?: string }> = ({ label = 'Loading puzzle…' }) => (
+  <div className="max-w-3xl mx-auto px-4 py-16 text-center">
+    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">{label}</p>
+  </div>
+);
+
+/**
+ * Today's puzzle. The date → id mapping comes from the append-only ledger, so
+ * only the record itself has to be fetched.
+ */
+const DailyPuzzleRoute: React.FC<{
+  boardTheme: BoardThemeId;
+  onNavigate: (route: string) => void;
+  onOpenWorksheet: (id: string) => void;
+}> = ({ boardTheme, onNavigate, onOpenWorksheet }) => {
+  const dailyId = getDailyPuzzleId();
+  const { puzzle, loading, notFound } = usePuzzle(dailyId ?? undefined);
+
+  if (loading) return <RouteLoading label="Loading today's puzzle…" />;
+  if (notFound || !puzzle) {
+    return (
+      <NotFound
+        onNavigate={onNavigate}
+        message="Today's daily puzzle is not available in the current corpus."
+      />
+    );
+  }
+
+  return (
+    <PuzzlePlayer
+      puzzle={puzzle}
+      boardTheme={boardTheme}
+      onNavigatePuzzle={() => onNavigate('/puzzles')}
+      onOpenWorksheet={onOpenWorksheet}
+      onNavigate={onNavigate}
+    />
+  );
+};
+
+const PuzzleDetailRoute: React.FC<{
+  id: string;
+  boardTheme: BoardThemeId;
+  onNavigate: (route: string) => void;
+  onOpenWorksheet: (id: string) => void;
+}> = ({ id, boardTheme, onNavigate, onOpenWorksheet }) => {
+  const { puzzle, loading, notFound } = usePuzzle(id);
+
+  if (loading) return <RouteLoading />;
+  if (notFound || !puzzle) {
+    return (
+      <NotFound
+        onNavigate={onNavigate}
+        message={`Puzzle ID "${id}" does not exist in the curated PlyQuest corpus.`}
+      />
+    );
+  }
+
+  return (
+    <PuzzlePlayer
+      puzzle={puzzle}
+      boardTheme={boardTheme}
+      onNavigatePuzzle={(direction?: number | string) => {
+        const offset = direction === 'prev' || direction === -1 ? -1 : 1;
+        const next = nextIndexId(id, offset);
+        if (next) onNavigate(`/puzzle/${next}`);
+      }}
+      onOpenWorksheet={onOpenWorksheet}
+      onNavigate={onNavigate}
+    />
+  );
+};
+
+const EmbedPuzzleRoute: React.FC<{ id: string; boardTheme: BoardThemeId }> = ({
+  id,
+  boardTheme,
+}) => {
+  const { puzzle, loading, notFound } = usePuzzle(id);
+
+  if (loading) {
+    return <div className="p-4 text-center text-xs text-slate-500">Loading puzzle…</div>;
+  }
+  if (notFound || !puzzle) {
+    return <div className="p-4 text-center text-xs text-slate-500">Puzzle not found.</div>;
+  }
+
+  return <EmbedWidget puzzle={puzzle} boardTheme={boardTheme} />;
+};
+
+function AppShell() {
+  const { ready: manifestReady } = usePuzzleManifest();
+
   // Current route pathname (e.g. "/", "/daily", "/puzzle/cb-daily-01", etc.)
   const [currentRoute, setCurrentRoute] = useState<string>(() => {
     if (typeof window !== 'undefined') {
@@ -105,8 +196,8 @@ export default function App() {
       document.title = 'Daily Chess Puzzle - PlyQuest';
     } else if (currentRoute.startsWith('/puzzle/')) {
       const id = currentRoute.replace('/puzzle/', '');
-      const pz = PUZZLES.find((p) => p.id === id);
-      document.title = pz ? `${pz.title} - Tactics Puzzle - PlyQuest` : 'Chess Puzzle - PlyQuest';
+      const entry = getIndexEntry(id);
+      document.title = entry ? `${entry.title} - Tactics Puzzle - PlyQuest` : 'Chess Puzzle - PlyQuest';
     } else if (currentRoute === '/printable-chess-puzzles') {
       document.title = 'Printable Chess Worksheets Studio (PDF) - PlyQuest';
     } else if (currentRoute === '/sprint') {
@@ -127,7 +218,7 @@ export default function App() {
       const clean = currentRoute.replace('/', '');
       document.title = `${clean.charAt(0).toUpperCase() + clean.slice(1)} - PlyQuest`;
     }
-  }, [currentRoute]);
+  }, [currentRoute, manifestReady]);
 
   // Route Dispatcher
   const renderRoute = () => {
@@ -144,17 +235,14 @@ export default function App() {
 
     // 2. Daily Puzzle
     if (currentRoute === '/daily') {
-      const dailyPuzzle = getDailyPuzzle();
       return (
-        <PuzzlePlayer
-          puzzle={dailyPuzzle}
+        <DailyPuzzleRoute
           boardTheme={boardTheme}
-          onNavigatePuzzle={() => navigate('/puzzles')}
+          onNavigate={navigate}
           onOpenWorksheet={(id) => {
             setWorksheetPuzzleId(id);
             navigate('/printable-chess-puzzles');
           }}
-          onNavigate={navigate}
         />
       );
     }
@@ -162,29 +250,15 @@ export default function App() {
     // 3. Puzzle Detail: /puzzle/[id]
     if (currentRoute.startsWith('/puzzle/')) {
       const id = currentRoute.replace('/puzzle/', '');
-      const puzzle = PUZZLES.find((p) => p.id === id);
-      if (!puzzle) {
-        return (
-          <NotFound
-            onNavigate={navigate}
-            message={`Puzzle ID "${id}" does not exist in the curated PlyQuest corpus.`}
-          />
-        );
-      }
       return (
-        <PuzzlePlayer
-          puzzle={puzzle}
+        <PuzzleDetailRoute
+          id={id}
           boardTheme={boardTheme}
-          onNavigatePuzzle={(direction) => {
-            const currIdx = PUZZLES.findIndex((p) => p.id === id);
-            const nextIdx = (currIdx + 1) % PUZZLES.length;
-            navigate(`/puzzle/${PUZZLES[nextIdx].id}`);
-          }}
+          onNavigate={navigate}
           onOpenWorksheet={(pId) => {
             setWorksheetPuzzleId(pId);
             navigate('/printable-chess-puzzles');
           }}
-          onNavigate={navigate}
         />
       );
     }
@@ -308,15 +382,7 @@ export default function App() {
     // 8d. Embed Widget: /embed/puzzle/:id
     if (currentRoute.startsWith('/embed/puzzle/')) {
       const id = currentRoute.replace('/embed/puzzle/', '');
-      const puzzle = PUZZLES.find((p) => p.id === id);
-      if (!puzzle) {
-        return (
-          <div className="p-4 text-center text-xs text-slate-500">
-            Puzzle not found.
-          </div>
-        );
-      }
-      return <EmbedWidget puzzle={puzzle} boardTheme={boardTheme} />;
+      return <EmbedPuzzleRoute id={id} boardTheme={boardTheme} />;
     }
 
     // 8e. Digital Chess Clock: /clock
@@ -401,5 +467,13 @@ export default function App() {
         onClose={() => setCookieSettingsOpen(false)}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <PuzzleProvider>
+      <AppShell />
+    </PuzzleProvider>
   );
 }

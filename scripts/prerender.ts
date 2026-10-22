@@ -11,12 +11,33 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { PUZZLES } from '../src/data/puzzles';
+import { loadRegistry } from './lib/registry';
+import { loadPublishedRecords, orderByRegistry } from './lib/shards';
 import { getDailyPuzzle } from '../src/utils/dailySchedule';
 
 const SITE_URL = 'https://plyquest.pages.dev';
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const BASE_HTML_PATH = path.resolve(DIST_DIR, 'index.html');
+
+/**
+ * Only the strongest puzzles get their own HTML page and OG image. The long tail
+ * stays client-rendered via the _redirects catch-all, which keeps the deployment
+ * comfortably under the host's file limit (plan S8).
+ */
+const PRERENDER_PUZZLE_LIMIT = 500;
+
+/** Conservative ceiling; Cloudflare Pages allows 20,000. */
+const DIST_FILE_LIMIT = 5000;
+
+const ALL_RECORDS = orderByRegistry(loadPublishedRecords(), loadRegistry());
+
+const PRERENDER_PUZZLES = [...ALL_RECORDS]
+  .sort(
+    (a, b) => (b.popularity ?? 0) - (a.popularity ?? 0) || b.rating - a.rating
+  )
+  .slice(0, PRERENDER_PUZZLE_LIMIT);
+
+const DAILY_PUZZLE = getDailyPuzzle(undefined, ALL_RECORDS);
 
 interface RouteMeta {
   path: string;
@@ -28,7 +49,7 @@ interface RouteMeta {
 }
 
 export function getStaticRoutes(): RouteMeta[] {
-  const daily = getDailyPuzzle();
+  const daily = DAILY_PUZZLE;
 
   const coreRoutes: RouteMeta[] = [
     {
@@ -47,14 +68,14 @@ export function getStaticRoutes(): RouteMeta[] {
     {
       path: '/daily',
       title: 'Daily Chess Puzzle — PlyQuest',
-      description: `Play today's tactical challenge. Rated ${daily.rating} chess tactic. Find the best continuation with zero account required.`,
+      description: `Play today's tactical challenge. Rated ${daily?.rating ?? 'N/A'} chess tactic. Find the best continuation with zero account required.`,
       priority: '0.9',
       changefreq: 'daily',
       semanticHtml: `
         <article>
           <h1>Daily Chess Puzzle</h1>
-          <p>Challenge your tactical calculation with today's featured puzzle. Side to move: ${daily.sideToMove === 'w' ? 'White' : 'Black'}.</p>
-          <p>Objective: ${daily.objective}</p>
+          <p>Challenge your tactical calculation with today's featured puzzle. Side to move: ${daily?.sideToMove === 'w' ? 'White' : 'Black'}.</p>
+          <p>Objective: ${daily?.objective ?? 'Find the winning continuation'}</p>
         </article>
       `,
     },
@@ -226,8 +247,8 @@ export function getStaticRoutes(): RouteMeta[] {
     });
   }
 
-  // Individual puzzle pages (curated collection)
-  for (const pz of PUZZLES) {
+  // Individual puzzle pages (prerendered subset; the rest render client-side)
+  for (const pz of PRERENDER_PUZZLES) {
     const sideName = pz.sideToMove === 'w' ? 'White' : 'Black';
     coreRoutes.push({
       path: `/puzzle/${pz.id}`,
@@ -360,7 +381,7 @@ export function buildPrerender(): void {
 
   const baseHtml = fs.readFileSync(BASE_HTML_PATH, 'utf-8');
   const routes = getStaticRoutes();
-  const daily = getDailyPuzzle();
+  const daily = DAILY_PUZZLE;
 
   // Create OG image output directories
   const distOgDir = path.resolve(DIST_DIR, 'assets/og');
@@ -379,16 +400,18 @@ export function buildPrerender(): void {
   fs.writeFileSync(path.resolve(distOgDir, 'cover.svg'), coverSvg, 'utf-8');
   fs.writeFileSync(path.resolve(publicOgDir, 'cover.svg'), coverSvg, 'utf-8');
 
-  const dailySvg = generateSvgCard(
-    'Daily Chess Puzzle',
-    `${daily.objective} • Rated ${daily.rating}`,
-    daily.solverFen,
-    daily.sideToMove
-  );
-  fs.writeFileSync(path.resolve(distOgDir, 'daily.svg'), dailySvg, 'utf-8');
-  fs.writeFileSync(path.resolve(publicOgDir, 'daily.svg'), dailySvg, 'utf-8');
+  if (daily) {
+    const dailySvg = generateSvgCard(
+      'Daily Chess Puzzle',
+      `${daily.objective} • Rated ${daily.rating}`,
+      daily.solverFen,
+      daily.sideToMove
+    );
+    fs.writeFileSync(path.resolve(distOgDir, 'daily.svg'), dailySvg, 'utf-8');
+    fs.writeFileSync(path.resolve(publicOgDir, 'daily.svg'), dailySvg, 'utf-8');
+  }
 
-  for (const pz of PUZZLES) {
+  for (const pz of PRERENDER_PUZZLES) {
     const pzSvg = generateSvgCard(
       pz.title,
       `${pz.objective} • Rated ${pz.rating}`,
@@ -399,7 +422,7 @@ export function buildPrerender(): void {
     fs.writeFileSync(path.resolve(publicOgDir, `puzzle-${pz.id}.svg`), pzSvg, 'utf-8');
   }
 
-  console.log(`Generated static social preview images for ${PUZZLES.length} puzzles and core routes.`);
+  console.log(`Generated static social preview images for ${PRERENDER_PUZZLES.length} puzzles and core routes.`);
   console.log(`Prerendering ${routes.length} static routes for true SSG/SEO...`);
 
   let renderedCount = 0;
@@ -530,10 +553,13 @@ export function buildPrerender(): void {
     renderedCount++;
   }
 
-  // Generate dynamic sitemap.xml
+  // Generate dynamic sitemap.xml from indexable routes only. Embed widgets are
+  // rendered for third-party iframes and must never be advertised for indexing.
+  const indexableRoutes = routes.filter((r) => !r.path.startsWith('/embed/'));
+
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes
+${indexableRoutes
   .map(
     (r) => `  <url>
     <loc>${SITE_URL}${r.path === '/' ? '' : r.path}</loc>
@@ -546,9 +572,74 @@ ${routes
 </urlset>
 `;
 
+  // Sitemap validation (plan S8).
+  const locs = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  const duplicateLocs = [...new Set(locs.filter((loc, i) => locs.indexOf(loc) !== i))];
+  if (duplicateLocs.length > 0) {
+    console.error(
+      `FAILED: sitemap contains ${duplicateLocs.length} duplicate URL(s): ${duplicateLocs.slice(0, 3).join(', ')}`
+    );
+    process.exit(1);
+  }
+
+  const NON_INDEXABLE_PREFIXES = ['/embed/'];
+  const nonIndexable = locs.filter((loc) =>
+    NON_INDEXABLE_PREFIXES.some((prefix) => loc.includes(prefix))
+  );
+  if (nonIndexable.length > 0) {
+    console.error(
+      `FAILED: sitemap advertises non-indexable routes: ${nonIndexable.slice(0, 3).join(', ')}`
+    );
+    process.exit(1);
+  }
+
+  console.log(
+    `Sitemap validated: ${locs.length} unique indexable URLs (${routes.length - indexableRoutes.length} embed routes excluded).`
+  );
+
   fs.writeFileSync(path.resolve(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf-8');
   fs.writeFileSync(path.resolve(process.cwd(), 'public/sitemap.xml'), sitemapXml, 'utf-8');
 
+  // Deployment guard (plan S8): count every emitted file and reject any raw
+  // dataset artefact that could otherwise reach the deployed output.
+  const countFiles = (dir: string): number => {
+    let total = 0;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory()) total += countFiles(path.resolve(dir, entry.name));
+      else total += 1;
+    }
+    return total;
+  };
+
+  const offenders: string[] = [];
+  const walk = (dir: string): void => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.resolve(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (/\.(zst|csv|tar|gz)$/i.test(entry.name)) offenders.push(full);
+    }
+  };
+  walk(DIST_DIR);
+
+  if (offenders.length > 0) {
+    console.error(
+      `FAILED: raw dataset artefacts present in dist/:\n  ${offenders.slice(0, 5).join('\n  ')}`
+    );
+    process.exit(1);
+  }
+
+  const fileCount = countFiles(DIST_DIR);
+  if (fileCount > DIST_FILE_LIMIT) {
+    console.error(
+      `FAILED: dist/ contains ${fileCount} files, above the ${DIST_FILE_LIMIT} limit. ` +
+        `Lower PRERENDER_PUZZLE_LIMIT or shard further.`
+    );
+    process.exit(1);
+  }
+
+  console.log(
+    `Deployment guard: ${fileCount} files in dist/ (limit ${DIST_FILE_LIMIT}), no raw dataset artefacts.`
+  );
   console.log(`Successfully prerendered ${renderedCount} routes and generated dynamic sitemap.xml!`);
 }
 

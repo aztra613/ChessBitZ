@@ -11,8 +11,6 @@
  * - Exports/imports review state for portability
  */
 
-import { PuzzleRecord } from '../types/puzzle';
-
 export interface SRSCard {
   puzzleId: string;
   /** Number of consecutive correct reviews */
@@ -180,12 +178,14 @@ export function recordReview(
 
 /**
  * Get puzzles due for review today, sorted by priority.
- * Returns puzzle IDs that need reviewing.
+ *
+ * Generic over anything carrying an id, so selection can run over the manifest
+ * index without loading full records.
  */
-export function getDueReviews(
-  availablePuzzles: PuzzleRecord[],
+export function getDueReviews<T extends { id: string }>(
+  availablePuzzles: T[],
   maxCount = 20
-): PuzzleRecord[] {
+): T[] {
   const state = loadSRSState();
   const today = new Date().toISOString().split('T')[0];
   const todayMs = new Date(today).getTime();
@@ -207,9 +207,9 @@ export function getDueReviews(
     return a.card.easinessFactor - b.card.easinessFactor;
   });
 
-  // Map back to puzzle records
+  // Map back to the caller's objects
   const puzzleMap = new Map(availablePuzzles.map(p => [p.id, p]));
-  const result: PuzzleRecord[] = [];
+  const result: T[] = [];
 
   for (const { card } of dueCards) {
     if (result.length >= maxCount) break;
@@ -223,10 +223,10 @@ export function getDueReviews(
 /**
  * Get new puzzles the user hasn't attempted yet.
  */
-export function getNewPuzzles(
-  availablePuzzles: PuzzleRecord[],
+export function getNewPuzzles<T extends { id: string }>(
+  availablePuzzles: T[],
   maxCount = 10
-): PuzzleRecord[] {
+): T[] {
   const state = loadSRSState();
   const reviewedIds = new Set(Object.keys(state.cards));
   return availablePuzzles

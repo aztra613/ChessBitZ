@@ -1,20 +1,458 @@
 {
-  "manifestVersion": "1.0.0",
-  "generatedAt": "2026-10-22T05:25:39.231Z",
-  "validatorVersion": "2.0.0",
-  "totalPuzzles": 17,
-  "suppressedByDenylist": 0,
-  "datasets": {
-    "lichess-open-puzzles": 6,
-    "plyquest-curated": 9,
-    "plyquest-transformed-variant": 2
+  "manifestVersion": "2.0.0",
+  "generatedAt": "2026-10-22T08:42:10.407Z",
+  "validatorVersion": "3.0.0",
+  "ingestion": {
+    "sourceUrl": "https://database.lichess.org/lichess_db_puzzle.csv.zst",
+    "sourceFile": "lichess_db_puzzle.csv.zst",
+    "retrievedAt": "2026-10-22T08:40:08.869Z",
+    "sourceChecksumSha256": "76335bfa7d7c4a7f93c1366d81549e53951ebb79dd43d34904cab8f22d962f8d",
+    "decompressor": "fzstd@0.1.1",
+    "csvParser": "csv-parse@7.0.3",
+    "filters": {
+      "minPopularity": 80,
+      "minPlays": 100,
+      "minRating": 600,
+      "maxRating": 2600
+    },
+    "rowsRead": 6157341,
+    "rowsFiltered": 2686242,
+    "candidatesKept": 32743
   },
-  "difficultyBreakdown": {
-    "beginner": 6,
-    "intermediate": 7,
-    "advanced": 3,
-    "master": 1
-  },
+  "requestedTarget": 1000,
+  "acceptedThisRun": 1005,
+  "acceptedCount": 4022,
+  "status": "complete",
+  "buckets": [
+    {
+      "key": "hangingPiece|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "endgame|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "interference|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn2|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "hangingPiece|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "endgame|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "endgame|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn1|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "fork|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "discoveredAttack|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "deflection|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "pin|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn2|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "fork|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "sacrifice|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "deflection|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "pin|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "quietMove|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "endgame|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "pin|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "backRankMate|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "skewer|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "discoveredAttack|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "deflection|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "interference|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "clearance|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "clearance|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "backRankMate|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn3|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "deflection|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "discoveredAttack|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "fork|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "trappedPiece|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "trappedPiece|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn1|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "clearance|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "clearance|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn3|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "hangingPiece|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn3|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "sacrifice|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "sacrifice|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "doubleCheck|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "skewer|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn2|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "doubleCheck|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "quietMove|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "discoveredAttack|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "pin|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "hangingPiece|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "doubleCheck|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "skewer|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "fork|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "skewer|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn1|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "quietMove|intermediate",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "trappedPiece|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "doubleCheck|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "backRankMate|advanced",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn2|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn3|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "trappedPiece|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "interference|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "sacrifice|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "interference|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "quietMove|beginner",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "backRankMate|master",
+      "requested": 15,
+      "accepted": 15,
+      "exhausted": false
+    },
+    {
+      "key": "mateIn1|master",
+      "requested": 15,
+      "accepted": 0,
+      "exhausted": true
+    },
+    {
+      "key": "smotheredMate|intermediate",
+      "requested": 15,
+      "accepted": 0,
+      "exhausted": true
+    },
+    {
+      "key": "smotheredMate|advanced",
+      "requested": 15,
+      "accepted": 0,
+      "exhausted": true
+    },
+    {
+      "key": "smotheredMate|beginner",
+      "requested": 15,
+      "accepted": 0,
+      "exhausted": true
+    }
+  ],
+  "totalPuzzles": 4022,
+  "bucketsWritten": 41,
   "licensingSummary": {
     "dataLicense": "CC0-1.0 Universal",
     "dataLicenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",

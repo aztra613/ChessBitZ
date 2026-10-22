@@ -14,6 +14,11 @@ on:
 permissions:
   contents: write
 
+env:
+  # Kept outside the repository: never committed, removed before the commit step.
+  PUZZLE_DATASET: ${{ runner.temp }}/lichess_db_puzzle.csv.zst
+  TARGET_PUZZLES: '5000'
+
 jobs:
   refresh-and-validate:
     runs-on: ubuntu-latest
@@ -29,8 +34,15 @@ jobs:
       - name: Install Dependencies
         run: bun install --frozen-lockfile
 
-      - name: Build & Curate Puzzle Corpus
-        run: bun run build:puzzles
+      - name: Download Lichess Open Puzzle Database (CC0-1.0)
+        run: curl -fL --retry 3 -o "$PUZZLE_DATASET" https://database.lichess.org/lichess_db_puzzle.csv.zst
+
+      - name: Ingest & Publish Curated Corpus
+        # Exits non-zero unless the requested target is met (plan S5).
+        run: bun run ingest -- --source "$PUZZLE_DATASET" --limit "$TARGET_PUZZLES"
+
+      - name: Rebuild Daily Schedule Ledger
+        run: bun run schedule:daily
 
       - name: Verify Puzzle Legality & Checkmate Objectives
         run: bun run verify:puzzles
@@ -44,20 +56,47 @@ jobs:
       - name: Build Production Static Assets & Prerender SSG Routes
         run: bun run build
 
-      - name: Verify Production Bundle Budget & Isolation
+      - name: Regression Suite (plan S9)
+        run: bun run verify:regressions
+
+      # S1 — src/data/* must stay tracked; the raw dataset must never be.
+      - name: Assert gitignore Scope (plan S1)
         run: |
-          # Ensure raw archives and CSVs are absent from dist/
-          if find dist -type f \( -name "*.csv" -o -name "*.zst" -o -name "*.tar*" \) | grep -q .; then
-            echo "ERROR: Raw dataset archive detected in dist/ production bundle!"
+          set -e
+          for f in src/data/boardThemes.ts src/data/dailySchedule.json src/data/puzzle-registry.json src/data/puzzleIdAliases.json; do
+            if git check-ignore -q "$f"; then
+              echo "ERROR: $f is gitignored but must stay tracked."
+              exit 1
+            fi
+          done
+          if git ls-files | grep -Eq '\.zst$|lichess_db_puzzle\.csv'; then
+            echo "ERROR: the raw dataset is tracked by git."
             exit 1
           fi
-          echo "SUCCESS: Zero raw dataset archives in dist/ output."
+          echo "SUCCESS: /data/ ignores the dataset only; ledgers remain tracked."
 
-      - name: Commit Updated Curated Corpus & Manifest (If Changed)
+      # S8 — deployment limits, independent of the build-time guard.
+      - name: Verify Production Bundle Budget (plan S8)
+        run: |
+          if find dist -type f \( -name "*.csv" -o -name "*.zst" -o -name "*.tar*" -o -name "*.gz" \) | grep -q .; then
+            echo "ERROR: raw dataset archive detected in dist/ production bundle!"
+            exit 1
+          fi
+          COUNT=$(find dist -type f | wc -l)
+          if [ "$COUNT" -gt 5000 ]; then
+            echo "ERROR: dist/ contains $COUNT files, above the 5000 limit."
+            exit 1
+          fi
+          echo "SUCCESS: $COUNT files in dist/; zero raw dataset archives."
+
+      - name: Delete Dataset Before Commit
+        run: rm -f "$PUZZLE_DATASET"
+
+      - name: Commit Updated Corpus, Ledgers & Manifest (If Changed)
         run: |
           git config user.name "PlyQuest Ingestion Bot"
           git config user.email "bot@plyquest.pages.dev"
-          git add src/data/puzzles.ts src/data/source-manifest.json public/sitemap.xml
+          git add public/puzzles src/data/source-manifest.json src/data/dailySchedule.json src/data/puzzle-registry.json public/sitemap.xml
           if git diff --staged --quiet; then
             echo "No dataset updates or changes detected."
           else
